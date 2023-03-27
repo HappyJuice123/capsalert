@@ -1,6 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "@firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import SignInPage from "./component/SignInPage";
+import SignUpPage from "./component/SignUpPage";
+import HomePage from "./component/HomePage";
+
+const Stack = createNativeStackNavigator();
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc6-4VudZ4SMt5dm2iS7CoTH8WN6nme0s",
@@ -13,13 +20,21 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={SignInPage}
+        ></Stack.Screen>
+        <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
+        <Stack.Screen name="Home" component={HomePage}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
