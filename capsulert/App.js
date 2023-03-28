@@ -3,9 +3,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "@firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignInPage from "./component/SignInPage";
-import SignUpPage from "./component/SignUpPage";
-import MyMedical from "./MyMedical";
+import SignInPage from "./components/SignInPage";
+import SignUpPage from "./components/SignUpPage";
+import MyMedical from "./components/MyMedical";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +32,7 @@ export default function App() {
           component={SignInPage}
         ></Stack.Screen>
         <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
-        <Stack.Screen name="Home" component={MyMedical}></Stack.Screen>
+        <Stack.Screen name="My Medical" component={MyMedical}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
