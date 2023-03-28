@@ -4,7 +4,9 @@ import { initializeApp } from "firebase/app";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { AddAllergies } from "./AddAllergies";
+import { AddAllergies } from "./components/AddAllergies";
+
+import MyMedical from "./components/MyMedical";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc6-4VudZ4SMt5dm2iS7CoTH8WN6nme0s",
@@ -28,7 +30,8 @@ const HomeScreen = ({ navigation }) => {
         title="Add Allergies"
         onPress={() => navigation.navigate("Allergies")}
       ></Button>
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" />
+      <MyMedical /> */}
     </View>
   );
 };
@@ -41,6 +44,10 @@ export default function App() {
         <Stack.Screen name="Allergies" component={AddAllergies} />
       </Stack.Navigator>
     </NavigationContainer>
+    // <View>
+    //   <StatusBar style="auto" />
+    //   <MyMedical />
+    // </View>
   );
 }
 
