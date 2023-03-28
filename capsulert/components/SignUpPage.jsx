@@ -13,8 +13,8 @@ import { useNavigation } from "@react-navigation/core";
 import { UserContext } from "../contexts/User";
 
 const SignUpPage = () => {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 

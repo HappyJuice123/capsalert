@@ -12,7 +12,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../App";
 import { UserContext } from "../contexts/User";
 
-const SignInPage = ({ email, setEmail, password, setPassword }) => {
+const SignInPage = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
