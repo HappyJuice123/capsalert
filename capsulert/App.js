@@ -2,10 +2,8 @@ import { initializeApp } from "firebase/app";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MyMedications } from "./MyMedications";
-import { AddMedsPlaceholder } from "./AddMedsPlaceholder";
+import { AddMedication } from "./AddMedication";
 import { MoreInfoPlaceholder } from "./MoreInfoPlaceholder";
-import { StatusBar } from "expo-status-bar";
-import { initializeApp } from "firebase/app";
 import MyMedical from "./MyMedical";
 
 const firebaseConfig = {
@@ -32,7 +30,7 @@ export default function App() {
         />
         <Stack.Screen
           name="AddMeds"
-          component={AddMedsPlaceholder}
+          component={AddMedication}
           options={{ title: "Add Medications" }}
         />
         <Stack.Screen
@@ -45,7 +43,6 @@ export default function App() {
           component={MyMedical}
           options={{ title: "MyMedical" }}
         />
-        <StatusBar style="auto" />
       </Stack.Navigator>
     </NavigationContainer>
   );

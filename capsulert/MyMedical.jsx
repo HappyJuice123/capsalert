@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignContent: "center",
-    verticalAlign: "center",
   },
 });
 export default MyMedical;

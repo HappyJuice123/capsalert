@@ -9,11 +9,13 @@ import {
 
 import { Picker } from "@react-native-picker/picker";
 
-export const AddMedsPlaceholder = ({ setMedications, setModalOpen }) => {
+export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
   const [dosage, setDosage] = useState("");
+  const [showDosageOption, setShowDosageOption] = useState(false);
   const [medicationType, setMedicationType] = useState("");
-  const [quantity, setQuantity] = useState("Quantity");
+  const [showMedicationOption, setShowMedicationOption] = useState(false);
+  const [quantity, setQuantity] = useState("");
 
   const handleInput = (newMedication) => {
     setMedications((prevMedications) => {
@@ -38,38 +40,87 @@ export const AddMedsPlaceholder = ({ setMedications, setModalOpen }) => {
       {/* Dosage */}
       <Picker
         selectedValue={dosage}
-        onValueChange={(currentDosage) => setDosage(currentDosage)}
+        onValueChange={(currentDosage) => {
+          setDosage(currentDosage);
+          if (currentDosage === "other") {
+            setShowDosageOption(true);
+          } else {
+            setShowDosageOption(false);
+          }
+        }}
       >
-        <Picker.Item label="set dosage" value="" />
-        <Picker.Item label="mg" value="mg" />
-        <Picker.Item label="ug" value="ug" />
-        <Picker.Item label="dose3" value="dose3" />
-        <Picker.Item label="dose4" value="dose4" />
+        <Picker.Item label="Dosage" value="" />
+        <Picker.Item label="milligram (mg)" value="mg" />
+        <Picker.Item label="microgram (μg)" value="ug" />
+        <Picker.Item label="millilitre (ml)" value="ml" />
+        <Picker.Item label="Other dosage" value="other" />
       </Picker>
-      {/* Form of Medication */}
+      {/* Dosage: Show Other input */}
+
+      {showDosageOption ? (
+        <TouchableOpacity style={styles.other}>
+          <Text>Other:</Text>
+          <TextInput
+            placeholder={"Enter dosage"}
+            value={dosage}
+            style={styles.otherInput}
+            onChangeText={(currentDosage) => setDosage(currentDosage)}
+          />
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
+
+      {/* Type of Medication */}
       <Picker
         selectedValue={medicationType}
-        onValueChange={(currentMedicationType) =>
-          setMedicationType(currentMedicationType)
-        }
+        onValueChange={(currentMedicationType) => {
+          setMedicationType(currentMedicationType);
+          if (currentMedicationType === "other") {
+            setShowMedicationOption(true);
+          } else {
+            setShowMedicationOption(false);
+          }
+        }}
       >
         <Picker.Item label="Type of Medication" value="" />
         <Picker.Item label="Pill" value="Pill" />
         <Picker.Item label="Liquid" value="Liquid" />
-        <Picker.Item label="Syringe" value="Syringe" />
-        <Picker.Item label="Other" value="Other" />
+        <Picker.Item label="Drops" value="Drops" />
+        <Picker.Item label="Inhaler" value="Inhaler" />
+        <Picker.Item label="Powder" value="Powder" />
+        <Picker.Item label="Injection" value="Injection" />
+        <Picker.Item label="Lozenge" value="Lozenge" />
+        <Picker.Item label="Cream" value="Cream" />
+        <Picker.Item label="Other type of medication" value="other" />
       </Picker>
+      {/* Type of Medication: Show Other input */}
+
+      {showMedicationOption ? (
+        <TouchableOpacity style={styles.other}>
+          <Text>Other:</Text>
+          <TextInput
+            placeholder={"Enter Type of Medication "}
+            value={medicationType}
+            style={styles.otherInput}
+            onChangeText={(value) => setMedicationType(value)}
+          />
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
+
       {/* Quantity */}
-      <Picker
-        selectedValue={quantity}
-        onValueChange={(currentQuantity) => setQuantity(currentQuantity)}
-      >
-        <Picker.Item label="Quantity" value="" />
-        <Picker.Item label="1" value="1" />
-        <Picker.Item label="2" value="2" />
-        <Picker.Item label="3" value="3" />
-        <Picker.Item label="4" value="4" />
-      </Picker>
+      <TouchableOpacity style={styles.quantity}>
+        <Text>Quantity:</Text>
+        <TextInput
+          placeholder={"Enter quantity here "}
+          value={quantity}
+          style={styles.quantityInput}
+          onChangeText={(currentQuantity) => setQuantity(currentQuantity)}
+        />
+      </TouchableOpacity>
+
       {/* Set Notifications */}
       <TouchableOpacity>
         <Text style={styles.notifications}>Set Notifications </Text>
@@ -106,6 +157,28 @@ const styles = StyleSheet.create({
   },
   btnText: {
     textAlign: "center",
+  },
+  quantity: {
+    marginHorizontal: 10,
+    marginVertical: 10,
+  },
+  quantityInput: {
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    marginVertical: 5,
+  },
+  other: {
+    marginHorizontal: 10,
+    marginVertical: 10,
+  },
+  otherInput: {
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
   notifications: {
     backgroundColor: "#F2F2F2",

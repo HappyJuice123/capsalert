@@ -7,17 +7,13 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
-import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
   const [modalOpen, setModalOpen] = useState(false);
   const [medications, setMedications] = useState([]);
-
-  const navigation = useNavigation();
 
   const handleDelete = (item) => {
     setMedications((prevmedications) => {
@@ -45,14 +41,7 @@ export function MyMedications() {
       </Modal>
 
       <TouchableOpacity>
-        <Text
-          style={styles.addMedsBtn}
-          // onPress={() => {
-          //   // Navigate to the AddMeds screen
-          //   navigation.navigate("AddMeds");
-          // }}
-          onPress={() => setModalOpen(true)}
-        >
+        <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
           {" "}
           Add Medication{" "}
         </Text>
