@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignInPage from "./component/SignInPage";
 import SignUpPage from "./component/SignUpPage";
-import HomePage from "./component/HomePage";
+import MyMedical from "./MyMedical";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +32,7 @@ export default function App() {
           component={SignInPage}
         ></Stack.Screen>
         <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
-        <Stack.Screen name="Home" component={HomePage}></Stack.Screen>
+        <Stack.Screen name="Home" component={MyMedical}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
