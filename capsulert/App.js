@@ -23,14 +23,14 @@ export default function App() {
           <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
           <Stack.Screen name="My Medical" component={MyMedical}></Stack.Screen>
           <Stack.Screen
-            name="profile"
+            name="MyMedications"
             component={MyMedications}
             options={{ title: "My Medications" }}
           />
           <Stack.Screen
-            name="AddMeds"
+            name="AddMedication"
             component={AddMedication}
-            options={{ title: "Add Medications" }}
+            options={{ title: "Add Medication" }}
           />
           <Stack.Screen
             name="MoreInfo"

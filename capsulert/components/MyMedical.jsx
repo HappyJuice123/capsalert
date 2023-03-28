@@ -35,7 +35,15 @@ const MyMedical = () => {
           <Text style={styles.text}>Medical History</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            {
+              /* Navigate to the AddMeds route */
+            }
+            navigation.navigate("MyMedications");
+          }}
+        >
           <Text style={styles.text}>My Medications</Text>
         </TouchableOpacity>
 
