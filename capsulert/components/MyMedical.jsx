@@ -1,17 +1,42 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import React from "react";
-import MedicalHistory from "./MedicalHistoy";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import React, { useContext } from "react";
+import { useNavigation } from "@react-navigation/core";
+import { auth } from "../firebase/firebase";
+import { UserContext } from "../contexts/User";
+
 //add your component on press in the TouchableOpacity component
 //eg <TouchableOpacity style={styles.button} onPress={<Allergies/>}>
 
 const MyMedical = () => {
+  const navigation = useNavigation();
+  const { loggedInUser } = useContext(UserContext);
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigation.replace("Login");
+      })
+      .catch((err) => alert(err.message));
+  };
+
   return (
-    <View>
-      <Text style={styles.welcome}>Welcome</Text>
+    <ScrollView>
+      <Text style={styles.welcome}>Welcome, {loggedInUser}!</Text>
       <Text style={styles.title}>Capsalert</Text>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Medical History");
+          }}
+        >
           <Text style={styles.text}>Medical History</Text>
         </TouchableOpacity>
 
@@ -22,8 +47,12 @@ const MyMedical = () => {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.text}>Allergies</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+          <Text style={styles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -64,4 +93,5 @@ const styles = StyleSheet.create({
     verticalAlign: "center",
   },
 });
+
 export default MyMedical;

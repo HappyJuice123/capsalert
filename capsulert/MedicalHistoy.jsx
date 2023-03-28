@@ -4,25 +4,23 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useState } from "react";
 
 const MedicalHistory = () => {
-  const [text, onChangeText] = useState("");
+  const [newInput, setNewInput] = useState("");
   const [list, setList] = useState([]);
   // console.log(text);
   // console.log(list);
-  const handleSubmit = (text) => {
-    if (list.length === 0) {
-      setList((key = { text }[text]));
-      //console.log(list);
-    } else {
-      setList([text, ...list]);
-    }
+  const handleSubmit = (newInput) => {
+    setList((currentList) => {
+      return [...currentList, newInput];
+    });
+    setNewInput("");
   };
   const handleRemove = (item) => {
-    console.log(item);
+    // console.log(item);
     // console.log(...list);
     const removedItemArray = list.filter((e) => e !== item);
     setList(removedItemArray);
@@ -33,40 +31,27 @@ const MedicalHistory = () => {
       <TextInput
         style={styles.input}
         placeholder="Add to your medical history..."
-        onChangeText={onChangeText}
-        value={text}
+        onChangeText={(value) => {
+          setNewInput(value);
+        }}
+        value={newInput}
       />
 
       <TouchableOpacity style={styles.addButton}>
-        <Text style={styles.add} onPress={() => handleSubmit(text)}>
+        <Text style={styles.add} onPress={() => handleSubmit(newInput)}>
           Add
         </Text>
       </TouchableOpacity>
-
+      {console.log(list)}
       <Text style={styles.yourHistory}>Your medical history</Text>
 
-      <View style={styles.boxList}>
-        <ScrollView>
-          {list
-            ? list.map((item) => {
-                return (
-                  <View>
-                    <Text>{item}</Text>
-                    {console.log(item)}
-                    <TouchableOpacity
-                      key={item}
-                      style={styles.removeButton}
-                      onPress={() => handleRemove(item)}
-                    >
-                      <Text>Remove</Text>
-                      {/* {console.log(item)} */}
-                    </TouchableOpacity>
-                  </View>
-                );
-              })
-            : (setList([]), (<Text>add to your history</Text>))}
-        </ScrollView>
-      </View>
+      <FlatList
+        style={styles.flatlist}
+        data={list}
+        renderItem={({ item }) => {
+          <Text>{item}</Text>;
+        }}
+      ></FlatList>
     </View>
   );
 };
@@ -118,5 +103,30 @@ const styles = StyleSheet.create({
     borderColor: "#000000",
     borderWidth: 2,
   },
+  flatlist: {
+    backgroundColor: "#ADD8E6",
+  },
 });
 export default MedicalHistory;
+{
+  /* {list
+            ? list.map((item) => {
+                return (
+                  <View>
+                    <Text>{item}</Text>
+                    {console.log(item)}
+                    <TouchableOpacity
+                      key={item}
+                      style={styles.removeButton}
+                      onPress={() => handleRemove(item)}
+                    >
+                      <Text>Remove</Text>
+                      {/* {console.log(item)} */
+}
+{
+  /* </TouchableOpacity>
+                  </View>
+                );
+              })
+            : (setList([]), (<Text>add to your history</Text>))} */
+}
