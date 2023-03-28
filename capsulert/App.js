@@ -1,10 +1,12 @@
-import { StyleSheet, View } from "react-native";
 import { initializeApp } from "firebase/app";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MyMedications } from "./MyMedications";
 import { AddMedsPlaceholder } from "./AddMedsPlaceholder";
 import { MoreInfoPlaceholder } from "./MoreInfoPlaceholder";
+import { StatusBar } from "expo-status-bar";
+import { initializeApp } from "firebase/app";
+import MyMedical from "./MyMedical";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc6-4VudZ4SMt5dm2iS7CoTH8WN6nme0s",
@@ -38,17 +40,39 @@ export default function App() {
           component={MoreInfoPlaceholder}
           options={{ title: "More Info" }}
         />
+        <Stack.Screen
+          name="MyMedical"
+          component={MyMedical}
+          options={{ title: "MyMedical" }}
+        />
+        <StatusBar style="auto" />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     padding: 20,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });
+//     <View>
+//       <StatusBar style="auto" />
+//       <MyMedical />
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//});
+//  StyleSheet, Text,style={styles.container}
