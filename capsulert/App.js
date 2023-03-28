@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { initializeApp } from "firebase/app";
+
+import MyMedical from "./MyMedical";
 import MedicalHistory from "./MedicalHistoy";
 
 const firebaseConfig = {
@@ -20,6 +22,17 @@ export default function App() {
     <View>
       <StatusBar style="auto" />
       <MedicalHistory />
+      <MyMedical />
     </View>
   );
 }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//});
+//  StyleSheet, Text,style={styles.container}

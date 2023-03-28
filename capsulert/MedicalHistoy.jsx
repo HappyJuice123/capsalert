@@ -4,12 +4,29 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 
 const MedicalHistory = () => {
   const [text, onChangeText] = useState("");
-  const handleSubmit = (text) => {};
+  const [list, setList] = useState([]);
+  // console.log(text);
+  // console.log(list);
+  const handleSubmit = (text) => {
+    if (list.length === 0) {
+      setList((key = { text }[text]));
+      //console.log(list);
+    } else {
+      setList([text, ...list]);
+    }
+  };
+  const handleRemove = (item) => {
+    console.log(item);
+    // console.log(...list);
+    const removedItemArray = list.filter((e) => e !== item);
+    setList(removedItemArray);
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Medical History</Text>
@@ -19,8 +36,9 @@ const MedicalHistory = () => {
         onChangeText={onChangeText}
         value={text}
       />
+
       <TouchableOpacity style={styles.addButton}>
-        <Text style={styles.add} onPress={handleSubmit}>
+        <Text style={styles.add} onPress={() => handleSubmit(text)}>
           Add
         </Text>
       </TouchableOpacity>
@@ -28,7 +46,26 @@ const MedicalHistory = () => {
       <Text style={styles.yourHistory}>Your medical history</Text>
 
       <View style={styles.boxList}>
-        <Text>hello</Text>
+        <ScrollView>
+          {list
+            ? list.map((item) => {
+                return (
+                  <View>
+                    <Text>{item}</Text>
+                    {console.log(item)}
+                    <TouchableOpacity
+                      key={item}
+                      style={styles.removeButton}
+                      onPress={() => handleRemove(item)}
+                    >
+                      <Text>Remove</Text>
+                      {/* {console.log(item)} */}
+                    </TouchableOpacity>
+                  </View>
+                );
+              })
+            : (setList([]), (<Text>add to your history</Text>))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -76,6 +113,10 @@ const styles = StyleSheet.create({
   },
   add: {
     fontSize: 15,
+  },
+  removeButton: {
+    borderColor: "#000000",
+    borderWidth: 2,
   },
 });
 export default MedicalHistory;
