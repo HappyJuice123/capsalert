@@ -39,7 +39,7 @@ const MyMedical = () => {
           style={styles.button}
           onPress={() => {
             {
-              /* Navigate to the AddMeds route */
+              /* Navigate to the MyMedications route */
             }
             navigation.navigate("MyMedications");
           }}
