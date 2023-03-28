@@ -1,6 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { initializeApp } from "firebase/app";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MyMedications } from "./MyMedications";
+import { AddMedsPlaceholder } from "./AddMedsPlaceholder";
+import { MoreInfoPlaceholder } from "./MoreInfoPlaceholder";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc6-4VudZ4SMt5dm2iS7CoTH8WN6nme0s",
@@ -13,19 +17,36 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="profile"
+          component={MyMedications}
+          options={{ title: "My Medications" }}
+        />
+        <Stack.Screen
+          name="AddMeds"
+          component={AddMedsPlaceholder}
+          options={{ title: "Add Medications" }}
+        />
+        <Stack.Screen
+          name="MoreInfo"
+          component={MoreInfoPlaceholder}
+          options={{ title: "More Info" }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
