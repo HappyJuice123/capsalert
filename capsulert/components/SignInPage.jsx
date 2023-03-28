@@ -6,14 +6,17 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../App";
+import { UserContext } from "../contexts/User";
 
-const SignInPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignInPage = ({ email, setEmail, password, setPassword }) => {
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const { setLoggedInUser } = useContext(UserContext);
 
   const navigation = useNavigation();
 
@@ -28,7 +31,7 @@ const SignInPage = () => {
   }, []);
 
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log("Logged in with", user.email);
@@ -41,14 +44,17 @@ const SignInPage = () => {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
+          value={loginEmail}
+          onChangeText={(text) => {
+            setLoginEmail(text);
+            setLoggedInUser(text);
+          }}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
+          value={loginPassword}
+          onChangeText={(text) => setLoginPassword(text)}
           style={styles.input}
           secureTextEntry
         />

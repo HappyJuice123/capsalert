@@ -5,14 +5,16 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 //add your component on press in the TouchableOpacity component
 //eg <TouchableOpacity style={styles.button} onPress={<Allergies/>}>
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../App";
+import { UserContext } from "../contexts/User";
 
 const MyMedical = () => {
   const navigation = useNavigation();
+  const { loggedInUser } = useContext(UserContext);
 
   const handleSignOut = () => {
     auth
@@ -25,7 +27,7 @@ const MyMedical = () => {
 
   return (
     <ScrollView>
-      <Text style={styles.welcome}>Welcome</Text>
+      <Text style={styles.welcome}>Welcome, {loggedInUser}!</Text>
       <Text style={styles.title}>Capsalert</Text>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.button}>

@@ -6,23 +6,26 @@ import {
   View,
   Text,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../App";
 import { useNavigation } from "@react-navigation/core";
+import { UserContext } from "../contexts/User";
 
 const SignUpPage = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+
+  const { setLoggedInUser } = useContext(UserContext);
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("Home");
+        navigation.replace("My Medical");
       }
     });
 
@@ -30,7 +33,7 @@ const SignUpPage = () => {
   }, []);
 
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log("Registered with", user.email);
@@ -44,7 +47,10 @@ const SignUpPage = () => {
         <TextInput
           placeholder="First Name"
           value={firstName}
-          onChangeText={(text) => setFirstName(text)}
+          onChangeText={(text) => {
+            setFirstName(text);
+            setLoggedInUser(text);
+          }}
           style={styles.input}
         />
         <TextInput
@@ -55,14 +61,14 @@ const SignUpPage = () => {
         />
         <TextInput
           placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
+          value={registerEmail}
+          onChangeText={(text) => setRegisterEmail(text)}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
+          value={registerPassword}
+          onChangeText={(text) => setRegisterPassword(text)}
           style={styles.input}
           secureTextEntry
         />
