@@ -9,7 +9,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../App";
+import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
 
 const SignInPage = () => {

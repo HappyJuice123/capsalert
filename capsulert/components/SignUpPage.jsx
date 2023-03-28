@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../App";
+import { auth } from "../firebase/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { UserContext } from "../contexts/User";
 

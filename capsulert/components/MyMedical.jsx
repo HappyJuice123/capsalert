@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/core";
-import { auth } from "../App";
+import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
 
 //add your component on press in the TouchableOpacity component
