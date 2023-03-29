@@ -12,7 +12,19 @@ import {
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { UserContext } from "../contexts/User";
-import { getDatabase, ref, set, child, push } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  child,
+  push,
+  update,
+  set,
+  onValue,
+  onChildAdded,
+  onChildChanged,
+  onChildRemoved,
+  get,
+} from "firebase/database";
 
 export const AddAllergies = () => {
   const [isCelerySelected, setIsCelerySelected] = useState(false);
@@ -38,6 +50,7 @@ export const AddAllergies = () => {
   const { userId } = useContext(UserContext);
 
   useEffect(() => {
+    writeNewAllergyList(userId);
     if (isCelerySelected) {
       setAllergies((currentAllergies) => {
         return [...currentAllergies, newAllergy];
@@ -51,6 +64,74 @@ export const AddAllergies = () => {
       });
     }
   }, [isCelerySelected]);
+
+  const writeNewAllergyList = (userId) => {
+    const db = getDatabase();
+    const postData = ["Celery"];
+    const postListRef = ref(db, `users/${userId}/allergies`);
+    const newPostRef = push(postListRef);
+    set(newPostRef, postData);
+  };
+
+  // const readAllergyList = () => {
+  //   const db = getDatabase();
+  //   const starCountRef = ref(db, `users/${userId}/allergies`);
+  //   onValue(starCountRef, (snapshot) => {
+  //     const data = snapshot.val();
+  //     updateStarCount(postElement, data);
+  //     console.log(data);
+  //   });
+  // };
+
+  // readAllergyList();
+
+  // const listenChildEvents = () => {
+  //   const db = getDatabase();
+  //   const commentsRef = ref(db, `users/${userId}/allergies`);
+  //   onChildAdded(commentsRef, (data) => {
+  //     addCommentElement(
+  //       postElement,
+  //       data.key,
+  //       data.val().text,
+  //       data.val().author
+  //     );
+  //     console.log("inside on child added >>> ", data);
+  //   });
+
+  //   onChildChanged(commentsRef, (data) => {
+  //     setCommentValues(
+  //       postElement,
+  //       data.key,
+  //       data.val().text,
+  //       data.val().author
+  //     );
+  //     console.log("inside on child changed >>> ", data);
+  //   });
+
+  //   onChildRemoved(commentsRef, (data) => {
+  //     deleteComment(postElement, data.key);
+  //     console.log("inside delete child >>> ", data);
+  //   });
+  // };
+
+  // listenChildEvents();
+
+  const readDatabase = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val().allergies);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  readDatabase();
 
   return (
     <ScrollView>
