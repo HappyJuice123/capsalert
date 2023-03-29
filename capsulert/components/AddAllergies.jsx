@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { UserContext } from "../contexts/User";
+import { getDatabase, ref, set, child, push } from "firebase/database";
 
 export const AddAllergies = () => {
   const [isCelerySelected, setIsCelerySelected] = useState(false);
@@ -32,13 +33,14 @@ export const AddAllergies = () => {
 
   const [allergies, setAllergies] = useState([]);
   const [newAllergy, setNewAllergy] = useState("");
+  const [addNewAllergy, setAddnewAllergy] = useState("");
 
   const { userId } = useContext(UserContext);
 
   useEffect(() => {
     if (isCelerySelected) {
       setAllergies((currentAllergies) => {
-        return [...currentAllergies, "Celery"];
+        return [...currentAllergies, newAllergy];
       });
     } else if (!isCelerySelected) {
       setAllergies((currentAllergies) => {
