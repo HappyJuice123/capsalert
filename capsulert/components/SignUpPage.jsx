@@ -11,6 +11,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { UserContext } from "../contexts/User";
+import { getDatabase, ref, set } from "firebase/database";
 
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -32,10 +33,19 @@ const SignUpPage = () => {
     return unsubscribe;
   }, []);
 
+  const writeUserData = (userId) => {
+    const db = getDatabase();
+    const reference = ref(db, `users/${userId}`);
+
+    set(reference, { uid: userId });
+  };
+
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        const uid = user.uid;
+        writeUserData(uid);
         console.log("Registered with", user.email);
       })
       .catch((err) => alert(err.message));

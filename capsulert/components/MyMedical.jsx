@@ -6,6 +6,7 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useContext } from "react";
+import { AddAllergies } from "./AddAllergies";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
@@ -47,7 +48,12 @@ const MyMedical = () => {
           <Text style={styles.text}>My Medications</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Allergies");
+          }}
+        >
           <Text style={styles.text}>Allergies</Text>
         </TouchableOpacity>
 
