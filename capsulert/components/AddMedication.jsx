@@ -19,7 +19,11 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   // states for date input
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
+  const [formatStartDate, setFormatStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  // states for time input
+  const [timeModal, setTimeModal] = useState(false);
+  const [selectedTime, setSelectedTime] = useState("");
   // states for unit input
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
@@ -42,13 +46,18 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   };
   // console.log(testObj);
 
-  // Set Start Date
+  // set start date
   const today = new Date();
 
-  const calendarStartDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
+  const calendarStartDate = getFormatedDate(today.setDate(today.getDate()));
+
+  // format start date
+  const formattedDate = new Date().toLocaleDateString("en-GB"); // format to DD/MM/YYYY
+
+  console.log(formattedDate);
+
+  console.log(today);
+  console.log(startDate);
 
   const handleDateModalPress = () => {
     setDateModal(!dateModal);
@@ -58,7 +67,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     setStartDate(newStartDate);
   };
 
-  //  Set End Date
+  //  set end date
   const calendarEndDate = getFormatedDate(
     today.setDate(today.getDate()),
     "YYYY/MM/DD"
@@ -66,6 +75,12 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   const handleEndDateChange = (newEndDate) => {
     setEndDate(newEndDate);
+  };
+
+  //  set time
+
+  const handleTimeModalPress = () => {
+    setTimeModal(!timeModal);
   };
 
   {
@@ -83,7 +98,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     <ScrollView styles={styles.container}>
       {/* Input Medication Name */}
       <TextInput
-        placeholder={"Enter your medication"}
+        placeholder={"Enter Medication"}
         style={styles.input}
         value={newMedication}
         onChangeText={(value) => setNewMedication(value)}
@@ -91,13 +106,13 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
       {/* Start/End Date */}
       <TouchableOpacity>
-        <TouchableOpacity onPress={handleDateModalPress}>
-          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
-        </TouchableOpacity>
         <View style={styles.displayDate}>
           <Text>Start Date: {startDate}</Text>
           <Text>End Date: {endDate}</Text>
         </View>
+        <TouchableOpacity onPress={handleDateModalPress}>
+          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={dateModal}>
         <View style={styles.centeredView}>
@@ -115,6 +130,31 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
               onDateChange={(selected) => handleEndDateChange(selected)}
             />
             <TouchableOpacity onPress={handleDateModalPress}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Time */}
+      <TouchableOpacity>
+        <View style={styles.displayDate}>
+          <Text>Time: {selectedTime}</Text>
+        </View>
+
+        <TouchableOpacity onPress={handleTimeModalPress}>
+          <Text style={styles.setDatebtn}>Click to Time</Text>
+        </TouchableOpacity>
+      </TouchableOpacity>
+      <Modal animationType="slide" transparent={true} visible={timeModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.dateView}>
+            <DatePicker
+              mode="time"
+              minuteInterval={15}
+              onTimeChange={(time) => setSelectedTime(time)}
+            />
+            <TouchableOpacity onPress={handleTimeModalPress}>
               <Text>Close</Text>
             </TouchableOpacity>
           </View>
@@ -167,31 +207,33 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       )}
 
       {/* Type of Medication */}
-      <Picker
-        selectedValue={medicationType}
-        style={styles.picker}
-        onValueChange={(currentMedicationType) => {
-          setMedicationType(currentMedicationType);
-          if (currentMedicationType === "other") {
-            setShowMedicationOption(true);
-            setMedicationType("");
-          } else {
-            setShowMedicationOption(false);
-          }
-        }}
-      >
-        <Picker.Item label="Select Type of Medication" value={medicationType} />
-        <Picker.Item label="Pill" value="Pill" />
-        <Picker.Item label="Liquid" value="Liquid" />
-        <Picker.Item label="Drops" value="Drops" />
-        <Picker.Item label="Inhaler" value="Inhaler" />
-        <Picker.Item label="Powder" value="Powder" />
-        <Picker.Item label="Injection" value="Injection" />
-        <Picker.Item label="Lozenge" value="Lozenge" />
-        <Picker.Item label="Cream" value="Cream" />
-        <Picker.Item label="Other type of medication" value="other" />
-      </Picker>
-
+      <View style={styles.typeContainer}>
+        <Text>Type of Medication:</Text>
+        <Picker
+          selectedValue={medicationType}
+          style={styles.typePicker}
+          onValueChange={(currentMedicationType) => {
+            setMedicationType(currentMedicationType);
+            if (currentMedicationType === "other") {
+              setShowMedicationOption(true);
+              setMedicationType("");
+            } else {
+              setShowMedicationOption(false);
+            }
+          }}
+        >
+          <Picker.Item label="Select" value={medicationType} />
+          <Picker.Item label="Pill" value="Pill" />
+          <Picker.Item label="Liquid" value="Liquid" />
+          <Picker.Item label="Drops" value="Drops" />
+          <Picker.Item label="Inhaler" value="Inhaler" />
+          <Picker.Item label="Powder" value="Powder" />
+          <Picker.Item label="Injection" value="Injection" />
+          <Picker.Item label="Lozenge" value="Lozenge" />
+          <Picker.Item label="Cream" value="Cream" />
+          <Picker.Item label="Other" value="other" />
+        </Picker>
+      </View>
       {/* Type of Medication: Show Other input */}
       {showMedicationOption ? (
         <TouchableOpacity style={styles.customerPicker}>
@@ -210,7 +252,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       )}
       {/* Quantity */}
       <TouchableOpacity style={styles.quantity}>
-        <Text>How many to take:</Text>
+        <Text>Amount to take:</Text>
         <TextInput
           placeholder={"Enter quantity here "}
           value={quantity}
@@ -240,9 +282,10 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     borderWidth: 1,
     borderRadius: 5,
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginVertical: 20,
+    marginHorizontal: 30,
     padding: 4,
+    textAlign: "center",
   },
   btn: {
     marginTop: 20,
@@ -259,28 +302,6 @@ const styles = StyleSheet.create({
   },
   btnText: {
     textAlign: "center",
-  },
-  quantity: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 50,
-    marginHorizontal: 50,
-    marginVertical: 10,
-  },
-  quantityInput: {
-    borderColor: "#000",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginHorizontal: 5,
-    marginVertical: 5,
-  },
-  picker: {
-    marginHorizontal: 10,
-    marginVertical: 10,
-    backgroundColor: "#F2F2F2",
-    borderRadius: 15,
   },
   customerPicker: {
     marginHorizontal: 30,
@@ -318,7 +339,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    width: "90%",
+    width: "80%",
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
@@ -341,8 +362,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: "#F2F2F2",
     borderColor: "#000000",
-    borderWidth: 2,
-    borderRadius: 15,
+    borderWidth: 1.5,
+    borderRadius: 10,
     padding: 10,
     marginHorizontal: 50,
     marginVertical: 20,
@@ -356,7 +377,7 @@ const styles = StyleSheet.create({
   },
   dosage: {
     borderColor: "#000",
-    borderWidth: 1,
+    borderWidth: 0.7,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginHorizontal: 5,
@@ -364,5 +385,31 @@ const styles = StyleSheet.create({
   },
   unit: {
     width: 200,
+  },
+  typeContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    gap: 50,
+  },
+  typePicker: {
+    width: 150,
+  },
+  quantity: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 80,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  quantityInput: {
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    marginVertical: 5,
   },
 });

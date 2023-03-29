@@ -20,8 +20,9 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
       {/* Medication Name */}
       <View>
         <Text>{item.name}</Text>
-        <Text>{item.startDate}</Text>
-        <Text>{item.endDate}</Text>
+        <Text>Start: {item.startDate}</Text>
+        <Text>End: {item.endDate}</Text>
+        <Text>Time: {item.endDate}</Text>
         <Text>
           {item.dosage}
           {item.unit}
@@ -67,7 +68,7 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
                     {
                       /* Navigate to the AddMedication route */
                     }
-                    navigation.navigate("AddMedication");
+                    navigation.navigate("AddMedication", { item });
                   }}
                 >
                   {" "}

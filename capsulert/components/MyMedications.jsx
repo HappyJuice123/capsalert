@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   FlatList,
+  ScrollView,
   View,
   Modal,
   Text,
@@ -24,7 +25,7 @@ export function MyMedications() {
   return (
     <View>
       <Modal visible={modalOpen} animationType="slide">
-        <View>
+        <ScrollView>
           <AntDesign
             name="closesquare"
             size={30}
@@ -37,7 +38,7 @@ export function MyMedications() {
             setMedications={setMedications}
             setModalOpen={setModalOpen}
           />
-        </View>
+        </ScrollView>
       </Modal>
 
       <TouchableOpacity>
