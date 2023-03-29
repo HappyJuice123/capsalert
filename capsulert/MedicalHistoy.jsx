@@ -6,21 +6,13 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
-// import { getDatabase, ref, set } from "firebase/database";
-
-// function testData(userUID, name, email) {
-//   const db = getDatabase();
-//   set(ref(db, "/users/" + userUID), {
-//     username: name,
-//     email: email,
-//   });
-// }
-// testData(1, "holly", "holly@test.com");
+import React, { useState, useContext } from "react";
+import { UserContext } from "./contexts/User";
+import { getDatabase, set, ref } from "firebase/database";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
   const [list, setList] = useState([]);
-
+  const { userId } = useContext(UserContext);
   const handleSubmit = (newInput) => {
     setList((currentList) => {
       return [...currentList, newInput];
@@ -32,13 +24,14 @@ const MedicalHistory = () => {
     setList(removedItemArray);
   };
 
-  // const handleSave = () => {
-  //   let data = {
-  //     items: newInput,
-  //   };
-  //   let ref = database.ref(`/users/` + userUID);
-  //   ref.push(data);
-  // };
+  const writeData = (userId, diagnosis) => {
+    const db = getDatabase();
+    const reference = ref(db, `users/${userId}/diagnosis`);
+    set(reference, { diagnosis: diagnosis });
+  };
+  {
+    console.log(userId);
+  }
 
   return (
     <View style={styles.container}>
@@ -60,7 +53,6 @@ const MedicalHistory = () => {
       </TouchableOpacity>
       {console.log(list)}
       <Text style={styles.yourHistory}>Your medical history</Text>
-
       <FlatList
         style={styles.flatlist}
         data={list}
@@ -76,7 +68,9 @@ const MedicalHistory = () => {
           </TouchableOpacity>
         )}
       ></FlatList>
-      <TouchableOpacity onPress={() => handleSave}>Save</TouchableOpacity>
+      <TouchableOpacity onPress={() => writeData(userId, list)}>
+        Save
+      </TouchableOpacity>
     </View>
   );
 };
