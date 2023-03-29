@@ -8,7 +8,15 @@ import {
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { UserContext } from "./contexts/User";
-import { getDatabase, set, ref } from "firebase/database";
+import {
+  getDatabase,
+  set,
+  ref,
+  push,
+  remove,
+  onValue,
+  DataSnapshot,
+} from "firebase/database";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
   const [list, setList] = useState([]);
@@ -24,14 +32,49 @@ const MedicalHistory = () => {
     setList(removedItemArray);
   };
 
-  const writeData = (userId, diagnosis) => {
+  const updateData = (userId, diagnosis) => {
     const db = getDatabase();
     const reference = ref(db, `users/${userId}/diagnosis`);
-    set(reference, { diagnosis: diagnosis });
+    const newUpdate = push(reference);
+    remove(reference);
+    set(newUpdate, { diagnosis: diagnosis });
   };
   {
     console.log(userId);
   }
+
+  // const renderData = () => {
+  //   const db = getDatabase().DataSnapshot;
+  //   const data = ref(db, `users/${userId}/diagnosis`);
+  //   const key = getKey(data);
+  //   console.log(db);
+  // };
+
+  // const readData = (userId) => {
+  //   const db = getDatabase();
+  //   const readReference = ref(db, `users/${userId}/diagnosis/diagnosis`);
+  //   onValue(readReference, (snapshot) => {
+  //     const data = snapshot.val();
+  //     updateList(postElement, data);
+  //   });
+  // };
+  // readData(userId);
+
+  //   const readData = (userId) => {
+  //     const db = getDatabase();
+  //     const dataReference = ref(db, `users/${userId}/diagnosis/diagnosis`);
+
+  //     onValue(dataReference, (DataSnapshot) => {
+  //       console.log(DataSnapshot.val().ref._path.pieces);
+  //     });
+  //   };
+  const readData = (userId) => {
+    const db = getDatabase();
+    const ref = db.ref(`users/${userId}`);
+    ref.orderByKey().on("diagnosis", (snapshot) => {
+      console.log(snapshot.key);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -44,7 +87,6 @@ const MedicalHistory = () => {
         }}
         value={newInput}
       />
-
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => handleSubmit(newInput)}
@@ -68,8 +110,11 @@ const MedicalHistory = () => {
           </TouchableOpacity>
         )}
       ></FlatList>
-      <TouchableOpacity onPress={() => writeData(userId, list)}>
+      <TouchableOpacity onPress={() => updateData(userId, list)}>
         Save
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => readData(userId)}>
+        seeData
       </TouchableOpacity>
     </View>
   );
