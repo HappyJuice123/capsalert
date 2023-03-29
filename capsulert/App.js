@@ -8,7 +8,6 @@ import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
 import MyMedical from "./components/MyMedical";
 import { UserProvider } from "./contexts/User";
-import { View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
