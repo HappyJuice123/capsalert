@@ -17,21 +17,19 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
 
   return (
     <TouchableOpacity style={styles.listItem}>
-      {/* Medication Name */}
+      {/* Medication details */}
       <View>
         <Text>{item.name}</Text>
         <Text>Start: {item.startDate}</Text>
         <Text>End: {item.endDate}</Text>
-        <Text>Time: {item.endDate}</Text>
+        <Text>Time: {item.time}</Text>
         <Text>
           {item.dosage}
           {item.unit}
         </Text>
-        <Text>{item.medicationType}</Text>
+        <Text>{item.form}</Text>
         <Text>{item.quantity}</Text>
       </View>
-
-      {/* Three dot options menu */}
 
       <TouchableOpacity style={styles.options}>
         {/* More info button */}
@@ -49,6 +47,8 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
             More Info{" "}
           </Text>
         </TouchableOpacity>
+
+        {/* Three dot options menu */}
         <TouchableOpacity>
           <Menu
             visible={visible}
@@ -68,7 +68,7 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
                     {
                       /* Navigate to the AddMedication route */
                     }
-                    navigation.navigate("AddMedication", { item });
+                    navigation.navigate("AddMedication");
                   }}
                 >
                   {" "}

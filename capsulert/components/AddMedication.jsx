@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Text,
   Modal,
-  ScrollView,
   View,
 } from "react-native";
 
@@ -19,7 +18,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   // states for date input
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
-  const [formatStartDate, setFormatStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   // states for time input
   const [timeModal, setTimeModal] = useState(false);
@@ -30,34 +28,30 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   // states for dosage input
   const [dosage, setDosage] = useState("");
   // state for type of medication input
-  const [medicationType, setMedicationType] = useState("Type of Medication");
+  const [medicationType, setMedicationType] = useState("");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   //  state for quantity input
   const [quantity, setQuantity] = useState("");
 
+  // test obj to check correct data renders to MyMedications component
   const testObj = {
     name: newMedication,
     startDate: startDate,
     endDate: endDate,
+    time: selectedTime,
     dosage: dosage,
     unit: unit,
-    medicationType: medicationType,
+    form: medicationType,
     quantity: quantity,
   };
-  // console.log(testObj);
 
   // set start date
   const today = new Date();
 
-  const calendarStartDate = getFormatedDate(today.setDate(today.getDate()));
-
-  // format start date
-  const formattedDate = new Date().toLocaleDateString("en-GB"); // format to DD/MM/YYYY
-
-  console.log(formattedDate);
-
-  console.log(today);
-  console.log(startDate);
+  const calendarStartDate = getFormatedDate(
+    today.setDate(today.getDate()),
+    "YYYY/MM/DD"
+  );
 
   const handleDateModalPress = () => {
     setDateModal(!dateModal);
@@ -95,7 +89,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   };
 
   return (
-    <ScrollView styles={styles.container}>
+    <View styles={styles.container}>
       {/* Input Medication Name */}
       <TextInput
         placeholder={"Enter Medication"}
@@ -270,7 +264,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       <TouchableOpacity style={styles.btn} onPress={() => handleInput(testObj)}>
         <Text style={styles.btnText}>Save Medication</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
