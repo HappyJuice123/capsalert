@@ -36,7 +36,15 @@ const MyMedical = () => {
           <Text style={styles.text}>Medical History</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            {
+              /* Navigate to the MyMedications route */
+            }
+            navigation.navigate("MyMedications");
+          }}
+        >
           <Text style={styles.text}>My Medications</Text>
         </TouchableOpacity>
 
@@ -91,7 +99,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignContent: "center",
-    verticalAlign: "center",
   },
 });
 
