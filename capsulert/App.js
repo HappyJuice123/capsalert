@@ -10,6 +10,7 @@ import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
 import MyMedical from "./components/MyMedical";
 import { UserProvider } from "./contexts/User";
+import AdditionalMedInfo from "./components/AdditionalMedInfo";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,9 +36,10 @@ export default function App() {
             component={AddMedication}
             options={{ title: "Add Medication" }}
           />
+          <Stack.Screen name="Allergies" component={AddAllergies} />
           <Stack.Screen
-            name="Allergies"
-            component={AddAllergies}
+            name="AdditionalMedInfo"
+            component={AdditionalMedInfo}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
