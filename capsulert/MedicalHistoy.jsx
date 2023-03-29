@@ -16,6 +16,9 @@ import {
   remove,
   onValue,
   DataSnapshot,
+  get,
+  child,
+  key,
 } from "firebase/database";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
@@ -81,6 +84,8 @@ const MedicalHistory = () => {
     get(child(dbRef, `users/${userId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
+          const key = Object.keys(snapshot.val().diagnosis);
+          console.log();
           console.log(snapshot.val().diagnosis);
         } else {
           console.log("No data available");
@@ -90,6 +95,7 @@ const MedicalHistory = () => {
         console.error(error);
       });
   };
+  console.log(snapshot.val().diagnosis);
 
   return (
     <View style={styles.container}>
