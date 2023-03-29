@@ -1,22 +1,76 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  View,
   TextInput,
   TouchableOpacity,
   Text,
+  Modal,
+  ScrollView,
+  View,
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
+import DatePicker from "react-native-modern-datepicker";
+import { getFormatedDate } from "react-native-modern-datepicker";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
+  // state for medication name input
   const [newMedication, setNewMedication] = useState("");
+  // states for date input
+  const [dateModal, setDateModal] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  // states for unit input
+  const [unit, setUnit] = useState("");
+  const [showUnitOption, setshowUnitOption] = useState(false);
+  // states for dosage input
   const [dosage, setDosage] = useState("");
-  const [showDosageOption, setShowDosageOption] = useState(false);
-  const [medicationType, setMedicationType] = useState("");
+  // state for type of medication input
+  const [medicationType, setMedicationType] = useState("Type of Medication");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
+  //  state for quantity input
   const [quantity, setQuantity] = useState("");
 
+  const testObj = {
+    name: newMedication,
+    startDate: startDate,
+    endDate: endDate,
+    dosage: dosage,
+    unit: unit,
+    medicationType: medicationType,
+    quantity: quantity,
+  };
+  // console.log(testObj);
+
+  // Set Start Date
+  const today = new Date();
+
+  const calendarStartDate = getFormatedDate(
+    today.setDate(today.getDate()),
+    "YYYY/MM/DD"
+  );
+
+  const handleDateModalPress = () => {
+    setDateModal(!dateModal);
+  };
+
+  const handleStartDateChange = (newStartDate) => {
+    setStartDate(newStartDate);
+  };
+
+  //  Set End Date
+  const calendarEndDate = getFormatedDate(
+    today.setDate(today.getDate()),
+    "YYYY/MM/DD"
+  );
+
+  const handleEndDateChange = (newEndDate) => {
+    setEndDate(newEndDate);
+  };
+
+  {
+    /* Handle submit medication information */
+  }
   const handleInput = (newMedication) => {
     setMedications((prevMedications) => {
       return [...prevMedications, newMedication];
@@ -26,7 +80,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   };
 
   return (
-    <View styles={styles.container}>
+    <ScrollView styles={styles.container}>
       {/* Input Medication Name */}
       <TextInput
         placeholder={"Enter your medication"}
@@ -35,36 +89,77 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         onChangeText={(value) => setNewMedication(value)}
       />
 
-      {/* date/time */}
+      {/* Start/End Date */}
+      <TouchableOpacity>
+        <TouchableOpacity onPress={handleDateModalPress}>
+          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
+        </TouchableOpacity>
+        <View style={styles.displayDate}>
+          <Text>Start Date: {startDate}</Text>
+          <Text>End Date: {endDate}</Text>
+        </View>
+      </TouchableOpacity>
+      <Modal animationType="slide" transparent={true} visible={dateModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.dateView}>
+            <DatePicker
+              mode="calendar"
+              minimumDate={calendarStartDate}
+              selected={startDate}
+              onDateChange={(selected) => handleStartDateChange(selected)}
+            />
+            <DatePicker
+              mode="calendar"
+              minimumDate={calendarEndDate}
+              selected={endDate}
+              onDateChange={(selected) => handleEndDateChange(selected)}
+            />
+            <TouchableOpacity onPress={handleDateModalPress}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
-      {/* Dosage */}
-      <Picker
-        selectedValue={dosage}
-        onValueChange={(currentDosage) => {
-          setDosage(currentDosage);
-          if (currentDosage === "other") {
-            setShowDosageOption(true);
-          } else {
-            setShowDosageOption(false);
-          }
-        }}
-      >
-        <Picker.Item label="Dosage" value="" />
-        <Picker.Item label="milligram (mg)" value="mg" />
-        <Picker.Item label="microgram (μg)" value="ug" />
-        <Picker.Item label="millilitre (ml)" value="ml" />
-        <Picker.Item label="Other dosage" value="other" />
-      </Picker>
+      {/* Dosage/Unit */}
+      <View style={styles.dosageContainer}>
+        <Text>Dosage:</Text>
+        <TextInput
+          placeholder={"Enter dosage"}
+          style={styles.dosage}
+          value={dosage}
+          onChangeText={(value) => setDosage(value)}
+        />
+
+        <Picker
+          selectedValue={unit}
+          style={styles.unit}
+          onValueChange={(currentUnit) => {
+            setUnit(currentUnit);
+            if (currentUnit === "other") {
+              setshowUnitOption(true);
+              setUnit("");
+            } else {
+              setshowUnitOption(false);
+            }
+          }}
+        >
+          <Picker.Item label="Select Unit" value={unit} />
+          <Picker.Item label="milligram (mg)" value="mg" />
+          <Picker.Item label="microgram (μg)" value="ug" />
+          <Picker.Item label="millilitre (ml)" value="ml" />
+          <Picker.Item label="Other dosage" value="other" />
+        </Picker>
+      </View>
       {/* Dosage: Show Other input */}
-
-      {showDosageOption ? (
-        <TouchableOpacity style={styles.other}>
-          <Text>Other:</Text>
+      {showUnitOption ? (
+        <TouchableOpacity style={styles.customerPicker}>
+          <Text>Custom Unit:</Text>
           <TextInput
-            placeholder={"Enter dosage"}
-            value={dosage}
+            placeholder={"Enter Custom Unit"}
+            value={unit}
             style={styles.otherInput}
-            onChangeText={(currentDosage) => setDosage(currentDosage)}
+            onChangeText={(currentUnit) => setUnit(currentUnit)}
           />
         </TouchableOpacity>
       ) : (
@@ -74,16 +169,18 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       {/* Type of Medication */}
       <Picker
         selectedValue={medicationType}
+        style={styles.picker}
         onValueChange={(currentMedicationType) => {
           setMedicationType(currentMedicationType);
           if (currentMedicationType === "other") {
             setShowMedicationOption(true);
+            setMedicationType("");
           } else {
             setShowMedicationOption(false);
           }
         }}
       >
-        <Picker.Item label="Type of Medication" value="" />
+        <Picker.Item label="Select Type of Medication" value={medicationType} />
         <Picker.Item label="Pill" value="Pill" />
         <Picker.Item label="Liquid" value="Liquid" />
         <Picker.Item label="Drops" value="Drops" />
@@ -94,25 +191,26 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         <Picker.Item label="Cream" value="Cream" />
         <Picker.Item label="Other type of medication" value="other" />
       </Picker>
-      {/* Type of Medication: Show Other input */}
 
+      {/* Type of Medication: Show Other input */}
       {showMedicationOption ? (
-        <TouchableOpacity style={styles.other}>
-          <Text>Other:</Text>
+        <TouchableOpacity style={styles.customerPicker}>
+          <Text>Custom Medication Type:</Text>
           <TextInput
             placeholder={"Enter Type of Medication "}
             value={medicationType}
             style={styles.otherInput}
-            onChangeText={(value) => setMedicationType(value)}
+            onChangeText={(currentNewValue) => {
+              setMedicationType(currentNewValue);
+            }}
           />
         </TouchableOpacity>
       ) : (
         <></>
       )}
-
       {/* Quantity */}
       <TouchableOpacity style={styles.quantity}>
-        <Text>Quantity:</Text>
+        <Text>How many to take:</Text>
         <TextInput
           placeholder={"Enter quantity here "}
           value={quantity}
@@ -125,14 +223,12 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       <TouchableOpacity>
         <Text style={styles.notifications}>Set Notifications </Text>
       </TouchableOpacity>
+
       {/* Submit Medication info */}
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={() => handleInput(newMedication)}
-      >
+      <TouchableOpacity style={styles.btn} onPress={() => handleInput(testObj)}>
         <Text style={styles.btnText}>Save Medication</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -149,43 +245,124 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   btn: {
-    backgroundColor: "#c2bad8",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
-    marginHorizontal: 10,
+    marginTop: 20,
+    marginBottom: 50,
+    backgroundColor: "#ADD8E6",
+    borderColor: "#000000",
+    borderWidth: 2,
+    borderRadius: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 60,
+    paddingRight: 60,
+    marginHorizontal: 80,
   },
   btnText: {
     textAlign: "center",
   },
   quantity: {
-    marginHorizontal: 10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 50,
+    marginHorizontal: 50,
     marginVertical: 10,
   },
   quantityInput: {
     borderColor: "#000",
     borderWidth: 1,
     borderRadius: 5,
+    paddingHorizontal: 10,
     marginHorizontal: 5,
     marginVertical: 5,
   },
-  other: {
+  picker: {
     marginHorizontal: 10,
+    marginVertical: 10,
+    backgroundColor: "#F2F2F2",
+    borderRadius: 15,
+  },
+  customerPicker: {
+    marginHorizontal: 30,
     marginVertical: 10,
   },
   otherInput: {
-    borderColor: "#000",
+    borderRadius: 5,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  select: {
+    borderColor: "#F2F2F2",
     borderWidth: 1,
     borderRadius: 5,
-    marginHorizontal: 10,
-    marginVertical: 10,
   },
   notifications: {
     backgroundColor: "#F2F2F2",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
-    marginHorizontal: 10,
     textAlign: "center",
+    borderColor: "#000000",
+    borderWidth: 1.5,
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingLeft: 60,
+    paddingRight: 60,
+    marginHorizontal: 20,
+    marginVertical: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  dateView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    width: "90%",
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  displayDate: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  setDatebtn: {
+    textAlign: "center",
+    backgroundColor: "#F2F2F2",
+    borderColor: "#000000",
+    borderWidth: 2,
+    borderRadius: 15,
+    padding: 10,
+    marginHorizontal: 50,
+    marginVertical: 20,
+  },
+  dosageContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginHorizontal: 20,
+  },
+  dosage: {
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    marginVertical: 20,
+  },
+  unit: {
+    width: 200,
   },
 });

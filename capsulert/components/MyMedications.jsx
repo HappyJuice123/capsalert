@@ -61,13 +61,21 @@ export function MyMedications() {
 const styles = StyleSheet.create({
   list: {
     backgroundColor: "#fff",
+    fontSize: 8,
   },
   addMedsBtn: {
-    backgroundColor: "#c2bad8",
-    borderRadius: 5,
-    padding: 20,
-    marginVertical: 20,
-    marginHorizontal: 40,
+    marginTop: 20,
+    marginBottom: 50,
+    backgroundColor: "#ADD8E6",
+    borderColor: "#000000",
+    borderWidth: 2,
+    borderRadius: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 60,
+    paddingRight: 60,
+    marginLeft: 50,
+    marginRight: 50,
     textAlign: "center",
   },
   modalToggle: {

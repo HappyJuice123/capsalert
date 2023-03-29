@@ -19,7 +19,15 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
     <TouchableOpacity style={styles.listItem}>
       {/* Medication Name */}
       <View>
-        <Text>{item}</Text>
+        <Text>{item.name}</Text>
+        <Text>{item.startDate}</Text>
+        <Text>{item.endDate}</Text>
+        <Text>
+          {item.dosage}
+          {item.unit}
+        </Text>
+        <Text>{item.medicationType}</Text>
+        <Text>{item.quantity}</Text>
       </View>
 
       {/* Three dot options menu */}
@@ -54,12 +62,12 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
               {/* Edit button */}
               <TouchableOpacity>
                 <Text
-                  style={styles.editBtn}
+                  style={styles.options}
                   onPress={() => {
                     {
-                      /* Navigate to the AddMeds route */
+                      /* Navigate to the AddMedication route */
                     }
-                    navigation.navigate("AddMeds");
+                    navigation.navigate("AddMedication");
                   }}
                 >
                   {" "}
@@ -111,10 +119,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 20,
-  },
-  editBtn: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
   },
 });
