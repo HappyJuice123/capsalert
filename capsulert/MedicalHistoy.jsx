@@ -68,12 +68,27 @@ const MedicalHistory = () => {
   //       console.log(DataSnapshot.val().ref._path.pieces);
   //     });
   //   };
-  const readData = (userId) => {
-    const db = getDatabase();
-    const ref = db.ref(`users/${userId}`);
-    ref.orderByKey().on("diagnosis", (snapshot) => {
-      console.log(snapshot.key);
-    });
+  //   const readData = (userId) => {
+  //     const db = getDatabase();
+  //     const ref = db.ref(`users/${userId}`);
+  //     ref.orderByKey().on("diagnosis", (snapshot) => {
+  //       console.log(snapshot.key);
+  //     });
+  //   };
+
+  const readDatabase = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val().diagnosis);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -113,7 +128,7 @@ const MedicalHistory = () => {
       <TouchableOpacity onPress={() => updateData(userId, list)}>
         Save
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => readData(userId)}>
+      <TouchableOpacity onPress={() => readDatabase()}>
         seeData
       </TouchableOpacity>
     </View>
