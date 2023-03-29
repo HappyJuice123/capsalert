@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MyMedications } from "./components/MyMedications";
+import { AddMedication } from "./components/AddMedication";
 import { AddAllergies } from "./components/AddAllergies";
 import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
@@ -28,6 +30,16 @@ export default function App() {
             name="Medical History"
             component={MedicalHistory}
           ></Stack.Screen>
+          <Stack.Screen
+            name="MyMedications"
+            component={MyMedications}
+            options={{ title: "My Medications" }}
+          />
+          <Stack.Screen
+            name="AddMedication"
+            component={AddMedication}
+            options={{ title: "Add Medication" }}
+          />
           <Stack.Screen
             name="Allergies"
             component={AddAllergies}
