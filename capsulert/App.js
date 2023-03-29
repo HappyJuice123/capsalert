@@ -5,7 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MyMedications } from "./components/MyMedications";
 import { AddMedication } from "./components/AddMedication";
-import { MoreInfoPlaceholder } from "./components/MoreInfoPlaceholder";
 import { AddAllergies } from "./components/AddAllergies";
 import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
@@ -35,11 +34,6 @@ export default function App() {
             name="AddMedication"
             component={AddMedication}
             options={{ title: "Add Medication" }}
-          />
-          <Stack.Screen
-            name="MoreInfo"
-            component={MoreInfoPlaceholder}
-            options={{ title: "More Info" }}
           />
           <Stack.Screen
             name="Allergies"
