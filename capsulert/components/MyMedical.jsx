@@ -1,4 +1,10 @@
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useContext } from "react";
 import { AddAllergies } from "./AddAllergies";
 import { useNavigation } from "@react-navigation/core";
@@ -34,7 +40,12 @@ const MyMedical = () => {
           <Text style={styles.text}>My Medications</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={AddAllergies}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Allergies");
+          }}
+        >
           <Text style={styles.text}>Allergies</Text>
         </TouchableOpacity>
 

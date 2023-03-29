@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -11,9 +11,9 @@ import {
   SafeAreaView,
 } from "react-native";
 import Checkbox from "expo-checkbox";
+import { UserContext } from "../contexts/User";
 
 export const AddAllergies = () => {
-  const [isSelected, setIsSelected] = useState(false);
   const [isCelerySelected, setIsCelerySelected] = useState(false);
   const [isCerealsSelected, setIsCerealsSelected] = useState(false);
   const [isCrustaceansSelected, setIsCrustaceansSelected] = useState(false);
@@ -33,11 +33,32 @@ export const AddAllergies = () => {
   const [allergies, setAllergies] = useState([]);
   const [newAllergy, setNewAllergy] = useState("");
 
+  const { userId } = useContext(UserContext);
+
+  useEffect(() => {
+    if (isCelerySelected) {
+      setAllergies((currentAllergies) => {
+        return [...currentAllergies, "Celery"];
+      });
+    } else if (!isCelerySelected) {
+      setAllergies((currentAllergies) => {
+        const copyAllergies = [...currentAllergies];
+        const index = copyAllergies.indexOf("Celery");
+        copyAllergies.splice(index, 1);
+        return copyAllergies;
+      });
+    }
+  }, [isCelerySelected]);
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.header}>Allergies</Text>
+        <Text style={styles.textBig}>
+          What allergies would you like to add?
+        </Text>
         <Text style={styles.text}>Please select all applicable allergies</Text>
+
         <View style={styles.row}>
           <Checkbox
             value={isCelerySelected}
@@ -187,9 +208,9 @@ export const AddAllergies = () => {
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.header}>Allergy List</Text>
-
+          <Text style={styles.headerSub}>Allergy List</Text>
           <FlatList
+            scrollEnabled={false}
             data={allergies}
             renderItem={({ item }) => {
               return (
@@ -245,9 +266,25 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
+  textSmall: {
+    fontSize: 15,
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  textBig: {
+    fontSize: 15,
+    marginTop: 20,
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
   addAllergy: {
-    fontSize: 25,
+    fontSize: 20,
     marginTop: 20,
     borderTopColor: "black",
+  },
+  headerSub: {
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
