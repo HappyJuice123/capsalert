@@ -38,9 +38,9 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
             style={styles.addMedsBtn}
             onPress={() => {
               {
-                /* Navigate to the MoreInfo screens */
+                /* Navigate to the AdditionalMedInfo screen */
               }
-              navigation.navigate("MoreInfo");
+              navigation.navigate("AdditionalMedInfo");
             }}
           >
             {" "}

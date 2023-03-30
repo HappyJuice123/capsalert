@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignContent: "center",
+    //  textAlignVertical: "center",
   },
 });
 
