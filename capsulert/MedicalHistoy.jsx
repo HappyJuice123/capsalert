@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "./contexts/User";
 import {
   getDatabase,
@@ -14,16 +14,16 @@ import {
   ref,
   push,
   remove,
-  onValue,
-  DataSnapshot,
   get,
   child,
-  key,
 } from "firebase/database";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
   const [list, setList] = useState([]);
+  const [data, setData] = useState([]);
+  const [addedData, setAddedData] = useState([]);
   const { userId } = useContext(UserContext);
+
   const handleSubmit = (newInput) => {
     setList((currentList) => {
       return [...currentList, newInput];
@@ -33,110 +33,110 @@ const MedicalHistory = () => {
   const handleRemove = (item) => {
     const removedItemArray = list.filter((e) => e !== item);
     setList(removedItemArray);
+    setData(...removedItemArray);
+    setAddedData(...data);
   };
 
   const updateData = (userId, diagnosis) => {
     const db = getDatabase();
     const reference = ref(db, `users/${userId}/diagnosis`);
-    const newUpdate = push(reference);
+    const newPostRef = push(reference);
     remove(reference);
-    set(newUpdate, { diagnosis: diagnosis });
+    console.log(newPostRef, "newPost");
+    console.log(diagnosis, "diagnosis");
+    set(newPostRef, diagnosis);
+    setData((currentData) => {
+      return [...currentData, ...diagnosis];
+    });
   };
-  {
-    console.log(userId);
-  }
-
-  // const renderData = () => {
-  //   const db = getDatabase().DataSnapshot;
-  //   const data = ref(db, `users/${userId}/diagnosis`);
-  //   const key = getKey(data);
-  //   console.log(db);
-  // };
-
-  // const readData = (userId) => {
-  //   const db = getDatabase();
-  //   const readReference = ref(db, `users/${userId}/diagnosis/diagnosis`);
-  //   onValue(readReference, (snapshot) => {
-  //     const data = snapshot.val();
-  //     updateList(postElement, data);
-  //   });
-  // };
-  // readData(userId);
-
-  //   const readData = (userId) => {
-  //     const db = getDatabase();
-  //     const dataReference = ref(db, `users/${userId}/diagnosis/diagnosis`);
-
-  //     onValue(dataReference, (DataSnapshot) => {
-  //       console.log(DataSnapshot.val().ref._path.pieces);
-  //     });
-  //   };
-  //   const readData = (userId) => {
-  //     const db = getDatabase();
-  //     const ref = db.ref(`users/${userId}`);
-  //     ref.orderByKey().on("diagnosis", (snapshot) => {
-  //       console.log(snapshot.key);
-  //     });
-  //   };
 
   const readDatabase = () => {
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `users/${userId}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const key = Object.keys(snapshot.val().diagnosis);
-          console.log();
-          console.log(snapshot.val().diagnosis);
-        } else {
-          console.log("No data available");
+    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        if (snapshot.val().diagnosis) {
+          const key = Object.keys(snapshot.val().diagnosis)[0];
+          console.log(key, "key");
+          console.log(snapshot.val().diagnosis[key], "59");
+          setData(snapshot.val().diagnosis[key]);
+          // const updates = [];
+          // key.map((key) => {
+          //   updates.push(snapshot.val().diagnosis[key]);
+          // });
+          // const lastUpdate = updates[updates.length - 1];
+          // console.log(updates, "updates");
+          // console.log(lastUpdate, "las");
+          // setData(lastUpdate);
         }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      }
+    });
   };
-  console.log(snapshot.val().diagnosis);
-
+  useEffect(() => {
+    readDatabase();
+  }, [addedData]);
+  {
+    console.log(data, "data");
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Medical History</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Add to your medical history..."
-        onChangeText={(value) => {
-          setNewInput(value);
-        }}
-        value={newInput}
-      />
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => handleSubmit(newInput)}
-      >
-        <Text style={styles.add}>Add</Text>
-      </TouchableOpacity>
-      {console.log(list)}
-      <Text style={styles.yourHistory}>Your medical history</Text>
-      <FlatList
-        style={styles.flatlist}
-        data={list}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.itemBox}>
-            <Text style={styles.item}>{item}</Text>
-            <Text
-              style={styles.removeButton}
-              onPress={() => handleRemove(item)}
-            >
-              Remove
-            </Text>
+    <View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Medical History</Text>
+        <TouchableOpacity>
+          <TextInput
+            style={styles.input}
+            placeholder="Add to your medical history..."
+            onChangeText={(value) => {
+              setNewInput(value);
+            }}
+            value={newInput}
+          />
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => handleSubmit(newInput)}
+          >
+            <Text style={styles.add}>Add</Text>
           </TouchableOpacity>
-        )}
-      ></FlatList>
-      <TouchableOpacity onPress={() => updateData(userId, list)}>
-        Save
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => readDatabase()}>
-        seeData
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <Text style={styles.yourHistory}>Your medical history</Text>
+        <FlatList
+          style={styles.flatlist}
+          data={list}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={{ ...styles.itemBox }}>
+              <Text style={styles.item}>{item}</Text>
+              <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => handleRemove(item)}
+              >
+                <Text>Remove</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          )}
+        ></FlatList>
+        <TouchableOpacity onPress={() => updateData(userId, list)}>
+          <Text>Save</Text>
+        </TouchableOpacity>
+        {/* {data.map((item) => {
+          return <Text>{item}</Text>;
+        })} */}
+        <View>
+          <FlatList
+            style={styles.flatlist}
+            data={data}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={{ ...styles.itemBox }}>
+                <Text style={styles.item}>{item}</Text>
+                <TouchableOpacity
+                  style={styles.removeButton}
+                  onPress={() => handleRemove(item)}
+                >
+                  <Text>Remove</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            )}
+          ></FlatList>
+        </View>
+      </View>
     </View>
   );
 };
@@ -194,8 +194,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-end",
     marginRight: 40,
-    textAlign: "center",
-    verticalAlign: "center",
+    // textAlign: "middle",
+    // verticalAlign: "center",
   },
   flatlist: {
     backgroundColor: "#ADD8E6",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   item: {
     paddingLeft: 20,
     paddingTop: 10,
-    textAligne: "center",
+    alignItems: "center",
   },
   itemBox: {
     borderBottomColor: "#000000",
