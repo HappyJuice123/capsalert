@@ -170,12 +170,16 @@ export const AddMedication = ({ setModalOpen }) => {
       {/* Dosage/Unit */}
       <View style={styles.dosageContainer}>
         <Text>Dosage:</Text>
-        <TextInput
-          placeholder={"Enter dosage"}
-          style={styles.dosage}
-          value={dosage}
-          onChangeText={(value) => setDosage(value)}
-        />
+        {showUnitOption ? (
+          <></>
+        ) : (
+          <TextInput
+            placeholder={"Enter dosage"}
+            style={styles.dosage}
+            value={dosage}
+            onChangeText={(value) => setDosage(value)}
+          />
+        )}
 
         <Picker
           selectedValue={unit}
