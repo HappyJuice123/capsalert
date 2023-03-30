@@ -13,7 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
-export const AddMedication = ({ setModalOpen }) => {
+export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
@@ -78,12 +78,6 @@ export const AddMedication = ({ setModalOpen }) => {
   // Handle submit medication information/ firebase realtime storage
 
   const handleInput = () => {
-    addMedicationToDataBase(userId);
-    setNewMedication("");
-    setModalOpen(false);
-  };
-
-  const addMedicationToDataBase = (userId) => {
     const db = getDatabase();
     const postData = {
       name: newMedication,
@@ -98,6 +92,11 @@ export const AddMedication = ({ setModalOpen }) => {
     const postReference = ref(db, `users/${userId}/medications`);
     const newPostRef = push(postReference);
     set(newPostRef, postData);
+    setNewMedication("");
+    setModalOpen(false);
+    setMedications((currentMedications) => {
+      return [...currentMedications, postData];
+    });
   };
 
   return (
