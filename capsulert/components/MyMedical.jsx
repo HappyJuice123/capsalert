@@ -61,6 +61,13 @@ const MyMedical = () => {
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
+      {/* <TouchableOpacity
+        title="Open URL with the system browser"
+        style={styles.button}
+        onPress={() => navigation.navigate("AdditionalMedInfo")}
+      >
+        <Text style={styles.buttonText}>Learn more about this medication </Text>
+      </TouchableOpacity> */}
     </ScrollView>
   );
 };
@@ -99,6 +106,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignContent: "center",
+    //  textAlignVertical: "center",
   },
 });
 

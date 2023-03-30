@@ -12,19 +12,7 @@ import {
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { UserContext } from "../contexts/User";
-import {
-  getDatabase,
-  ref,
-  child,
-  push,
-  update,
-  set,
-  onValue,
-  onChildAdded,
-  onChildChanged,
-  onChildRemoved,
-  get,
-} from "firebase/database";
+import { getDatabase, ref, child, push, set, get } from "firebase/database";
 
 export const AddAllergies = () => {
   const [isCelerySelected, setIsCelerySelected] = useState(false);
@@ -42,18 +30,55 @@ export const AddAllergies = () => {
   const [isSoyaSelected, setIsSoyaSelected] = useState(false);
   const [isSulphurDioxideSelected, setIsSulphurDioxideSelected] =
     useState(false);
+  const [foodAllergy, setFoodAllergy] = useState("");
+
+  // const [isSelected, setIsSelected] = useState([
+  //   ["Celery", false],
+  //   ["Cereals containing gluten", false],
+  //   ["Crustaceans", false],
+  //   ["Eggs", false],
+  //   ["Fish", false],
+  //   ["Lupin", false],
+  //   ["Milk", false],
+  //   ["Molluscs", false],
+  //   ["Mustard", false],
+  //   ["Nuts", false],
+  //   ["Peanuts", false],
+  //   ["Sesame Seeds", false],
+  //   ["Soya", false],
+  //   ["Sulphur Dioxide", false],
+  // ]);
+
+  // {
+  //   Celery: false,
+  //   Cereals: false,
+  //   Crustaceans: false,
+  //   Eggs: false,
+  //   Fish: false,
+  //   Lupin: false,
+  //   Milk: false,
+  //   Molluscs: false,
+  //   Mustard: false,
+  //   Nuts: false,
+  //   Peanuts: false,
+  //   SesameSeeds: false,
+  //   Soya: false,
+  //   SulphurDioxide: false,
+  // }
 
   const [allergies, setAllergies] = useState([]);
   const [newAllergy, setNewAllergy] = useState("");
-  const [addNewAllergy, setAddnewAllergy] = useState("");
+  const [readAllergyList, setReadAllergyList] = useState([]);
 
   const { userId } = useContext(UserContext);
 
   useEffect(() => {
-    writeNewAllergyList(userId);
+    readDatabase();
     if (isCelerySelected) {
+      setFoodAllergy("Celery");
       setAllergies((currentAllergies) => {
-        return [...currentAllergies, newAllergy];
+        console.log(currentAllergies);
+        return [...currentAllergies, foodAllergy];
       });
     } else if (!isCelerySelected) {
       setAllergies((currentAllergies) => {
@@ -67,61 +92,25 @@ export const AddAllergies = () => {
 
   const writeNewAllergyList = (userId) => {
     const db = getDatabase();
-    const postData = ["Celery"];
+    const postData = allergies;
     const postListRef = ref(db, `users/${userId}/allergies`);
     const newPostRef = push(postListRef);
     set(newPostRef, postData);
   };
-
-  // const readAllergyList = () => {
-  //   const db = getDatabase();
-  //   const starCountRef = ref(db, `users/${userId}/allergies`);
-  //   onValue(starCountRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     updateStarCount(postElement, data);
-  //     console.log(data);
-  //   });
-  // };
-
-  // readAllergyList();
-
-  // const listenChildEvents = () => {
-  //   const db = getDatabase();
-  //   const commentsRef = ref(db, `users/${userId}/allergies`);
-  //   onChildAdded(commentsRef, (data) => {
-  //     addCommentElement(
-  //       postElement,
-  //       data.key,
-  //       data.val().text,
-  //       data.val().author
-  //     );
-  //     console.log("inside on child added >>> ", data);
-  //   });
-
-  //   onChildChanged(commentsRef, (data) => {
-  //     setCommentValues(
-  //       postElement,
-  //       data.key,
-  //       data.val().text,
-  //       data.val().author
-  //     );
-  //     console.log("inside on child changed >>> ", data);
-  //   });
-
-  //   onChildRemoved(commentsRef, (data) => {
-  //     deleteComment(postElement, data.key);
-  //     console.log("inside delete child >>> ", data);
-  //   });
-  // };
-
-  // listenChildEvents();
 
   const readDatabase = () => {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `users/${userId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val().allergies);
+          if (snapshot.val().allergies) {
+            const uniqueKey = Object.keys(snapshot.val().allergies)[0];
+            setReadAllergyList(snapshot.val().allergies[uniqueKey]);
+            setAllergies(snapshot.val().allergies[uniqueKey]);
+          } else {
+            console.log("New list created in database");
+            writeNewAllergyList(userId);
+          }
         } else {
           console.log("No data available");
         }
@@ -131,7 +120,8 @@ export const AddAllergies = () => {
       });
   };
 
-  readDatabase();
+  console.log("database list", readAllergyList);
+  console.log("local list", allergies);
 
   return (
     <ScrollView>
@@ -294,7 +284,7 @@ export const AddAllergies = () => {
           <Text style={styles.headerSub}>Allergy List</Text>
           <FlatList
             scrollEnabled={false}
-            data={allergies}
+            data={readAllergyList}
             renderItem={({ item }) => {
               return (
                 <View>
