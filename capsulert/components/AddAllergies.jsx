@@ -103,8 +103,11 @@ export const AddAllergies = () => {
     get(child(dbRef, `users/${userId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
+          console.log("snapshot >>>", snapshot);
+          console.log("snapshot.val", snapshot.val());
           if (snapshot.val().allergies) {
             const uniqueKey = Object.keys(snapshot.val().allergies)[0];
+            console.log(uniqueKey);
             setReadAllergyList(snapshot.val().allergies[uniqueKey]);
             setAllergies(snapshot.val().allergies[uniqueKey]);
           } else {
