@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -11,8 +11,10 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
+import { UserContext } from "../contexts/User";
+import { getDatabase, set, ref, push } from "firebase/database";
 
-export const AddMedication = ({ setMedications, setModalOpen }) => {
+export const AddMedication = ({ setModalOpen }) => {
   // state for medication name input
   const [newMedication, setNewMedication] = useState("");
   // states for date input
@@ -33,6 +35,9 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   //  state for quantity input
   const [quantity, setQuantity] = useState("");
 
+  // userId useContext
+  const { userId } = useContext(UserContext);
+
   // test obj to check correct data renders to MyMedications component
   const testObj = {
     name: newMedication,
@@ -44,6 +49,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     form: medicationType,
     quantity: quantity,
   };
+
+  console.log(testObj);
 
   // set start date
   const today = new Date();
@@ -78,14 +85,29 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   };
 
   {
-    /* Handle submit medication information */
+    /* Handle submit medication information/ firebase realtime storage */
   }
-  const handleInput = (newMedication) => {
-    setMedications((prevMedications) => {
-      return [...prevMedications, newMedication];
-    });
+  const handleInput = () => {
+    addMedicationToDataBase(userId);
     setNewMedication("");
     setModalOpen(false);
+  };
+
+  const addMedicationToDataBase = (userId) => {
+    const db = getDatabase();
+    const postData = {
+      name: newMedication,
+      startDate: startDate,
+      endDate: endDate,
+      time: selectedTime,
+      dosage: dosage,
+      unit: unit,
+      form: medicationType,
+      quantity: quantity,
+    };
+    const postReference = ref(db, `users/${userId}/medications`);
+    const newPostRef = push(postReference);
+    set(newPostRef, postData);
   };
 
   return (
@@ -261,7 +283,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       </TouchableOpacity>
 
       {/* Submit Medication info */}
-      <TouchableOpacity style={styles.btn} onPress={() => handleInput(testObj)}>
+      <TouchableOpacity style={styles.btn} onPress={handleInput}>
         <Text style={styles.btnText}>Save Medication</Text>
       </TouchableOpacity>
     </View>
