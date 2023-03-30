@@ -40,6 +40,7 @@ export default function App() {
           <Stack.Screen
             name="AdditionalMedInfo"
             component={AdditionalMedInfo}
+            options={{ title: "Additional Info" }}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
