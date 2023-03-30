@@ -14,23 +14,21 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
   const hideMenu = () => setVisible(false);
 
   const showMenu = () => setVisible(true);
-  // to be replaced by user input medication name
-  const testMedication = { name: "Pregabalin" };
 
   return (
     <TouchableOpacity style={styles.listItem}>
       {/* Medication details */}
       <View>
-        <Text>{item.name}</Text>
-        <Text>Start: {item.startDate}</Text>
-        <Text>End: {item.endDate}</Text>
-        <Text>Time: {item.time}</Text>
-        <Text>
+        <Text style={styles.itemText}>{item.name}</Text>
+        <Text style={styles.itemText}>Start: {item.startDate}</Text>
+        <Text style={styles.itemText}>End: {item.endDate}</Text>
+        <Text style={styles.itemText}>Time: {item.time}</Text>
+        <Text style={styles.itemText}>
           {item.dosage}
           {item.unit}
         </Text>
-        <Text>{item.form}</Text>
-        <Text>{item.quantity}</Text>
+        <Text style={styles.itemText}>{item.form}</Text>
+        <Text style={styles.itemText}>{item.quantity}</Text>
       </View>
 
       <TouchableOpacity style={styles.options}>
@@ -42,8 +40,7 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
               {
                 /* Navigate to the AdditionalMedInfo screen */
               }
-              navigation.navigate("AdditionalMedInfo", testMedication.name);
-              console.log(testMedication.name);
+              navigation.navigate("AdditionalMedInfo", item.name);
             }}
           >
             More Info
@@ -103,11 +100,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 10,
     padding: 15,
     backgroundColor: "#F2F2F2",
     borderBottomWidth: 1,
-    marginBottom: 10,
+  },
+  itemText: {
+    fontSize: 10,
   },
   icon: {
     display: "flex",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -7,31 +7,27 @@ import {
   Modal,
   View,
 } from "react-native";
-
+import { getDatabase, set, ref, push } from "firebase/database";
+import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
-  // state for medication name input
   const [newMedication, setNewMedication] = useState("");
-  // states for date input
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  // states for time input
   const [timeModal, setTimeModal] = useState(false);
   const [selectedTime, setSelectedTime] = useState("");
-  // states for unit input
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
-  // states for dosage input
   const [dosage, setDosage] = useState("");
-  // state for type of medication input
   const [medicationType, setMedicationType] = useState("");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
-  //  state for quantity input
   const [quantity, setQuantity] = useState("");
+
+  const { userId } = useContext(UserContext);
 
   // test obj to check correct data renders to MyMedications component
   const testObj = {
@@ -44,6 +40,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     form: medicationType,
     quantity: quantity,
   };
+
+  console.log(testObj);
 
   // set start date
   const today = new Date();
@@ -77,15 +75,28 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     setTimeModal(!timeModal);
   };
 
-  {
-    /* Handle submit medication information */
-  }
-  const handleInput = (newMedication) => {
-    setMedications((prevMedications) => {
-      return [...prevMedications, newMedication];
-    });
+  // Handle submit medication information/ firebase realtime storage
+
+  const handleInput = () => {
+    const db = getDatabase();
+    const postData = {
+      name: newMedication,
+      startDate: startDate,
+      endDate: endDate,
+      time: selectedTime,
+      dosage: dosage,
+      unit: unit,
+      form: medicationType,
+      quantity: quantity,
+    };
+    const postReference = ref(db, `users/${userId}/medications`);
+    const newPostRef = push(postReference);
+    set(newPostRef, postData);
     setNewMedication("");
     setModalOpen(false);
+    setMedications((currentMedications) => {
+      return [...currentMedications, postData];
+    });
   };
 
   return (
@@ -158,12 +169,16 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       {/* Dosage/Unit */}
       <View style={styles.dosageContainer}>
         <Text>Dosage:</Text>
-        <TextInput
-          placeholder={"Enter dosage"}
-          style={styles.dosage}
-          value={dosage}
-          onChangeText={(value) => setDosage(value)}
-        />
+        {showUnitOption ? (
+          <></>
+        ) : (
+          <TextInput
+            placeholder={"Enter dosage"}
+            style={styles.dosage}
+            value={dosage}
+            onChangeText={(value) => setDosage(value)}
+          />
+        )}
 
         <Picker
           selectedValue={unit}
@@ -261,7 +276,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       </TouchableOpacity>
 
       {/* Submit Medication info */}
-      <TouchableOpacity style={styles.btn} onPress={() => handleInput(testObj)}>
+      <TouchableOpacity style={styles.btn} onPress={handleInput}>
         <Text style={styles.btnText}>Save Medication</Text>
       </TouchableOpacity>
     </View>
