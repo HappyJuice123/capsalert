@@ -7,11 +7,13 @@ import {
   Modal,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
+import PushNotifications from "./PushNotifications";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
@@ -26,6 +28,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [medicationType, setMedicationType] = useState("");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const navigation = useNavigation();
 
   const { userId } = useContext(UserContext);
 
@@ -40,8 +44,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     form: medicationType,
     quantity: quantity,
   };
-
-  console.log(testObj);
 
   // set start date
   const today = new Date();
@@ -73,6 +75,10 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   const handleTimeModalPress = () => {
     setTimeModal(!timeModal);
+  };
+
+  const handleNotificationsModalPress = () => {
+    setNotificationsModalOpen(!notificationsModalOpen);
   };
 
   // Handle submit medication information/ firebase realtime storage
@@ -156,7 +162,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
           <View style={styles.dateView}>
             <DatePicker
               mode="time"
-              minuteInterval={15}
+              minuteInterval={1}
               onTimeChange={(time) => setSelectedTime(time)}
             />
             <TouchableOpacity onPress={handleTimeModalPress}>
@@ -271,9 +277,16 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       </TouchableOpacity>
 
       {/* Set Notifications */}
-      <TouchableOpacity>
+
+      <TouchableOpacity onPress={handleNotificationsModalPress}>
         <Text style={styles.notifications}>Set Notifications </Text>
       </TouchableOpacity>
+      <Modal visible={notificationsModalOpen} animationType="slide">
+        <PushNotifications
+          setNotificationsModalOpen={setNotificationsModalOpen}
+          selectedTime={selectedTime}
+        />
+      </Modal>
 
       {/* Submit Medication info */}
       <TouchableOpacity style={styles.btn} onPress={handleInput}>
