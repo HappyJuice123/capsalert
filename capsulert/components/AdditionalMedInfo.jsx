@@ -13,14 +13,13 @@ import { getMedication } from "../utils/api";
 
 import * as Linking from "expo-linking";
 
-function AdditionalMedInfo() {
+function AdditionalMedInfo({ route }) {
   const [name, setName] = useState("");
   const [descriptions, setDescriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const medicationName = "Gliclazide";
+  const medicationName = route.params;
   // Test Medication name: Rivaroxaban, Gliclazide
-
   useEffect(() => {
     setIsLoading(true);
 
