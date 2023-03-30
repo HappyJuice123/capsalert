@@ -14,8 +14,6 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
   const hideMenu = () => setVisible(false);
 
   const showMenu = () => setVisible(true);
-  // to be replaced by user input medication name
-  const testMedication = { name: "Pregabalin" };
 
   return (
     <TouchableOpacity style={styles.listItem}>
@@ -42,8 +40,7 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
               {
                 /* Navigate to the AdditionalMedInfo screen */
               }
-              navigation.navigate("AdditionalMedInfo", testMedication.name);
-              console.log(testMedication.name);
+              navigation.navigate("AdditionalMedInfo", item.name);
             }}
           >
             More Info
