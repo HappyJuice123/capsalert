@@ -7,35 +7,26 @@ import {
   Modal,
   View,
 } from "react-native";
-
+import { getDatabase, set, ref, push } from "firebase/database";
+import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
-import { UserContext } from "../contexts/User";
-import { getDatabase, set, ref, push } from "firebase/database";
 
 export const AddMedication = ({ setModalOpen }) => {
-  // state for medication name input
   const [newMedication, setNewMedication] = useState("");
-  // states for date input
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  // states for time input
   const [timeModal, setTimeModal] = useState(false);
   const [selectedTime, setSelectedTime] = useState("");
-  // states for unit input
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
-  // states for dosage input
   const [dosage, setDosage] = useState("");
-  // state for type of medication input
   const [medicationType, setMedicationType] = useState("");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
-  //  state for quantity input
   const [quantity, setQuantity] = useState("");
 
-  // userId useContext
   const { userId } = useContext(UserContext);
 
   // test obj to check correct data renders to MyMedications component
@@ -84,9 +75,8 @@ export const AddMedication = ({ setModalOpen }) => {
     setTimeModal(!timeModal);
   };
 
-  {
-    /* Handle submit medication information/ firebase realtime storage */
-  }
+  // Handle submit medication information/ firebase realtime storage
+
   const handleInput = () => {
     addMedicationToDataBase(userId);
     setNewMedication("");
