@@ -71,9 +71,7 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
                     navigation.navigate("AddMedication");
                   }}
                 >
-                  {" "}
-                  Edit
-                  <Feather name="edit" size={24} color="black" />{" "}
+                  <Feather name="edit" size={24} color="black" />
                 </Text>
               </TouchableOpacity>
             </MenuItem>
