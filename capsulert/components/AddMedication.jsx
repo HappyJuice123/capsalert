@@ -173,6 +173,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       </TouchableOpacity>
       <Modal visible={notificationsModalOpen} animationType="slide">
         <PushNotifications
+          notificationsModalOpen={notificationsModalOpen}
           setNotificationsModalOpen={setNotificationsModalOpen}
         />
       </Modal>

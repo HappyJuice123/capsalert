@@ -16,7 +16,12 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const PushNotifications = ({ setNotificationsModalOpen }) => {
+const PushNotifications = ({
+  notificationsModalOpen,
+  setNotificationsModalOpen,
+  modalOpen,
+  setModalOpen,
+}) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -160,7 +165,12 @@ const PushNotifications = ({ setNotificationsModalOpen }) => {
     });
 
     handleNotifications();
-    setNotificationsModalOpen(false);
+
+    if (notificationsModalOpen) {
+      setNotificationsModalOpen(false);
+    } else if (modalOpen) {
+      setModalOpen(false);
+    }
   };
 
   return (

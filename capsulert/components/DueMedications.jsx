@@ -10,13 +10,16 @@ import {
 } from "react-native";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { UserContext } from "../contexts/User";
+import { NotificationsContext } from "../contexts/Notifications";
 import { AntDesign } from "@expo/vector-icons";
 import PushNotifications from "./PushNotifications";
 import { DueMedicationsItem } from "./DueMedicationsItem";
 
 const DueMedications = () => {
-  //   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const { userId } = useContext(UserContext);
+  const { notificationsList, setNotificationsList } =
+    useContext(NotificationsContext);
 
   useEffect(() => {
     getNotifications();
@@ -32,7 +35,7 @@ const DueMedications = () => {
             const snapshotNotifications = [snapshot.val().notifications];
             const notificationsArray = [];
             uniqueKey.map((key) => {
-              notifications.push(snapshot.val().notifications[key]);
+              notificationsArray.push(snapshot.val().notifications[key]);
             });
             console.log(
               snapshotNotifications,
@@ -40,7 +43,7 @@ const DueMedications = () => {
             );
             console.log(uniqueKey, "<<< unique key");
             console.log(notificationsArray, "<<< notificationsArray");
-            setNotifications(notificationsArray);
+            setNotificationsList(notificationsArray);
           } else {
             console.log("No data available");
           }
@@ -53,7 +56,7 @@ const DueMedications = () => {
 
   return (
     <View>
-      {/* <Modal visible={modalOpen} animationType="slide">
+      <Modal visible={modalOpen} animationType="slide">
         <ScrollView>
           <AntDesign
             name="closesquare"
@@ -62,24 +65,21 @@ const DueMedications = () => {
             color="black"
             onPress={() => setModalOpen(false)}
           />
-
-          {/* <PushNotifications
-            setNotifications={setNotifications}
+          <PushNotifications
+            modalOpen={modalOpen}
             setModalOpen={setModalOpen}
-          /> */}
-      {/* </ScrollView>
-      </Modal> */}{" "}
-      */
-      {/* <TouchableOpacity>
+          />
+        </ScrollView>
+      </Modal>
+      <TouchableOpacity>
         <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
-          {" "}
-          Add Notification{" "}
+          Add Notification
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <FlatList
         scrollEnabled={false}
         style={styles.list}
-        data={notifications}
+        data={notificationsList}
         renderItem={({ item }) => <DueMedicationsItem item={item} />}
       ></FlatList>
     </View>
