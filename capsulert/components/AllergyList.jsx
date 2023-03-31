@@ -19,7 +19,6 @@ export const AllergyList = ({ newAllergy }) => {
     get(child(dbRef, `users/${userId}/allergies`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          //allergy Result is an array of [{allergy: XXX}]
           const allergiesResult = Object.values(snapshot.val());
 
           const allergyListDatabase = allergiesResult.map(
@@ -27,7 +26,7 @@ export const AllergyList = ({ newAllergy }) => {
           );
           setReadAllergyList(allergyListDatabase);
         } else {
-          console.log("No data available");
+          setReadAllergyList([]);
         }
       })
       .catch((error) => {
@@ -60,12 +59,7 @@ export const AllergyList = ({ newAllergy }) => {
           const allergyListDatabase = allergiesResult.map(
             (allergyResult) => allergyResult.allergy
           );
-          console.log("allergy list database", allergyListDatabase);
-          if (allergyListDatabase) {
-            setReadAllergyList(allergyListDatabase);
-          } else {
-            setReadAllergyList([]);
-          }
+          setReadAllergyList(allergyListDatabase);
         }
       })
       .catch((error) => {
