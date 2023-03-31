@@ -11,21 +11,10 @@ import { useNavigation } from "@react-navigation/native";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
-// import DatePicker from "react-native-modern-datepicker";
-// import { getFormatedDate } from "react-native-modern-datepicker";
 import PushNotifications from "./PushNotifications";
 
-export const AddMedication = ({
-  setMedications,
-  setModalOpen,
-  setNotifications,
-}) => {
+export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
-  // const [dateModal, setDateModal] = useState(false);
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
-  // const [timeModal, setTimeModal] = useState(false);
-  // const [selectedTime, setSelectedTime] = useState("");
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
   const [dosage, setDosage] = useState("");
@@ -185,7 +174,6 @@ export const AddMedication = ({
       <Modal visible={notificationsModalOpen} animationType="slide">
         <PushNotifications
           setNotificationsModalOpen={setNotificationsModalOpen}
-          setNotifications={setNotifications}
         />
       </Modal>
 

@@ -17,8 +17,6 @@ const MyMedical = () => {
   const navigation = useNavigation();
   const { loggedInUser } = useContext(UserContext);
 
-  const [notifications, setNotifications] = useState([]);
-
   const handleSignOut = () => {
     auth
       .signOut()
@@ -48,7 +46,7 @@ const MyMedical = () => {
             {
               /* Navigate to the MyMedications route */
             }
-            navigation.navigate("MyMedications", { setNotifications });
+            navigation.navigate("MyMedications");
           }}
         >
           <Text style={styles.text}>My Medications</Text>
