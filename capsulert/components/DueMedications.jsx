@@ -15,9 +15,7 @@ import PushNotifications from "./PushNotifications";
 import { DueMedicationsItem } from "./DueMedicationsItem";
 
 const DueMedications = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-
+  //   const [modalOpen, setModalOpen] = useState(false);
   const { userId } = useContext(UserContext);
 
   useEffect(() => {
@@ -55,7 +53,7 @@ const DueMedications = () => {
 
   return (
     <View>
-      <Modal visible={modalOpen} animationType="slide">
+      {/* <Modal visible={modalOpen} animationType="slide">
         <ScrollView>
           <AntDesign
             name="closesquare"
@@ -65,26 +63,24 @@ const DueMedications = () => {
             onPress={() => setModalOpen(false)}
           />
 
-          <PushNotifications
+          {/* <PushNotifications
             setNotifications={setNotifications}
             setModalOpen={setModalOpen}
-          />
-        </ScrollView>
-      </Modal>
-
-      <TouchableOpacity>
+          /> */}
+      {/* </ScrollView>
+      </Modal> */}{" "}
+      */
+      {/* <TouchableOpacity>
         <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
           {" "}
           Add Notification{" "}
         </Text>
-      </TouchableOpacity>
-
+      </TouchableOpacity> */}
       <FlatList
+        scrollEnabled={false}
         style={styles.list}
         data={notifications}
-        renderItem={({ item }) => (
-          <DueMedicationsItem item={item} handleDelete={handleDelete} />
-        )}
+        renderItem={({ item }) => <DueMedicationsItem item={item} />}
       ></FlatList>
     </View>
   );
