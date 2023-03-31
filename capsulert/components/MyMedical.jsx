@@ -31,7 +31,12 @@ const MyMedical = () => {
       <Text style={styles.welcome}>Welcome, {loggedInUser}!</Text>
       <Text style={styles.title}>Capsalert</Text>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Medical History");
+          }}
+        >
           <Text style={styles.text}>Medical History</Text>
         </TouchableOpacity>
 
