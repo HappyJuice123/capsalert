@@ -6,6 +6,7 @@ import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
+import { NotificationsContext } from "../contexts/Notifications";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -15,13 +16,12 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const PushNotifications = ({ setNotificationsModalOpen, setNotifications }) => {
+const PushNotifications = ({ setNotificationsModalOpen }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
   const [lastNotificationStatus, setLastNotificationStatus] = useState(false);
-
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -29,6 +29,7 @@ const PushNotifications = ({ setNotificationsModalOpen, setNotifications }) => {
   const [time, setTime] = useState("");
 
   const { userId } = useContext(UserContext);
+  const { setNotificationsList } = useContext(NotificationsContext);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
@@ -154,18 +155,13 @@ const PushNotifications = ({ setNotificationsModalOpen, setNotifications }) => {
     const postReference = ref(db, `users/${userId}/notifications`);
     const newPostRef = push(postReference);
     set(newPostRef, postData);
-    setNotifications((currentNotifications) => {
-      console.log(currentNotifications);
+    setNotificationsList((currentNotifications) => {
       return [...currentNotifications, postData];
     });
 
-    // handleNotifications();
+    handleNotifications();
     setNotificationsModalOpen(false);
   };
-
-  console.log(startDate);
-  console.log(endDate);
-  console.log(time);
 
   return (
     <View>

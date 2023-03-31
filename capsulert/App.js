@@ -11,6 +11,7 @@ import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
 import MyMedical from "./components/MyMedical";
 import { UserProvider } from "./contexts/User";
+import { NotificationsProvider } from "./contexts/Notifications";
 import AdditionalMedInfo from "./components/AdditionalMedInfo";
 import PushNotifications from "./components/PushNotifications";
 import DueMedications from "./components/DueMedications";
@@ -20,47 +21,52 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Login"
-            component={SignInPage}
-          ></Stack.Screen>
-          <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
-          <Stack.Screen name="My Medical" component={MyMedical}></Stack.Screen>
-          <Stack.Screen
-            name="Medical History"
-            component={MedicalHistory}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="MyMedications"
-            component={MyMedications}
-            options={{ title: "My Medications" }}
-          />
-          <Stack.Screen
-            name="AddMedication"
-            component={AddMedication}
-            options={{ title: "Add Medication" }}
-          />
-          <Stack.Screen name="Allergies" component={AddAllergies} />
-          <Stack.Screen
-            name="AdditionalMedInfo"
-            component={AdditionalMedInfo}
-            options={{ title: "Additional Info" }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Push Notifications"
-            component={PushNotifications}
-            options={{ title: "Push Notifications" }}
-          />
-          <Stack.Screen
-            name="Due Medications"
-            component={DueMedications}
-            options={{ title: "Due Medications" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <NotificationsProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Login"
+              component={SignInPage}
+            ></Stack.Screen>
+            <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
+            <Stack.Screen
+              name="My Medical"
+              component={MyMedical}
+            ></Stack.Screen>
+            <Stack.Screen
+              name="Medical History"
+              component={MedicalHistory}
+            ></Stack.Screen>
+            <Stack.Screen
+              name="MyMedications"
+              component={MyMedications}
+              options={{ title: "My Medications" }}
+            />
+            <Stack.Screen
+              name="AddMedication"
+              component={AddMedication}
+              options={{ title: "Add Medication" }}
+            />
+            <Stack.Screen name="Allergies" component={AddAllergies} />
+            <Stack.Screen
+              name="AdditionalMedInfo"
+              component={AdditionalMedInfo}
+              options={{ title: "Additional Info" }}
+            ></Stack.Screen>
+            <Stack.Screen
+              name="Push Notifications"
+              component={PushNotifications}
+              options={{ title: "Push Notifications" }}
+            />
+            <Stack.Screen
+              name="Due Medications"
+              component={DueMedications}
+              options={{ title: "Due Medications" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </NotificationsProvider>
     </UserProvider>
   );
 }
