@@ -12,6 +12,7 @@ import MyMedical from "./components/MyMedical";
 import { UserProvider } from "./contexts/User";
 import AdditionalMedInfo from "./components/AdditionalMedInfo";
 import PushNotifications from "./components/PushNotifications";
+import DueMedications from "./components/DueMedications";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,11 @@ export default function App() {
             name="Push Notifications"
             component={PushNotifications}
             options={{ title: "Push Notifications" }}
+          />
+          <Stack.Screen
+            name="Due Medications"
+            component={DueMedications}
+            options={{ title: "Due Medications" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

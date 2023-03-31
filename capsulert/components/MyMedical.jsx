@@ -56,6 +56,18 @@ const MyMedical = () => {
           <Text style={styles.text}>Allergies</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            {
+              /* Navigate to the Due Medications route */
+            }
+            navigation.navigate("Due Medications");
+          }}
+        >
+          <Text style={styles.text}>Notifications</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>

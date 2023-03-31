@@ -11,17 +11,17 @@ import { useNavigation } from "@react-navigation/native";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
-import DatePicker from "react-native-modern-datepicker";
-import { getFormatedDate } from "react-native-modern-datepicker";
+// import DatePicker from "react-native-modern-datepicker";
+// import { getFormatedDate } from "react-native-modern-datepicker";
 import PushNotifications from "./PushNotifications";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
-  const [dateModal, setDateModal] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [timeModal, setTimeModal] = useState(false);
-  const [selectedTime, setSelectedTime] = useState("");
+  // const [dateModal, setDateModal] = useState(false);
+  // const [startDate, setStartDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
+  // const [timeModal, setTimeModal] = useState(false);
+  // const [selectedTime, setSelectedTime] = useState("");
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
   const [dosage, setDosage] = useState("");
@@ -33,49 +33,37 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   const { userId } = useContext(UserContext);
 
-  // test obj to check correct data renders to MyMedications component
-  const testObj = {
-    name: newMedication,
-    startDate: startDate,
-    endDate: endDate,
-    time: selectedTime,
-    dosage: dosage,
-    unit: unit,
-    form: medicationType,
-    quantity: quantity,
-  };
+  // // set start date
+  // const today = new Date();
 
-  // set start date
-  const today = new Date();
+  // const calendarStartDate = getFormatedDate(
+  //   today.setDate(today.getDate()),
+  //   "YYYY/MM/DD"
+  // );
 
-  const calendarStartDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
+  // const handleDateModalPress = () => {
+  //   setDateModal(!dateModal);
+  // };
 
-  const handleDateModalPress = () => {
-    setDateModal(!dateModal);
-  };
+  // const handleStartDateChange = (newStartDate) => {
+  //   setStartDate(newStartDate);
+  // };
 
-  const handleStartDateChange = (newStartDate) => {
-    setStartDate(newStartDate);
-  };
+  // //  set end date
+  // const calendarEndDate = getFormatedDate(
+  //   today.setDate(today.getDate()),
+  //   "YYYY/MM/DD"
+  // );
 
-  //  set end date
-  const calendarEndDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleEndDateChange = (newEndDate) => {
-    setEndDate(newEndDate);
-  };
+  // const handleEndDateChange = (newEndDate) => {
+  //   setEndDate(newEndDate);
+  // };
 
   //  set time
 
-  const handleTimeModalPress = () => {
-    setTimeModal(!timeModal);
-  };
+  // const handleTimeModalPress = () => {
+  //   setTimeModal(!timeModal);
+  // };
 
   const handleNotificationsModalPress = () => {
     setNotificationsModalOpen(!notificationsModalOpen);
@@ -87,9 +75,9 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     const db = getDatabase();
     const postData = {
       name: newMedication,
-      startDate: startDate,
-      endDate: endDate,
-      time: selectedTime,
+      // startDate: startDate,
+      // endDate: endDate,
+      // time: selectedTime,
       dosage: dosage,
       unit: unit,
       form: medicationType,
@@ -115,7 +103,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         onChangeText={(value) => setNewMedication(value)}
       />
 
-      {/* Start/End Date */}
+      {/* Start/End Date
       <TouchableOpacity>
         <View style={styles.displayDate}>
           <Text>Start Date: {startDate}</Text>
@@ -145,9 +133,9 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
-      {/* Time */}
+      {/* Time
       <TouchableOpacity>
         <View style={styles.displayDate}>
           <Text>Time: {selectedTime}</Text>
@@ -170,7 +158,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
       {/* Dosage/Unit */}
       <View style={styles.dosageContainer}>
@@ -284,7 +272,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       <Modal visible={notificationsModalOpen} animationType="slide">
         <PushNotifications
           setNotificationsModalOpen={setNotificationsModalOpen}
-          selectedTime={selectedTime}
         />
       </Modal>
 
@@ -349,45 +336,6 @@ const styles = StyleSheet.create({
     paddingLeft: 60,
     paddingRight: 60,
     marginHorizontal: 20,
-    marginVertical: 20,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  dateView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    width: "80%",
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  displayDate: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  setDatebtn: {
-    textAlign: "center",
-    backgroundColor: "#F2F2F2",
-    borderColor: "#000000",
-    borderWidth: 1.5,
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 50,
     marginVertical: 20,
   },
   dosageContainer: {
