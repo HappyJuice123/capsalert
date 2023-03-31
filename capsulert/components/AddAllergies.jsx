@@ -6,13 +6,20 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  FlatList,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { UserContext } from "../contexts/User";
-import { getDatabase, ref, set, child, push } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  child,
+  push,
+  set,
+  get,
+  remove,
+} from "firebase/database";
+import { AllergyList } from "./AllergyList";
 
 export const AddAllergies = () => {
   const [isCelerySelected, setIsCelerySelected] = useState(false);
@@ -30,27 +37,253 @@ export const AddAllergies = () => {
   const [isSoyaSelected, setIsSoyaSelected] = useState(false);
   const [isSulphurDioxideSelected, setIsSulphurDioxideSelected] =
     useState(false);
-
-  const [allergies, setAllergies] = useState([]);
   const [newAllergy, setNewAllergy] = useState("");
-  const [addNewAllergy, setAddnewAllergy] = useState("");
 
   const { userId } = useContext(UserContext);
 
+  const handleInput = () => {
+    const db = getDatabase();
+
+    const postData = { allergy: newAllergy };
+    const postListRef = ref(db, `users/${userId}/allergies`);
+    const newPostRef = push(postListRef);
+    set(newPostRef, postData);
+    setNewAllergy("");
+  };
+
   useEffect(() => {
-    if (isCelerySelected) {
-      setAllergies((currentAllergies) => {
-        return [...currentAllergies, newAllergy];
+    readCeleryCheckbox("Celery");
+    readCerealsCheckbox("Cereals");
+    readCrustaceansCheckbox("Crustaceans");
+    readEggsCheckbox("Eggs");
+    readFishCheckbox("Fish");
+    readLupinCheckbox("Lupin");
+    readMilkCheckbox("Milk");
+    readMolluscsCheckbox("Molluscs");
+    readMustardCheckbox("Mustard");
+    readNutsCheckbox("Nuts");
+    readPeanutsCheckbox("Peanuts");
+    readSesameSeedsCheckbox("Sesame Seeds");
+    readSulphurDioxideCheckbox("Sulphur Dioxide");
+  }, [
+    isCelerySelected,
+    isCerealsSelected,
+    isCrustaceansSelected,
+    isEggsSelected,
+    isFishSelected,
+    isLupinSelected,
+    isMilkSelected,
+    isMolluscsSelected,
+    isMustardSelected,
+    isNutsSelected,
+    isPeanutsSelected,
+    isSesameSeedsSelected,
+    isSoyaSelected,
+    isSulphurDioxideSelected,
+  ]);
+
+  const handleCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const postListRef = ref(db, `users/${userId}/foodAllergies/${food}`);
+
+          snapshot.val() ? set(postListRef, false) : set(postListRef, true);
+
+          readCeleryCheckbox("Celery");
+          readCerealsCheckbox("Cereals");
+          readCrustaceansCheckbox("Crustaceans");
+          readEggsCheckbox("Eggs");
+          readFishCheckbox("Fish");
+          readLupinCheckbox("Lupin");
+          readMilkCheckbox("Milk");
+          readMolluscsCheckbox("Molluscs");
+          readMustardCheckbox("Mustard");
+          readNutsCheckbox("Nuts");
+          readPeanutsCheckbox("Peanuts");
+          readSesameSeedsCheckbox("Sesame Seeds");
+          readSoyaCheckbox("Soya");
+          readSulphurDioxideCheckbox("Sulphur Dioxide");
+        } else {
+          const postListRef = ref(db, `users/${userId}/foodAllergies/${food}`);
+          set(postListRef, true);
+
+          food === "Celery" ? setIsCelerySelected(true) : null;
+          food === "Cereals" ? setIsCerealsSelected(true) : null;
+          food === "Crustaceans" ? setIsCrustaceansSelected(true) : null;
+          food === "Eggs" ? setIsEggsSelected(true) : null;
+          food === "Fish" ? setIsFishSelected(true) : null;
+          food === "Lupin" ? setIsLupinSelected(true) : null;
+          food === "Milk" ? setIsMilkSelected(true) : null;
+          food === "Molluscs" ? setIsMolluscsSelected(true) : null;
+          food === "Mustard" ? setIsMustardSelected(true) : null;
+          food === "Nuts" ? setIsNutsSelected(true) : null;
+          food === "Peanuts" ? setIsPeanutsSelected(true) : null;
+          food === "Sesame Seeds" ? setIsSesameSeedsSelected(true) : null;
+          food === "Soya" ? setIsSoyaSelected(true) : null;
+          food === "Sulphur Dioxide" ? setIsSulphurDioxideSelected(true) : null;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    } else if (!isCelerySelected) {
-      setAllergies((currentAllergies) => {
-        const copyAllergies = [...currentAllergies];
-        const index = copyAllergies.indexOf("Celery");
-        copyAllergies.splice(index, 1);
-        return copyAllergies;
-      });
-    }
-  }, [isCelerySelected]);
+  };
+
+  const readCeleryCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsCelerySelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readCerealsCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsCerealsSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readCrustaceansCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsCrustaceansSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readEggsCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsEggsSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readFishCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsFishSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readLupinCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsLupinSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readMilkCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsMilkSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readMolluscsCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsMolluscsSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readMustardCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsMustardSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readNutsCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsNutsSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readPeanutsCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsPeanutsSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readSesameSeedsCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsSesameSeedsSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readSoyaCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsSoyaSelected(foodCheckbox);
+      }
+    );
+  };
+
+  const readSulphurDioxideCheckbox = (food) => {
+    const db = getDatabase();
+
+    get(child(ref(db), `users/${userId}/foodAllergies/${food}`)).then(
+      (snapshot) => {
+        const foodCheckbox = snapshot.val();
+        setIsSulphurDioxideSelected(foodCheckbox);
+      }
+    );
+  };
 
   return (
     <ScrollView>
@@ -64,7 +297,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isCelerySelected}
-            onValueChange={setIsCelerySelected}
+            onValueChange={() => handleCheckbox("Celery")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Celery</Text>
@@ -73,7 +306,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isCerealsSelected}
-            onValueChange={setIsCerealsSelected}
+            onValueChange={() => handleCheckbox("Cereals")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Cereals containing gluten</Text>
@@ -82,7 +315,9 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isCrustaceansSelected}
-            onValueChange={setIsCrustaceansSelected}
+            onValueChange={() => {
+              handleCheckbox("Crustaceans");
+            }}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Crustaceans</Text>
@@ -91,7 +326,9 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isEggsSelected}
-            onValueChange={setIsEggsSelected}
+            onValueChange={() => {
+              handleCheckbox("Eggs");
+            }}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Eggs</Text>
@@ -100,7 +337,9 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isFishSelected}
-            onValueChange={setIsFishSelected}
+            onValueChange={() => {
+              handleCheckbox("Fish");
+            }}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Fish</Text>
@@ -109,7 +348,9 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isLupinSelected}
-            onValueChange={setIsLupinSelected}
+            onValueChange={() => {
+              handleCheckbox("Lupin");
+            }}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Lupin</Text>
@@ -118,7 +359,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isMilkSelected}
-            onValueChange={setIsMilkSelected}
+            onValueChange={() => handleCheckbox("Milk")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Milk</Text>
@@ -127,7 +368,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isMolluscsSelected}
-            onValueChange={setIsMolluscsSelected}
+            onValueChange={() => handleCheckbox("Molluscs")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Molluscs</Text>
@@ -136,7 +377,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isMustardSelected}
-            onValueChange={setIsMustardSelected}
+            onValueChange={() => handleCheckbox("Mustard")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Mustard</Text>
@@ -145,7 +386,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isNutsSelected}
-            onValueChange={setIsNutsSelected}
+            onValueChange={() => handleCheckbox("Nuts")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Nuts</Text>
@@ -154,7 +395,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isPeanutsSelected}
-            onValueChange={setIsPeanutsSelected}
+            onValueChange={() => handleCheckbox("Peanuts")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Peanuts</Text>
@@ -163,7 +404,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isSesameSeedsSelected}
-            onValueChange={setIsSesameSeedsSelected}
+            onValueChange={() => handleCheckbox("Sesame Seeds")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Sesame Seeds</Text>
@@ -172,7 +413,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isSoyaSelected}
-            onValueChange={setIsSoyaSelected}
+            onValueChange={() => handleCheckbox("Soya")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Soya</Text>
@@ -181,7 +422,7 @@ export const AddAllergies = () => {
         <View style={styles.row}>
           <Checkbox
             value={isSulphurDioxideSelected}
-            onValueChange={setIsSulphurDioxideSelected}
+            onValueChange={() => handleCheckbox("Sulphur Dioxide")}
             style={styles.checkbox}
           />
           <Text style={styles.AllergenText}>Sulphur Dioxide</Text>
@@ -198,30 +439,11 @@ export const AddAllergies = () => {
             value={newAllergy}
           ></TextInput>
           <TouchableOpacity>
-            <Button
-              title="Add Allergy"
-              onPress={() => {
-                setNewAllergy("");
-                setAllergies((prevAllergies) => {
-                  return [...prevAllergies, newAllergy];
-                });
-              }}
-            ></Button>
+            <Button title="Add Allergy" onPress={handleInput}></Button>
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.headerSub}>Allergy List</Text>
-          <FlatList
-            scrollEnabled={false}
-            data={allergies}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <Text>{item}</Text>
-                </View>
-              );
-            }}
-          />
+          <AllergyList />
         </View>
       </View>
     </ScrollView>
