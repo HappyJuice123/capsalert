@@ -443,7 +443,7 @@ export const AddAllergies = () => {
           </TouchableOpacity>
         </View>
         <View>
-          <AllergyList />
+          <AllergyList newAllergy={newAllergy} />
         </View>
       </View>
     </ScrollView>
