@@ -19,64 +19,87 @@ import {
 } from "firebase/database";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
-  const [list, setList] = useState([]);
   const [data, setData] = useState([]);
-  const [addedData, setAddedData] = useState([]);
   const { userId } = useContext(UserContext);
 
   const handleSubmit = (newInput) => {
-    setList((currentList) => {
-      return [...currentList, newInput];
+    console.log(newInput, "newInput");
+    const db = getDatabase();
+    const postReference = ref(db, `users/${userId}/diagnosis`);
+    const newPostRef = push(postReference);
+    set(newPostRef, newInput);
+    setData((currentDiagnosis) => {
+      return [...currentDiagnosis, newInput];
     });
     setNewInput("");
   };
+
   const handleRemove = (item) => {
-    const removedItemArray = list.filter((e) => e !== item);
-    setList(removedItemArray);
-    setData(...removedItemArray);
-    setAddedData(...data);
-  };
-
-  const updateData = (userId, diagnosis) => {
-    const db = getDatabase();
-    const reference = ref(db, `users/${userId}/diagnosis`);
-    const newPostRef = push(reference);
-    remove(reference);
-    console.log(newPostRef, "newPost");
-    console.log(diagnosis, "diagnosis");
-    set(newPostRef, diagnosis);
-    setData((currentData) => {
-      return [...currentData, ...diagnosis];
-    });
-  };
-
-  const readDatabase = () => {
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        if (snapshot.val().diagnosis) {
-          const key = Object.keys(snapshot.val().diagnosis)[0];
-          console.log(key, "key");
-          console.log(snapshot.val().diagnosis[key], "59");
-          setData(snapshot.val().diagnosis[key]);
-          // const updates = [];
-          // key.map((key) => {
-          //   updates.push(snapshot.val().diagnosis[key]);
-          // });
-          // const lastUpdate = updates[updates.length - 1];
-          // console.log(updates, "updates");
-          // console.log(lastUpdate, "las");
-          // setData(lastUpdate);
+    get(child(dbRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          if (snapshot.val().diagnosis) {
+            const uniqueKey = Object.keys(snapshot.val().diagnosis);
+            const snapshotDiagnosis = [snapshot.val().diagnosis];
+            const diagnosisArray = [];
+            uniqueKey.map((key) => {
+              diagnosisArray.push(snapshot.val().diagnosis[key]);
+            });
+            const keyAndValues = snapshotDiagnosis.pop();
+            const kVPair = Object.entries(keyAndValues);
+            kVPair.map((pair) => {
+              if (pair[1] === item) {
+                console.log(pair);
+                const db = getDatabase();
+                const deleteRef = ref(
+                  db,
+                  `users/${userId}/diagnosis/${pair[0]}`
+                );
+                setData((currentData) => {
+                  return currentData.filter((e) => e != item);
+                });
+                remove(deleteRef);
+                return pair;
+              }
+            });
+          } else {
+            console.log("No data available");
+          }
         }
-      }
-    });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
+
   useEffect(() => {
-    readDatabase();
-  }, [addedData]);
-  {
-    console.log(data, "data");
-  }
+    getDiagnosis();
+  }, []);
+
+  const getDiagnosis = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          if (snapshot.val().diagnosis) {
+            const uniqueKey = Object.keys(snapshot.val().diagnosis);
+            const snapshotDiagnosis = [snapshot.val().diagnosis];
+            const diagnosisArray = [];
+            uniqueKey.map((key) => {
+              diagnosisArray.push(snapshot.val().diagnosis[key]);
+            });
+            setData(diagnosisArray);
+          } else {
+            console.log("No data available");
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <View>
       <View style={styles.container}>
@@ -100,7 +123,7 @@ const MedicalHistory = () => {
         <Text style={styles.yourHistory}>Your medical history</Text>
         <FlatList
           style={styles.flatlist}
-          data={list}
+          data={data}
           renderItem={({ item }) => (
             <TouchableOpacity style={{ ...styles.itemBox }}>
               <Text style={styles.item}>{item}</Text>
@@ -113,29 +136,6 @@ const MedicalHistory = () => {
             </TouchableOpacity>
           )}
         ></FlatList>
-        <TouchableOpacity onPress={() => updateData(userId, list)}>
-          <Text>Save</Text>
-        </TouchableOpacity>
-        {/* {data.map((item) => {
-          return <Text>{item}</Text>;
-        })} */}
-        <View>
-          <FlatList
-            style={styles.flatlist}
-            data={data}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={{ ...styles.itemBox }}>
-                <Text style={styles.item}>{item}</Text>
-                <TouchableOpacity
-                  style={styles.removeButton}
-                  onPress={() => handleRemove(item)}
-                >
-                  <Text>Remove</Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            )}
-          ></FlatList>
-        </View>
       </View>
     </View>
   );
@@ -194,8 +194,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-end",
     marginRight: 40,
-    // textAlign: "middle",
-    // verticalAlign: "center",
   },
   flatlist: {
     backgroundColor: "#ADD8E6",
