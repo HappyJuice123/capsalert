@@ -6,7 +6,6 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useContext } from "react";
-import { AddAllergies } from "./AddAllergies";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
@@ -104,6 +103,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignContent: "center",
+    //  textAlignVertical: "center",
   },
 });
 

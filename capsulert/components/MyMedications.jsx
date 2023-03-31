@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   FlatList,
@@ -8,13 +8,48 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+import { getDatabase, ref, child, get } from "firebase/database";
+import { UserContext } from "../contexts/User";
 import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
 import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
+  // const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [medications, setMedications] = useState([]);
+
+  const { userId } = useContext(UserContext);
+
+  useEffect(() => {
+    getMedications();
+  }, []);
+
+  const getMedications = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          if (snapshot.val().medications) {
+            const uniqueKey = Object.keys(snapshot.val().medications);
+            const snapshotMedications = [snapshot.val().medications];
+            const medicationsArray = [];
+            uniqueKey.map((key) => {
+              medicationsArray.push(snapshot.val().medications[key]);
+            });
+            console.log(snapshotMedications, "<<< snapshot.val.medications");
+            console.log(uniqueKey, "<<< unique key");
+            console.log(medicationsArray, "<<< medicationsArray");
+            setMedications(medicationsArray);
+          } else {
+            console.log("No data available");
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleDelete = (item) => {
     setMedications((prevmedications) => {
