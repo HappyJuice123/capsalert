@@ -13,28 +13,37 @@ import { getMedication } from "../utils/api";
 
 import * as Linking from "expo-linking";
 
-function AdditionalMedInfo() {
+function AdditionalMedInfo({ route }) {
   const [name, setName] = useState("");
   const [descriptions, setDescriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const medicationName = "Gliclazide";
-  // Test Medication name: Rivaroxaban, Gliclazide
+  const medicationName = route.params;
 
   useEffect(() => {
     setIsLoading(true);
 
-    getMedication(medicationName).then((responseData) => {
-      setName(responseData.name);
-      setDescriptions(responseData.hasPart);
-      setIsLoading(false);
-    });
+    getMedication(medicationName)
+      .then((responseData) => {
+        console.log(responseData, "responseData, AddMedInfo");
+        if (responseData === undefined) {
+          setError(true);
+        }
+        setName(responseData.name);
+        setDescriptions(responseData.hasPart);
+        setIsLoading(false);
+        setError(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
       {isLoading ? (
-        <p>Loading your medication details...</p>
+        <Text>Loading your medication details...</Text>
       ) : (
         <View style={styles.description}>
           <Text style={styles.header}>{name}</Text>
@@ -55,7 +64,11 @@ function AdditionalMedInfo() {
             Linking.openURL(`https://www.nhs.uk/medicines/${name}`)
           }
         >
-          <Text>Click here to visit the NHS page for your medication</Text>
+          {error ? (
+            <Text>Error: Medication Not Recognised</Text>
+          ) : (
+            <Text>Click here to visit the NHS page for your medication</Text>
+          )}
         </TouchableOpacity>
       </View>
 
