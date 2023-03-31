@@ -155,10 +155,11 @@ const PushNotifications = ({ setNotificationsModalOpen, setNotifications }) => {
     const newPostRef = push(postReference);
     set(newPostRef, postData);
     setNotifications((currentNotifications) => {
+      console.log(currentNotifications);
       return [...currentNotifications, postData];
     });
 
-    handleNotifications();
+    // handleNotifications();
     setNotificationsModalOpen(false);
   };
 

@@ -14,10 +14,13 @@ import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
 import { AntDesign } from "@expo/vector-icons";
 
-export function MyMedications() {
+export function MyMedications({ route }) {
   // const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [medications, setMedications] = useState([]);
+
+  const setNotifications = route.params.setNotifications;
+  console.log(setNotifications);
 
   const { userId } = useContext(UserContext);
 
@@ -72,6 +75,7 @@ export function MyMedications() {
           <AddMedication
             setMedications={setMedications}
             setModalOpen={setModalOpen}
+            setNotifications={setNotifications}
           />
         </ScrollView>
       </Modal>

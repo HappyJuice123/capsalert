@@ -15,7 +15,11 @@ import { Picker } from "@react-native-picker/picker";
 // import { getFormatedDate } from "react-native-modern-datepicker";
 import PushNotifications from "./PushNotifications";
 
-export const AddMedication = ({ setMedications, setModalOpen }) => {
+export const AddMedication = ({
+  setMedications,
+  setModalOpen,
+  setNotifications,
+}) => {
   const [newMedication, setNewMedication] = useState("");
   // const [dateModal, setDateModal] = useState(false);
   // const [startDate, setStartDate] = useState("");
@@ -33,38 +37,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   const { userId } = useContext(UserContext);
 
-  // // set start date
-  // const today = new Date();
-
-  // const calendarStartDate = getFormatedDate(
-  //   today.setDate(today.getDate()),
-  //   "YYYY/MM/DD"
-  // );
-
-  // const handleDateModalPress = () => {
-  //   setDateModal(!dateModal);
-  // };
-
-  // const handleStartDateChange = (newStartDate) => {
-  //   setStartDate(newStartDate);
-  // };
-
-  // //  set end date
-  // const calendarEndDate = getFormatedDate(
-  //   today.setDate(today.getDate()),
-  //   "YYYY/MM/DD"
-  // );
-
-  // const handleEndDateChange = (newEndDate) => {
-  //   setEndDate(newEndDate);
-  // };
-
-  //  set time
-
-  // const handleTimeModalPress = () => {
-  //   setTimeModal(!timeModal);
-  // };
-
   const handleNotificationsModalPress = () => {
     setNotificationsModalOpen(!notificationsModalOpen);
   };
@@ -75,9 +47,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     const db = getDatabase();
     const postData = {
       name: newMedication,
-      // startDate: startDate,
-      // endDate: endDate,
-      // time: selectedTime,
       dosage: dosage,
       unit: unit,
       form: medicationType,
@@ -102,63 +71,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         value={newMedication}
         onChangeText={(value) => setNewMedication(value)}
       />
-
-      {/* Start/End Date
-      <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Start Date: {startDate}</Text>
-          <Text>End Date: {endDate}</Text>
-        </View>
-        <TouchableOpacity onPress={handleDateModalPress}>
-          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={dateModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarStartDate}
-              selected={startDate}
-              onDateChange={(selected) => handleStartDateChange(selected)}
-            />
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarEndDate}
-              selected={endDate}
-              onDateChange={(selected) => handleEndDateChange(selected)}
-            />
-            <TouchableOpacity onPress={handleDateModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> */}
-
-      {/* Time
-      <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Time: {selectedTime}</Text>
-        </View>
-
-        <TouchableOpacity onPress={handleTimeModalPress}>
-          <Text style={styles.setDatebtn}>Click to Time</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={timeModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
-            <DatePicker
-              mode="time"
-              minuteInterval={1}
-              onTimeChange={(time) => setSelectedTime(time)}
-            />
-            <TouchableOpacity onPress={handleTimeModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> */}
 
       {/* Dosage/Unit */}
       <View style={styles.dosageContainer}>
@@ -194,6 +106,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
           <Picker.Item label="Other dosage" value="other" />
         </Picker>
       </View>
+
       {/* Dosage: Show Other input */}
       {showUnitOption ? (
         <TouchableOpacity style={styles.customerPicker}>
@@ -272,6 +185,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       <Modal visible={notificationsModalOpen} animationType="slide">
         <PushNotifications
           setNotificationsModalOpen={setNotificationsModalOpen}
+          setNotifications={setNotifications}
         />
       </Modal>
 

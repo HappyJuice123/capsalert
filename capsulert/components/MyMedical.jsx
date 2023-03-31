@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
@@ -16,6 +16,8 @@ import { UserContext } from "../contexts/User";
 const MyMedical = () => {
   const navigation = useNavigation();
   const { loggedInUser } = useContext(UserContext);
+
+  const [notifications, setNotifications] = useState([]);
 
   const handleSignOut = () => {
     auth
@@ -46,7 +48,7 @@ const MyMedical = () => {
             {
               /* Navigate to the MyMedications route */
             }
-            navigation.navigate("MyMedications");
+            navigation.navigate("MyMedications", { setNotifications });
           }}
         >
           <Text style={styles.text}>My Medications</Text>
