@@ -19,45 +19,43 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaView
-      className="flex-1 items-center justify-center bg-white
-    "
-    >
-      <View className="flex-1 items-center justify-center" />
-      <Text className="text-slate-800">Styling just works! 🎉</Text>
-      <UserProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="Login"
-              component={SignInPage}
-            ></Stack.Screen>
-            <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
-            <Stack.Screen
-              name="My Medical"
-              component={MyMedical}
-            ></Stack.Screen>
-            <Stack.Screen
-              name="MyMedications"
-              component={MyMedications}
-              options={{ title: "My Medications" }}
-            />
-            <Stack.Screen
-              name="AddMedication"
-              component={AddMedication}
-              options={{ title: "Add Medication" }}
-            />
-            <Stack.Screen name="Allergies" component={AddAllergies} />
-            <Stack.Screen
-              name="AdditionalMedInfo"
-              component={AdditionalMedInfo}
-              options={{ title: "Additional Info" }}
-            ></Stack.Screen>
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserProvider>
-    </SafeAreaView>
+    // <SafeAreaView
+    //   className="flex-1 items-center justify-center bg-white
+    // "
+    // >
+
+    //   <View className="flex-1 items-center justify-center" />
+    //    <Text className="text-slate-800">Styling just works! 🎉</Text>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Login"
+            component={SignInPage}
+          ></Stack.Screen>
+          <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
+          <Stack.Screen name="My Medical" component={MyMedical}></Stack.Screen>
+          <Stack.Screen
+            name="MyMedications"
+            component={MyMedications}
+            options={{ title: "My Medications" }}
+          />
+          <Stack.Screen
+            name="AddMedication"
+            component={AddMedication}
+            options={{ title: "Add Medication" }}
+          />
+          <Stack.Screen name="Allergies" component={AddAllergies} />
+          <Stack.Screen
+            name="AdditionalMedInfo"
+            component={AdditionalMedInfo}
+            options={{ title: "Additional Info" }}
+          ></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
+    // </SafeAreaView>
   );
 }
 
