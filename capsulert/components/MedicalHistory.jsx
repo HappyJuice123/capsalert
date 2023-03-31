@@ -5,9 +5,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { UserContext } from "./contexts/User";
+import { UserContext } from "../contexts/User";
 import {
   getDatabase,
   set,
@@ -101,7 +102,7 @@ const MedicalHistory = () => {
   };
 
   return (
-    <View>
+    <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Medical History</Text>
         <TouchableOpacity>
@@ -122,6 +123,7 @@ const MedicalHistory = () => {
         </TouchableOpacity>
         <Text style={styles.yourHistory}>Your medical history</Text>
         <FlatList
+          scrollEnabled={false}
           style={styles.flatlist}
           data={data}
           renderItem={({ item }) => (
@@ -137,7 +139,7 @@ const MedicalHistory = () => {
           )}
         ></FlatList>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({

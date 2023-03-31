@@ -1,4 +1,4 @@
-import MedicalHistory from "./MedicalHistoy";
+import MedicalHistory from "./components/MedicalHistory";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import * as React from "react";
