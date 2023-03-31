@@ -1,3 +1,4 @@
+import MedicalHistory from "./components/MedicalHistory";
 import { StatusBar } from "expo-status-bar";
 //import { StyleSheet} from "react-native";
 import { Text, View, Button, SafeAreaView } from "react-native";
@@ -36,6 +37,10 @@ export default function App() {
           ></Stack.Screen>
           <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
           <Stack.Screen name="My Medical" component={MyMedical}></Stack.Screen>
+          <Stack.Screen
+            name="Medical History"
+            component={MedicalHistory}
+          ></Stack.Screen>
           <Stack.Screen
             name="MyMedications"
             component={MyMedications}
