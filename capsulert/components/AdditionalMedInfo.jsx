@@ -6,6 +6,8 @@ import {
   Text,
   Image,
   Button,
+  FlatList,
+  ScrollView,
 } from "react-native";
 
 import React, { useState, useEffect } from "react";
@@ -21,6 +23,8 @@ function AdditionalMedInfo({ route }) {
   const [descriptions, setDescriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [url, setUrl] = useState("");
+  const [speaking, setSpeaking] = useState(false);
 
   const medicationName = route.params;
 
@@ -35,6 +39,8 @@ function AdditionalMedInfo({ route }) {
         }
         setName(responseData.name);
         setDescriptions(responseData.hasPart);
+        const updatedUrl = responseData.url.replace("api.", "");
+        setUrl(updatedUrl);
         setIsLoading(false);
         setError(false);
       })
@@ -44,56 +50,75 @@ function AdditionalMedInfo({ route }) {
   }, []);
 
   const speakDescription = () => {
-    options = { rate: 0.55 };
+    options = {
+      rate: 0.6,
+      onStart: () => setSpeaking(true),
+      onStopped: () => setSpeaking(false),
+      onDone: () => setSpeaking(false),
+    };
     const descriptionArr = descriptions.map(
       (description) => description.description
     );
 
     const readDescription = descriptionArr.join(" ");
-    Speech.speak(readDescription, options);
+    if (!speaking) {
+      Speech.speak(readDescription, options);
+    } else {
+      Speech.stop();
+    }
   };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      {isLoading ? (
-        <Text>Loading your medication details...</Text>
-      ) : (
-        <View style={styles.description}>
-          <Text style={styles.header}>{name}</Text>
-          <TouchableOpacity>
-            <Button title="Speak" onPress={speakDescription}></Button>
-          </TouchableOpacity>
-          <Text>
-            {descriptions.map((item) => {
-              return item.description;
-            })}
-          </Text>
-        </View>
-      )}
-      <View>
-        <Text style={styles.extraInfo}>
-          For further details please refer to the NHS website
-        </Text>
-        <TouchableOpacity
-          style={styles.buttonText}
-          onPress={() =>
-            Linking.openURL(`https://www.nhs.uk/medicines/${name}`)
-          }
-        >
-          {error ? (
-            <Text>Error: Medication Not Recognised</Text>
-          ) : (
-            <Text>Click here to visit the NHS page for your medication</Text>
-          )}
-        </TouchableOpacity>
-      </View>
+      <ScrollView>
+        {isLoading ? (
+          <Text>Loading your medication details...</Text>
+        ) : (
+          <View style={styles.description}>
+            <Text style={styles.header}>{name}</Text>
+            <TouchableOpacity onPress={speakDescription}>
+              <Image
+                style={styles.imageSpeech}
+                source={require("../assets/speaking-icon.png")}
+              />
+            </TouchableOpacity>
 
-      <View>
-        <Image
-          style={styles.image}
-          source={require("../assets/nhs_attribution_logo.png")}
-        />
-      </View>
+            <FlatList
+              scrollEnabled={false}
+              data={descriptions}
+              renderItem={({ item }) => {
+                return (
+                  <View>
+                    <Text style={styles.text}>{item.description}</Text>
+                  </View>
+                );
+              }}
+            ></FlatList>
+          </View>
+        )}
+        <View>
+          <Text style={styles.extraInfo}>
+            For further details please refer to the NHS website
+          </Text>
+          <TouchableOpacity
+            style={styles.buttonText}
+            onPress={() => Linking.openURL(url)}
+          >
+            {error ? (
+              <Text>Error: Medication Not Recognised</Text>
+            ) : (
+              <Text>Click here to visit the NHS page for your medication</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <Image
+            style={styles.image}
+            source={require("../assets/nhs_attribution_logo.png")}
+          />
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -107,8 +132,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   header: {
-    fontWeight: 900,
+    fontWeight: 500,
     paddingBottom: 10,
+    marginTop: 20,
+    fontSize: 20,
   },
   description: {
     justifyContent: "center",
@@ -128,8 +155,17 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   image: {
-    width: 400,
+    width: 350,
     height: 200,
     resizeMode: "contain",
+  },
+  imageSpeech: {
+    width: 80,
+    height: 80,
+    resizeMode: "contain",
+  },
+  text: {
+    textAlign: "justify",
+    marginBottom: 10,
   },
 });
