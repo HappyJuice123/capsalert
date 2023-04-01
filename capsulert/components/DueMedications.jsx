@@ -10,13 +10,9 @@ import {
 } from "react-native";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { UserContext } from "../contexts/User";
-// import { NotificationsContext } from "../contexts/Notifications";
-// import { AntDesign } from "@expo/vector-icons";
-// import PushNotifications from "./PushNotifications";
 import { DueMedicationsItem } from "./DueMedicationsItem";
 
 const DueMedications = () => {
-  // const [modalOpen, setModalOpen] = useState(false);
   const { userId } = useContext(UserContext);
   const [dueMedicationsList, setDueMedicationsList] = useState([]);
 
@@ -35,6 +31,13 @@ const DueMedications = () => {
             const dueMedicationsArray = [];
             uniqueKey.map((key) => {
               dueMedicationsArray.push(snapshot.val().medications[key]);
+            });
+            dueMedicationsArray.sort((a, b) => {
+              if (Number(a.time.slice(0, 2)) !== Number(b.time.slice(0, 2))) {
+                return a.time.slice(0, 2) - b.time.slice(0, 2);
+              } else {
+                return a.time.slice(3, 5) - b.time.slice(3, 5);
+              }
             });
             console.log(
               snapshotDueMedications,
@@ -55,26 +58,6 @@ const DueMedications = () => {
 
   return (
     <View>
-      {/* <Modal visible={modalOpen} animationType="slide">
-        {/* <ScrollView>
-          <AntDesign
-            name="closesquare"
-            size={30}
-            style={{ ...styles.modalToggle, ...styles.modalClose }}
-            color="black"
-            onPress={() => setModalOpen(false)}
-          />
-          <PushNotifications
-            modalOpen={modalOpen}
-            setModalOpen={setModalOpen}
-          />
-        </ScrollView> */}
-      {/* </Modal> */}
-      {/* <TouchableOpacity>
-        <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
-          Add Notification
-        </Text>
-      </TouchableOpacity> */}
       <FlatList
         scrollEnabled={false}
         style={styles.list}

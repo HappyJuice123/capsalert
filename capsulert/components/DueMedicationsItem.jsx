@@ -25,6 +25,7 @@ export const DueMedicationsItem = ({ item, handleDelete }) => {
         <Text style={styles.itemText}>
           take {item.quantity} {item.form}(s)
         </Text>
+        <Text>Due at: {item.time}</Text>
       </View>
 
       <TouchableOpacity style={styles.options}>

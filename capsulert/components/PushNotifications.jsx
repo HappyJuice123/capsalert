@@ -217,7 +217,7 @@ const PushNotifications = ({
           <View style={styles.dateView}>
             <DatePicker
               mode="time"
-              minuteInterval={1}
+              minuteInterval={15}
               onTimeChange={(time) => setTime(time)}
             />
             <TouchableOpacity onPress={handleTimeModalPress}>

@@ -12,6 +12,7 @@ import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
 import PushNotifications from "./PushNotifications";
+import { AntDesign } from "@expo/vector-icons";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
@@ -174,6 +175,14 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         <Text style={styles.notifications}>Set Notifications </Text>
       </TouchableOpacity>
       <Modal visible={notificationsModalOpen} animationType="slide">
+        <AntDesign
+          name="closesquare"
+          size={30}
+          style={{ ...styles.modalToggle, ...styles.modalClose }}
+          color="black"
+          onPress={() => setNotificationsModalOpen(false)}
+        />
+
         <PushNotifications
           notificationsModalOpen={notificationsModalOpen}
           setNotificationsModalOpen={setNotificationsModalOpen}
@@ -288,5 +297,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 5,
     marginVertical: 5,
+  },
+  modalToggle: {
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 10,
+    alignSelf: "center",
+  },
+  modalClose: {
+    marginHorizontal: 40,
+    marginBottom: 0,
   },
 });
