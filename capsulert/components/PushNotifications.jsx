@@ -24,6 +24,8 @@ const PushNotifications = ({
   setNotificationsModalOpen,
   modalOpen,
   setModalOpen,
+  time,
+  setTime,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -33,7 +35,6 @@ const PushNotifications = ({
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [timeModal, setTimeModal] = useState(false);
-  const [time, setTime] = useState("");
 
   const { userId } = useContext(UserContext);
   const { setNotificationsList } = useContext(NotificationsContext);
