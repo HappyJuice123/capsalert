@@ -22,6 +22,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const [time, setTime] = useState("");
   const navigation = useNavigation();
 
   const { userId } = useContext(UserContext);
@@ -40,6 +41,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       unit: unit,
       form: medicationType,
       quantity: quantity,
+      time: time,
     };
     const postReference = ref(db, `users/${userId}/medications`);
     const newPostRef = push(postReference);
@@ -175,6 +177,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         <PushNotifications
           notificationsModalOpen={notificationsModalOpen}
           setNotificationsModalOpen={setNotificationsModalOpen}
+          time={time}
+          setTime={setTime}
         />
       </Modal>
 
