@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Modal } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  LogBox,
+} from "react-native";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
@@ -8,6 +15,10 @@ import { getFormatedDate } from "react-native-modern-datepicker";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { NotificationsContext } from "../contexts/Notifications";
+
+LogBox.ignoreLogs([
+  "Calling getExpoPushTokenAsync without specifying a projectId is deprecated and will no longer be supported in SDK 49+",
+]);
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -63,18 +74,18 @@ const PushNotifications = ({
     };
   }, []);
 
-  async function schedulePushNotification() {
+  async function schedulePushNotification(specificTime) {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: `It's ${time}`,
+        title: `It's ${specificTime}`,
         body: "Time to take your medications!",
         data: {
           url: `exp://${pathwayURL}:19000/--/medications`,
         },
       },
       trigger: {
-        hour: parseInt(time.slice(0, 2)),
-        minute: parseInt(time.slice(3, 5)),
+        hour: parseInt(specificTime.slice(0, 2)),
+        minute: parseInt(specificTime.slice(3, 5)),
         repeats: true,
       },
     });
@@ -145,8 +156,8 @@ const PushNotifications = ({
     setTimeModal(!timeModal);
   };
 
-  const handleNotifications = async () => {
-    await schedulePushNotification();
+  const handleNotifications = async (specificTime) => {
+    await schedulePushNotification(specificTime);
   };
 
   const handleSubmit = () => {
@@ -159,7 +170,9 @@ const PushNotifications = ({
       return [...currentNotifications, postData];
     });
 
-    handleNotifications();
+    time.map((specificTime) => {
+      handleNotifications(specificTime);
+    });
 
     if (notificationsModalOpen) {
       setNotificationsModalOpen(false);
@@ -217,8 +230,12 @@ const PushNotifications = ({
           <View style={styles.dateView}>
             <DatePicker
               mode="time"
-              minuteInterval={15}
-              onTimeChange={(time) => setTime(time)}
+              minuteInterval={1}
+              onTimeChange={(time) => {
+                setTime((currentTimeArray) => {
+                  return [...currentTimeArray, time];
+                });
+              }}
             />
             <TouchableOpacity onPress={handleTimeModalPress}>
               <Text>Close</Text>
