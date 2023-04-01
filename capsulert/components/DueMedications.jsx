@@ -10,40 +10,39 @@ import {
 } from "react-native";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { UserContext } from "../contexts/User";
-import { NotificationsContext } from "../contexts/Notifications";
-import { AntDesign } from "@expo/vector-icons";
-import PushNotifications from "./PushNotifications";
+// import { NotificationsContext } from "../contexts/Notifications";
+// import { AntDesign } from "@expo/vector-icons";
+// import PushNotifications from "./PushNotifications";
 import { DueMedicationsItem } from "./DueMedicationsItem";
 
 const DueMedications = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
   const { userId } = useContext(UserContext);
-  const { notificationsList, setNotificationsList } =
-    useContext(NotificationsContext);
+  const [dueMedicationsList, setDueMedicationsList] = useState([]);
 
   useEffect(() => {
-    getNotifications();
+    getDueMedications();
   }, []);
 
-  const getNotifications = () => {
+  const getDueMedications = () => {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `users/${userId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          if (snapshot.val().notifications) {
-            const uniqueKey = Object.keys(snapshot.val().notifications);
-            const snapshotNotifications = [snapshot.val().notifications];
-            const notificationsArray = [];
+          if (snapshot.val().medications) {
+            const uniqueKey = Object.keys(snapshot.val().medications);
+            const snapshotDueMedications = [snapshot.val().medications];
+            const dueMedicationsArray = [];
             uniqueKey.map((key) => {
-              notificationsArray.push(snapshot.val().notifications[key]);
+              dueMedicationsArray.push(snapshot.val().medications[key]);
             });
             console.log(
-              snapshotNotifications,
+              snapshotDueMedications,
               "<<< snapshot.val.notifications"
             );
             console.log(uniqueKey, "<<< unique key");
-            console.log(notificationsArray, "<<< notificationsArray");
-            setNotificationsList(notificationsArray);
+            console.log(dueMedicationsArray, "<<< notificationsArray");
+            setDueMedicationsList(dueMedicationsArray);
           } else {
             console.log("No data available");
           }
@@ -56,8 +55,8 @@ const DueMedications = () => {
 
   return (
     <View>
-      <Modal visible={modalOpen} animationType="slide">
-        <ScrollView>
+      {/* <Modal visible={modalOpen} animationType="slide">
+        {/* <ScrollView>
           <AntDesign
             name="closesquare"
             size={30}
@@ -69,17 +68,17 @@ const DueMedications = () => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
           />
-        </ScrollView>
-      </Modal>
-      <TouchableOpacity>
+        </ScrollView> */}
+      {/* </Modal> */}
+      {/* <TouchableOpacity>
         <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
           Add Notification
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <FlatList
         scrollEnabled={false}
         style={styles.list}
-        data={notificationsList}
+        data={dueMedicationsList}
         renderItem={({ item }) => <DueMedicationsItem item={item} />}
       ></FlatList>
     </View>

@@ -19,9 +19,12 @@ export const DueMedicationsItem = ({ item, handleDelete }) => {
     <TouchableOpacity style={styles.listItem}>
       {/* Notification details */}
       <View>
-        <Text style={styles.itemText}>Start: {item.startDate}</Text>
-        <Text style={styles.itemText}>End: {item.endDate}</Text>
-        <Text style={styles.itemText}>Time: {item.time}</Text>
+        <Text style={styles.itemText}>
+          {item.name} {item.dosage} {item.unit}
+        </Text>
+        <Text style={styles.itemText}>
+          take {item.quantity} {item.form}(s)
+        </Text>
       </View>
 
       <TouchableOpacity style={styles.options}>

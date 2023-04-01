@@ -70,7 +70,7 @@ const MyMedical = () => {
             navigation.navigate("DueMedications");
           }}
         >
-          <Text style={styles.text}>Notifications</Text>
+          <Text style={styles.text}>Due Medications</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
