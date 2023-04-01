@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal } from "react-native";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
+import Constants from "expo-constants";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { getDatabase, set, ref, push } from "firebase/database";
@@ -16,6 +17,8 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const pathwayURL = Constants.manifest.hostUri.split(":")[0];
+
 const PushNotifications = ({
   notificationsModalOpen,
   setNotificationsModalOpen,
@@ -26,7 +29,6 @@ const PushNotifications = ({
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [lastNotificationStatus, setLastNotificationStatus] = useState(false);
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -48,7 +50,8 @@ const PushNotifications = ({
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        const url = response.notification.request.content.data.url;
+        Linking.openURL(url);
       });
 
     return () => {
@@ -59,23 +62,14 @@ const PushNotifications = ({
     };
   }, []);
 
-  const lastNotificationResponse = Notifications.useLastNotificationResponse();
-
-  useEffect(() => {
-    if (lastNotificationResponse) {
-      setLastNotificationStatus(true);
-      if (lastNotificationStatus) {
-        navigation.replace("MyMedications");
-        setLastNotificationStatus(false);
-      }
-    }
-  }, [lastNotificationResponse]);
-
   async function schedulePushNotification() {
     Notifications.scheduleNotificationAsync({
       content: {
         title: `It's ${time}`,
         body: "Time to take your medications!",
+        data: {
+          url: `exp://${pathwayURL}:19000/--/medications`,
+        },
       },
       trigger: {
         hour: parseInt(time.slice(0, 2)),

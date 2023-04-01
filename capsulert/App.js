@@ -1,6 +1,6 @@
 import MedicalHistory from "./components/MedicalHistory";
-import { StyleSheet } from "react-native";
-import * as React from "react";
+import { StyleSheet, Text } from "react-native";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MyMedications } from "./components/MyMedications";
@@ -14,14 +14,42 @@ import { NotificationsProvider } from "./contexts/Notifications";
 import AdditionalMedInfo from "./components/AdditionalMedInfo";
 import PushNotifications from "./components/PushNotifications";
 import DueMedications from "./components/DueMedications";
+import * as Notifications from "expo-notifications";
+import * as Linking from "expo-linking";
 
 const Stack = createNativeStackNavigator();
 
+const prefix = Linking.createURL("/");
+
+const config = {
+  screens: {
+    DueMedications: "medications",
+  },
+};
+
 export default function App() {
+  const linking = {
+    prefixes: [prefix],
+    config,
+  };
+
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  useEffect(() => {
+    if (lastNotificationResponse) {
+      Linking.openURL(
+        lastNotificationResponse.notification.request.content.data.url
+      );
+    }
+  }, [lastNotificationResponse]);
+
   return (
     <UserProvider>
       <NotificationsProvider>
-        <NavigationContainer>
+        <NavigationContainer
+          linking={linking}
+          fallback={<Text>Loading...</Text>}
+        >
           <Stack.Navigator>
             <Stack.Screen
               options={{ headerShown: false }}
@@ -59,9 +87,9 @@ export default function App() {
               options={{ title: "Push Notifications" }}
             />
             <Stack.Screen
-              name="Due Medications"
+              name="DueMedications"
               component={DueMedications}
-              options={{ title: "Due Medications" }}
+              options={{ title: "DueMedications" }}
             />
           </Stack.Navigator>
         </NavigationContainer>

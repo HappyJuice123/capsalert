@@ -67,7 +67,7 @@ const MyMedical = () => {
             {
               /* Navigate to the Due Medications route */
             }
-            navigation.navigate("Due Medications");
+            navigation.navigate("DueMedications");
           }}
         >
           <Text style={styles.text}>Notifications</Text>
