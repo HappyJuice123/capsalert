@@ -26,12 +26,20 @@ const DueMedications = () => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           if (snapshot.val().medications) {
-            const uniqueKey = Object.keys(snapshot.val().medications);
-            const snapshotDueMedications = [snapshot.val().medications];
+            const uniqueMedicationKeys = Object.keys(
+              snapshot.val().medications
+            );
+
             const dueMedicationsArray = [];
-            uniqueKey.map((key) => {
-              dueMedicationsArray.push(snapshot.val().medications[key]);
+            uniqueMedicationKeys.map((key) => {
+              snapshot.val().medications[key].time.forEach((specificTime) => {
+                dueMedicationsArray.push({
+                  ...snapshot.val().medications[key],
+                  time: specificTime,
+                });
+              });
             });
+
             dueMedicationsArray.sort((a, b) => {
               if (Number(a.time.slice(0, 2)) !== Number(b.time.slice(0, 2))) {
                 return a.time.slice(0, 2) - b.time.slice(0, 2);
@@ -39,12 +47,7 @@ const DueMedications = () => {
                 return a.time.slice(3, 5) - b.time.slice(3, 5);
               }
             });
-            console.log(
-              snapshotDueMedications,
-              "<<< snapshot.val.notifications"
-            );
-            console.log(uniqueKey, "<<< unique key");
-            console.log(dueMedicationsArray, "<<< notificationsArray");
+
             setDueMedicationsList(dueMedicationsArray);
           } else {
             console.log("No data available");

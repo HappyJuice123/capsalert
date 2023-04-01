@@ -23,7 +23,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState([]);
   const navigation = useNavigation();
 
   const { userId } = useContext(UserContext);
