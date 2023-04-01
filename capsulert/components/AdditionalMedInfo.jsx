@@ -5,6 +5,7 @@ import {
   View,
   Text,
   Image,
+  Button,
 } from "react-native";
 
 import React, { useState, useEffect } from "react";
@@ -12,6 +13,8 @@ import React, { useState, useEffect } from "react";
 import { getMedication } from "../utils/api";
 
 import * as Linking from "expo-linking";
+
+import * as Speech from "expo-speech";
 
 function AdditionalMedInfo({ route }) {
   const [name, setName] = useState("");
@@ -40,6 +43,16 @@ function AdditionalMedInfo({ route }) {
       });
   }, []);
 
+  const speakDescription = () => {
+    options = { rate: 0.55 };
+    const descriptionArr = descriptions.map(
+      (description) => description.description
+    );
+
+    const readDescription = descriptionArr.join(" ");
+    Speech.speak(readDescription, options);
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       {isLoading ? (
@@ -47,6 +60,9 @@ function AdditionalMedInfo({ route }) {
       ) : (
         <View style={styles.description}>
           <Text style={styles.header}>{name}</Text>
+          <TouchableOpacity>
+            <Button title="Speak" onPress={speakDescription}></Button>
+          </TouchableOpacity>
           <Text>
             {descriptions.map((item) => {
               return item.description;
