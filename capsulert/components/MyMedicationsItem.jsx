@@ -1,4 +1,10 @@
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  FlatList,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -22,7 +28,14 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
         <Text style={styles.itemText}>{item.name}</Text>
         <Text style={styles.itemText}>Start: {item.startDate}</Text>
         <Text style={styles.itemText}>End: {item.endDate}</Text>
-        <Text style={styles.itemText}>Time: {item.time}</Text>
+        <Text style={styles.itemText}>Due Time(s):</Text>
+        <FlatList
+          scrollEnabled={false}
+          data={item.time}
+          renderItem={({ item }) => {
+            return <Text style={styles.itemText}>{item}</Text>;
+          }}
+        />
         <Text style={styles.itemText}>
           {item.dosage}
           {item.unit}

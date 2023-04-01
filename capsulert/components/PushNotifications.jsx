@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Modal,
   LogBox,
+  FlatList,
 } from "react-native";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import * as Notifications from "expo-notifications";
@@ -37,14 +38,16 @@ const PushNotifications = ({
   setModalOpen,
   time,
   setTime,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
   const [dateModal, setDateModal] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [timeModal, setTimeModal] = useState(false);
 
   const { userId } = useContext(UserContext);
@@ -218,7 +221,14 @@ const PushNotifications = ({
       {/* Time */}
       <TouchableOpacity>
         <View style={styles.displayDate}>
-          <Text>Time: {time}</Text>
+          <Text>Time(s):</Text>
+          <FlatList
+            scrollEnabled={false}
+            data={time}
+            renderItem={({ item }) => {
+              return <Text style={styles.itemText}>{item}</Text>;
+            }}
+          />
         </View>
 
         <TouchableOpacity onPress={handleTimeModalPress}>
@@ -235,11 +245,9 @@ const PushNotifications = ({
                 setTime((currentTimeArray) => {
                   return [...currentTimeArray, time];
                 });
+                handleTimeModalPress();
               }}
             />
-            <TouchableOpacity onPress={handleTimeModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
