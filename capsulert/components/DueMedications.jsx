@@ -60,14 +60,13 @@ const DueMedications = () => {
   };
 
   return (
-    <View>
+    <ScrollView style={styles.list}>
       <FlatList
         scrollEnabled={false}
-        style={styles.list}
         data={dueMedicationsList}
         renderItem={({ item }) => <DueMedicationsItem item={item} />}
       ></FlatList>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -76,7 +75,6 @@ export default DueMedications;
 const styles = StyleSheet.create({
   list: {
     backgroundColor: "#fff",
-    fontSize: 8,
   },
   addMedsBtn: {
     marginTop: 20,
