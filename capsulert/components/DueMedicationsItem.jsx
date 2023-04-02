@@ -1,78 +1,48 @@
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { Menu, MenuItem } from "react-native-material-menu";
-import { useState } from "react";
 
-export const DueMedicationsItem = ({ item, handleDelete }) => {
-  const [visible, setVisible] = useState(false);
+export const DueMedicationsItem = ({ item }) => {
+  let today = new Date();
 
-  const navigation = useNavigation();
-
-  const hideMenu = () => setVisible(false);
-
-  const showMenu = () => setVisible(true);
+  const handleTimeStyle = () => {
+    if (item.time.slice(3, 5) >= 30) {
+      if (
+        item.time.slice(0, 2) - today.getHours() === 0 &&
+        item.time.slice(3, 5) - today.getMinutes() <= 30
+      ) {
+        return styles.dueTime;
+      } else {
+        return styles.time;
+      }
+    } else if (item.time.slice(3, 5) < 30) {
+      if (
+        item.time.slice(0, 2) - today.getHours() === 1 &&
+        60 - today.getMinutes() <= 30
+      ) {
+        return styles.dueTime;
+      } else if (
+        item.time.slice(0, 2) - today.getHours() === 0 &&
+        today.getMinutes() <= 30
+      ) {
+        return styles.dueTime;
+      } else {
+        return styles.time;
+      }
+    }
+  };
 
   return (
     <TouchableOpacity style={styles.listItem}>
-      {/* Notification details */}
-      <View>
+      <View style={styles.itemTextContainer}>
         <Text style={styles.itemText}>
           {item.name} {item.dosage} {item.unit}
         </Text>
-        <Text style={styles.itemText}>
+        <Text>
           take {item.quantity} {item.form}(s)
         </Text>
-        <Text>Due at: {item.time}</Text>
       </View>
-
-      <TouchableOpacity style={styles.options}>
-        {/* Three dot options menu */}
-        <TouchableOpacity>
-          <Menu
-            visible={visible}
-            anchor={
-              <Text onPress={showMenu}>
-                <Entypo name="dots-three-horizontal" size={24} color="black" />
-              </Text>
-            }
-            onRequestClose={hideMenu}
-          >
-            <MenuItem onPress={hideMenu}>
-              {/* Edit button */}
-              <TouchableOpacity>
-                <Text
-                  style={styles.options}
-                  onPress={() => {
-                    {
-                      /* Navigate to the Push Notifications route */
-                    }
-                    navigation.navigate("Push Notifications");
-                  }}
-                >
-                  <Feather name="edit" size={24} color="black" />
-                </Text>
-              </TouchableOpacity>
-            </MenuItem>
-            <MenuItem onPress={hideMenu}>
-              {/* Delete button */}
-              <TouchableOpacity>
-                <Text style={styles.options} onPress={() => handleDelete(item)}>
-                  {" "}
-                  Delete
-                  <MaterialIcons
-                    name="delete-outline"
-                    size={26}
-                    color="black"
-                  />
-                </Text>
-              </TouchableOpacity>
-            </MenuItem>
-          </Menu>
-        </TouchableOpacity>
-      </TouchableOpacity>
+      <View>
+        <Text style={handleTimeStyle()}>Due at: {item.time}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -80,25 +50,35 @@ export const DueMedicationsItem = ({ item, handleDelete }) => {
 const styles = StyleSheet.create({
   listItem: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
-    padding: 15,
+    marginVertical: 10,
+    marginHorizontal: 14,
     backgroundColor: "#F2F2F2",
-    borderBottomWidth: 1,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#999999",
+  },
+  itemTextContainer: {
+    fontSize: 14,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   itemText: {
-    fontSize: 10,
+    marginBottom: 4,
   },
-  icon: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+  time: {
+    backgroundColor: "lightblue",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
   },
-  options: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
+  dueTime: {
+    backgroundColor: "lightgreen",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
   },
 });
