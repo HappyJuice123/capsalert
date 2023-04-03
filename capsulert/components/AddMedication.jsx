@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -24,8 +24,14 @@ import { AntDesign } from "@expo/vector-icons";
 import { getFormatedDate } from "react-native-modern-datepicker";
 import DatePicker from "react-native-modern-datepicker";
 
-export const AddMedication = ({ setMedications, setModalOpen }) => {
+export const AddMedication = ({
+  setMedications,
+  setModalOpen,
+  editData,
+  setEditData,
+}) => {
   const [newMedication, setNewMedication] = useState("");
+  const [medicationBrand, setMedicationBrand] = useState("");
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
   const [dosage, setDosage] = useState("");
@@ -39,7 +45,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   const { userId } = useContext(UserContext);
   const { medicationData } = useContext(MedicationsContext);
-  console.log(medicationData, "<<<< medicationData");
+
+  const medicationToUpdate = medicationData;
 
   const handleNotificationsModalPress = () => {
     setNotificationsModalOpen(!notificationsModalOpen);
@@ -81,6 +88,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     const postData = {
       id: `MM${postId}`,
       name: newMedication,
+      brand: medicationBrand,
       dosage: dosage,
       unit: unit,
       form: medicationType,
@@ -96,29 +104,57 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     });
   };
 
+  useEffect(() => {
+    getMedicationsToUpdate(medicationToUpdate);
+  }, []);
+
+  const getMedicationsToUpdate = (medicationToUpdate) => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}/medications`))
+      .then((snapshot) => {
+        const medicationList = snapshot.val();
+
+        for (const medication in medicationList) {
+          get(child(dbRef, `users/${userId}/medications/${medication}`)).then(
+            (snapshot) => {
+              const medicationInDatabase = snapshot.val();
+
+              if (medicationInDatabase.id === medicationToUpdate.id) {
+                setNewMedication(medicationToUpdate.name);
+                setMedicationBrand(medicationToUpdate.brand);
+                setUnit(medicationToUpdate.unit);
+                setDosage(medicationToUpdate.dosage);
+                setMedicationType(medicationToUpdate.form);
+                setQuantity(medicationToUpdate.quantity);
+                setStartDate(medicationToUpdate.startDate);
+                setEndDate(medicationToUpdate.endDate);
+              } else {
+                console.log("no data to update");
+              }
+            }
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleEdit = (medicationData) => {
     const dbRef = ref(getDatabase());
     const db = getDatabase();
     get(child(dbRef, `users/${userId}/medications`))
       .then((snapshot) => {
         const medicationList = snapshot.val();
-        console.log(medicationList, "<<<< medicationListMM");
 
         for (const medication in medicationList) {
-          console.log(medication, "<<<< medication");
-
-          get(child(dbRef, `users/${userId}/medications/${medication}`)).then(
-            (snapshot) => {
+          get(child(dbRef, `users/${userId}/medications/${medication}`))
+            .then((snapshot) => {
               const medicationInDatabase = snapshot.val();
-              console.log(medicationInDatabase, "<<<< medicationInDatabase");
 
               if (medicationInDatabase.id === medicationData.id) {
-                console.log(
-                  medicationInDatabase.id,
-                  "<<<< medicationInDatabase.id"
-                );
                 const key = medication;
-                console.log(key, "<<<< key");
+
                 const medicationRef = ref(
                   db,
                   `users/${userId}/medications/${key}`
@@ -126,6 +162,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
                 update(medicationRef, {
                   ...medicationData,
                   name: newMedication,
+                  brand: medicationBrand,
                   dosage: dosage,
                   unit: unit,
                   form: medicationType,
@@ -134,14 +171,15 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
                   endDate: endDate,
                 });
               }
-              setNewMedication("");
-              setEditData(false);
-              setModalOpen(false);
               setMedications((currentMedications) => {
                 return [...currentMedications];
               });
-            }
-          );
+              setModalOpen(false);
+              setEditData(false);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }
       })
       .catch((error) => {
@@ -154,10 +192,17 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       {/* Input Medication Name */}
       <TextInput
         placeholder={"Enter Medication"}
-        //  editData ? medicationData.name : "Enter Medication"
         style={styles.input}
         value={newMedication}
         onChangeText={(value) => setNewMedication(value)}
+      />
+
+      {/* Input Medication Brand Name */}
+      <TextInput
+        placeholder={"Enter Medication Brand"}
+        style={styles.input}
+        value={medicationBrand}
+        onChangeText={(value) => setMedicationBrand(value)}
       />
 
       {/* Dosage/Unit */}
@@ -187,7 +232,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
             }
           }}
         >
-          <Picker.Item label={"Select Unit"} value={unit} />
+          <Picker.Item label="select" value={unit} />
           <Picker.Item label="milligram (mg)" value="mg" />
           <Picker.Item label="microgram (μg)" value="ug" />
           <Picker.Item label="millilitre (ml)" value="ml" />
@@ -226,7 +271,10 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
             }
           }}
         >
-          <Picker.Item label={"Select"} value={medicationType} />
+          <Picker.Item
+            label={editData ? medicationType : "select"}
+            value={medicationType}
+          />
           <Picker.Item label="Pill" value="Pill" />
           <Picker.Item label="Liquid" value="Liquid" />
           <Picker.Item label="Drops" value="Drops" />
@@ -331,7 +379,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         <TouchableOpacity style={styles.btn}>
           {/* onPress={handleEdit} */}
           <Text
-            style={styles.btnText}
+            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5"
+            // style={styles.btnText}
             onPress={() => handleEdit(medicationData)}
           >
             Save Medication
@@ -339,7 +388,12 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity style={styles.btn} onPress={handleInput}>
-          <Text style={styles.btnText}>Add Medication</Text>
+          <Text
+            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5"
+            // style={styles.btnText}
+          >
+            Add Medication
+          </Text>
         </TouchableOpacity>
       )}
     </View>
