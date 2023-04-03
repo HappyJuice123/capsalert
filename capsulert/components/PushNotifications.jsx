@@ -165,7 +165,14 @@ const PushNotifications = ({
 
   const handleSubmit = () => {
     const db = getDatabase();
-    const postData = { startDate: startDate, endDate: endDate, time: time };
+    const postData = [];
+    time.map((specificTime) => {
+      postData.push({
+        startDate: startDate,
+        endDate: endDate,
+        time: specificTime,
+      });
+    });
     const postReference = ref(db, `users/${userId}/notifications`);
     const newPostRef = push(postReference);
     set(newPostRef, postData);
@@ -183,6 +190,11 @@ const PushNotifications = ({
       setModalOpen(false);
     }
   };
+
+  // const handleDelete = () => {
+  //   Notifications.cancelAllScheduledNotificationsAsync();
+  //   console.log("All notifications deleted");
+  // };
 
   return (
     <View>
@@ -255,6 +267,10 @@ const PushNotifications = ({
       <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
         <Text style={styles.btnText}>Save Settings</Text>
       </TouchableOpacity>
+
+      {/* <TouchableOpacity style={styles.btn} onPress={handleDelete}>
+        <Text style={styles.btnText}>Cancel All Notifications</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };

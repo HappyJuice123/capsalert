@@ -1,6 +1,9 @@
+import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 
 export const DueMedicationsItem = ({ item }) => {
+  const [toggleMedTaken, setToggleMedTaken] = useState(false);
+
   let today = new Date();
 
   const handleTimeStyle = () => {
@@ -10,6 +13,13 @@ export const DueMedicationsItem = ({ item }) => {
         item.time.slice(3, 5) - today.getMinutes() <= 30
       ) {
         return styles.dueTime;
+      } else if (
+        today.getHours() - item.time.slice(0, 2) === 0 &&
+        today.getMinutes() - item.time.slice(3, 5) > 30
+      ) {
+        return styles.medMissed;
+      } else if (today.getHours() - item.time.slice(0, 2) >= 1) {
+        return styles.medMissed;
       } else {
         return styles.time;
       }
@@ -24,14 +34,29 @@ export const DueMedicationsItem = ({ item }) => {
         today.getMinutes() <= 30
       ) {
         return styles.dueTime;
+      } else if (today.getHours() - item.time.slice(0, 2) >= 1) {
+        return styles.medMissed;
       } else {
         return styles.time;
       }
     }
   };
 
+  const handleMedTaken = () => {
+    if (toggleMedTaken === false) {
+      setToggleMedTaken(true);
+    } else {
+      setToggleMedTaken(false);
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.listItem}>
+    <TouchableOpacity
+      style={styles.listItem}
+      onPress={() => {
+        handleMedTaken();
+      }}
+    >
       <View style={styles.itemTextContainer}>
         <Text style={styles.itemText}>
           {item.name} {item.dosage} {item.unit}
@@ -41,7 +66,11 @@ export const DueMedicationsItem = ({ item }) => {
         </Text>
       </View>
       <View>
-        <Text style={handleTimeStyle()}>Due at: {item.time}</Text>
+        {toggleMedTaken ? (
+          <Text style={styles.medTaken}>Taken</Text>
+        ) : (
+          <Text style={handleTimeStyle()}>Due at: {item.time}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -73,6 +102,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
+    textAlign: "center",
   },
   dueTime: {
     backgroundColor: "lightgreen",
@@ -80,5 +110,23 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
+    textAlign: "center",
+  },
+  medTaken: {
+    backgroundColor: "#1d62f5",
+    color: "#fff",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    textAlign: "center",
+  },
+  medMissed: {
+    backgroundColor: "pink",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    textAlign: "center",
   },
 });

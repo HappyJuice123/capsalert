@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  View,
-  Modal,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, FlatList, ScrollView } from "react-native";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { DueMedicationsItem } from "./DueMedicationsItem";
