@@ -58,7 +58,7 @@ export function MyMedications() {
   };
 
   return (
-    <View>
+    <ScrollView>
       <Modal visible={modalOpen} animationType="slide">
         <ScrollView>
           <AntDesign
@@ -84,13 +84,14 @@ export function MyMedications() {
       </TouchableOpacity>
 
       <FlatList
+        scrollEnabled={false}
         style={styles.list}
         data={medications}
         renderItem={({ item }) => (
           <MyMedicationsItem item={item} handleDelete={handleDelete} />
         )}
       ></FlatList>
-    </View>
+    </ScrollView>
   );
 }
 

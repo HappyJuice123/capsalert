@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
@@ -59,6 +59,18 @@ const MyMedical = () => {
           }}
         >
           <Text style={styles.text}>Allergies</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            {
+              /* Navigate to the Due Medications route */
+            }
+            navigation.navigate("DueMedications");
+          }}
+        >
+          <Text style={styles.text}>Due Medications</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>

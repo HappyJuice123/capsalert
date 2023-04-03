@@ -7,72 +7,32 @@ import {
   Modal,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
-import DatePicker from "react-native-modern-datepicker";
-import { getFormatedDate } from "react-native-modern-datepicker";
+import PushNotifications from "./PushNotifications";
+import { AntDesign } from "@expo/vector-icons";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
-  const [dateModal, setDateModal] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [timeModal, setTimeModal] = useState(false);
-  const [selectedTime, setSelectedTime] = useState("");
   const [unit, setUnit] = useState("");
   const [showUnitOption, setshowUnitOption] = useState(false);
   const [dosage, setDosage] = useState("");
   const [medicationType, setMedicationType] = useState("");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [time, setTime] = useState([]);
+
+  const navigation = useNavigation();
 
   const { userId } = useContext(UserContext);
 
-  // test obj to check correct data renders to MyMedications component
-  const testObj = {
-    name: newMedication,
-    startDate: startDate,
-    endDate: endDate,
-    time: selectedTime,
-    dosage: dosage,
-    unit: unit,
-    form: medicationType,
-    quantity: quantity,
-  };
-
-  console.log(testObj);
-
-  // set start date
-  const today = new Date();
-
-  const calendarStartDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleDateModalPress = () => {
-    setDateModal(!dateModal);
-  };
-
-  const handleStartDateChange = (newStartDate) => {
-    setStartDate(newStartDate);
-  };
-
-  //  set end date
-  const calendarEndDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleEndDateChange = (newEndDate) => {
-    setEndDate(newEndDate);
-  };
-
-  //  set time
-
-  const handleTimeModalPress = () => {
-    setTimeModal(!timeModal);
+  const handleNotificationsModalPress = () => {
+    setNotificationsModalOpen(!notificationsModalOpen);
   };
 
   // Handle submit medication information/ firebase realtime storage
@@ -81,13 +41,13 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
     const db = getDatabase();
     const postData = {
       name: newMedication,
-      startDate: startDate,
-      endDate: endDate,
-      time: selectedTime,
       dosage: dosage,
       unit: unit,
       form: medicationType,
       quantity: quantity,
+      startDate: startDate,
+      endDate: endDate,
+      time: time,
     };
     const postReference = ref(db, `users/${userId}/medications`);
     const newPostRef = push(postReference);
@@ -108,63 +68,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         value={newMedication}
         onChangeText={(value) => setNewMedication(value)}
       />
-
-      {/* Start/End Date */}
-      <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Start Date: {startDate}</Text>
-          <Text>End Date: {endDate}</Text>
-        </View>
-        <TouchableOpacity onPress={handleDateModalPress}>
-          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={dateModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarStartDate}
-              selected={startDate}
-              onDateChange={(selected) => handleStartDateChange(selected)}
-            />
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarEndDate}
-              selected={endDate}
-              onDateChange={(selected) => handleEndDateChange(selected)}
-            />
-            <TouchableOpacity onPress={handleDateModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Time */}
-      <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Time: {selectedTime}</Text>
-        </View>
-
-        <TouchableOpacity onPress={handleTimeModalPress}>
-          <Text style={styles.setDatebtn}>Click to Time</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={timeModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
-            <DatePicker
-              mode="time"
-              minuteInterval={15}
-              onTimeChange={(time) => setSelectedTime(time)}
-            />
-            <TouchableOpacity onPress={handleTimeModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
 
       {/* Dosage/Unit */}
       <View style={styles.dosageContainer}>
@@ -200,6 +103,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
           <Picker.Item label="Other dosage" value="other" />
         </Picker>
       </View>
+
       {/* Dosage: Show Other input */}
       {showUnitOption ? (
         <TouchableOpacity style={styles.customerPicker}>
@@ -271,9 +175,30 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       </TouchableOpacity>
 
       {/* Set Notifications */}
-      <TouchableOpacity>
+
+      <TouchableOpacity onPress={handleNotificationsModalPress}>
         <Text style={styles.notifications}>Set Notifications </Text>
       </TouchableOpacity>
+      <Modal visible={notificationsModalOpen} animationType="slide">
+        <AntDesign
+          name="closesquare"
+          size={30}
+          style={{ ...styles.modalToggle, ...styles.modalClose }}
+          color="black"
+          onPress={() => setNotificationsModalOpen(false)}
+        />
+
+        <PushNotifications
+          notificationsModalOpen={notificationsModalOpen}
+          setNotificationsModalOpen={setNotificationsModalOpen}
+          time={time}
+          setTime={setTime}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+        />
+      </Modal>
 
       {/* Submit Medication info */}
       <TouchableOpacity style={styles.btn} onPress={handleInput}>
@@ -338,45 +263,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 20,
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  dateView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    width: "80%",
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  displayDate: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  setDatebtn: {
-    textAlign: "center",
-    backgroundColor: "#F2F2F2",
-    borderColor: "#000000",
-    borderWidth: 1.5,
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 50,
-    marginVertical: 20,
-  },
   dosageContainer: {
     display: "flex",
     flexDirection: "row",
@@ -420,5 +306,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 5,
     marginVertical: 5,
+  },
+  modalToggle: {
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 10,
+    alignSelf: "center",
+  },
+  modalClose: {
+    marginHorizontal: 40,
+    marginBottom: 0,
   },
 });
