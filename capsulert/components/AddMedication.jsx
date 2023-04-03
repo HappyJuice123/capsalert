@@ -7,7 +7,6 @@ import {
   Modal,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
@@ -27,8 +26,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [endDate, setEndDate] = useState("");
   const [time, setTime] = useState([]);
 
-  const navigation = useNavigation();
-
   const { userId } = useContext(UserContext);
 
   const handleNotificationsModalPress = () => {
@@ -39,18 +36,17 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   const handleInput = () => {
     const db = getDatabase();
+    const postReference = ref(db, `users/${userId}/medications`);
+    const newPostRef = push(postReference);
+    const postId = newPostRef.key;
     const postData = {
+      id: `MM${postId}`,
       name: newMedication,
       dosage: dosage,
       unit: unit,
       form: medicationType,
       quantity: quantity,
-      startDate: startDate,
-      endDate: endDate,
-      time: time,
     };
-    const postReference = ref(db, `users/${userId}/medications`);
-    const newPostRef = push(postReference);
     set(newPostRef, postData);
     setNewMedication("");
     setModalOpen(false);

@@ -3,19 +3,17 @@ import {
   StyleSheet,
   FlatList,
   ScrollView,
-  View,
   Modal,
   Text,
   TouchableOpacity,
 } from "react-native";
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
 import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
-  // const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [medications, setMedications] = useState([]);
 
@@ -31,18 +29,15 @@ export function MyMedications() {
       .then((snapshot) => {
         if (snapshot.exists()) {
           if (snapshot.val().medications) {
-            const uniqueKey = Object.keys(snapshot.val().medications);
-            const snapshotMedications = [snapshot.val().medications];
+            const uniqueKeys = Object.keys(snapshot.val().medications);
             const medicationsArray = [];
-            uniqueKey.map((key) => {
+            uniqueKeys.map((key) => {
               medicationsArray.push(snapshot.val().medications[key]);
             });
-            console.log(snapshotMedications, "<<< snapshot.val.medications");
-            console.log(uniqueKey, "<<< unique key");
-            console.log(medicationsArray, "<<< medicationsArray");
             setMedications(medicationsArray);
           } else {
             console.log("No data available");
+            setMedications([]);
           }
         }
       })
@@ -52,11 +47,44 @@ export function MyMedications() {
   };
 
   const handleDelete = (item) => {
-    setMedications((prevmedications) => {
-      return prevmedications.filter((medication) => medication !== item);
-    });
-  };
+    const dbRef = ref(getDatabase());
+    const db = getDatabase();
+    get(child(dbRef, `users/${userId}/medications`))
+      .then((snapshot) => {
+        const medicationList = snapshot.val();
+        console.log(medicationList, "<<<< medicationListMM");
 
+        for (const medication in medicationList) {
+          console.log(medication, "<<<< medication");
+
+          get(child(dbRef, `users/${userId}/medications/${medication}`)).then(
+            (snapshot) => {
+              const medicationInDatabase = snapshot.val();
+              console.log(medicationInDatabase, "<<<< medicationInDatabase");
+
+              if (medicationInDatabase.id === item.id) {
+                console.log(
+                  medicationInDatabase.id,
+                  "<<<< medicationInDatabase.id"
+                );
+                console.log(item.id, "<<<< item.id");
+                const key = medication;
+                console.log(key, "<<<< key");
+                remove(ref(db, `users/${userId}/medications/${key}`));
+              }
+              setMedications((medicationsResult) => {
+                return medicationsResult.filter(
+                  (medication) => medication !== item
+                );
+              });
+            }
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <ScrollView>
       <Modal visible={modalOpen} animationType="slide">
