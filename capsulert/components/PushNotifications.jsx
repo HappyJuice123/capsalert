@@ -36,12 +36,6 @@ const PushNotifications = ({
   setNotificationsModalOpen,
   modalOpen,
   setModalOpen,
-  time,
-  setTime,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -49,6 +43,9 @@ const PushNotifications = ({
   const responseListener = useRef();
   const [dateModal, setDateModal] = useState(false);
   const [timeModal, setTimeModal] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [time, setTime] = useState([]);
 
   const { userId } = useContext(UserContext);
   const { setNotificationsList } = useContext(NotificationsContext);
@@ -165,9 +162,11 @@ const PushNotifications = ({
 
   const handleSubmit = () => {
     const db = getDatabase();
+    const postId = newPostRef.key;
     const postData = [];
     time.map((specificTime) => {
       postData.push({
+        id: `NN${postId}`,
         startDate: startDate,
         endDate: endDate,
         time: specificTime,

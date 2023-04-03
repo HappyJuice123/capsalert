@@ -22,9 +22,6 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [time, setTime] = useState([]);
 
   const { userId } = useContext(UserContext);
 
@@ -187,12 +184,11 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         <PushNotifications
           notificationsModalOpen={notificationsModalOpen}
           setNotificationsModalOpen={setNotificationsModalOpen}
-          time={time}
-          setTime={setTime}
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
+          newMedication={newMedication}
+          dosage={dosage}
+          unit={unit}
+          medicationType={medicationType}
+          quantity={quantity}
         />
       </Modal>
 
