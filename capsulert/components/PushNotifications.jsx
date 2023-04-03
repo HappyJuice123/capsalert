@@ -178,6 +178,12 @@ const PushNotifications = ({
   //   console.log("All notifications deleted");
   // };
 
+  const handleDeleteTime = (item) => {
+    setTime((prevTimes) => {
+      return prevTimes.filter((specificTime) => specificTime !== item);
+    });
+  };
+
   return (
     <View>
       {/* Time */}
@@ -188,7 +194,12 @@ const PushNotifications = ({
             scrollEnabled={false}
             data={time}
             renderItem={({ item }) => {
-              return <Text style={styles.itemText}>{item}</Text>;
+              return (
+                <TouchableOpacity style={styles.listItem}>
+                  <Text style={styles.itemText}>{item}</Text>
+                  <Text onPress={() => handleDeleteTime(item)}>Delete</Text>
+                </TouchableOpacity>
+              );
             }}
           />
         </View>
@@ -282,5 +293,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 50,
     marginVertical: 20,
+  },
+  listItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 50,
+    padding: 15,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 1,
+    borderColor: "#eee",
   },
 });
