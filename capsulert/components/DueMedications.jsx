@@ -17,17 +17,16 @@ const DueMedications = () => {
     get(child(dbRef, `users/${userId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          if (snapshot.val().medications) {
+          if (snapshot.val().notifications) {
             const uniqueMedicationKeys = Object.keys(
-              snapshot.val().medications
+              snapshot.val().notifications
             );
 
             const dueMedicationsArray = [];
             uniqueMedicationKeys.map((key) => {
-              snapshot.val().medications[key].time.forEach((specificTime) => {
+              snapshot.val().notifications[key].forEach((medication) => {
                 dueMedicationsArray.push({
-                  ...snapshot.val().medications[key],
-                  time: specificTime,
+                  ...medication,
                 });
               });
             });

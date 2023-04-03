@@ -255,9 +255,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
           medicationType={medicationType}
           quantity={quantity}
           startDate={startDate}
-          setStartDate={setStartDate}
           endDate={endDate}
-          setEndDate={setEndDate}
         />
       </Modal>
 

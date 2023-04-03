@@ -35,6 +35,13 @@ const PushNotifications = ({
   setNotificationsModalOpen,
   modalOpen,
   setModalOpen,
+  newMedication,
+  dosage,
+  unit,
+  medicationType,
+  quantity,
+  startDate,
+  endDate,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -132,23 +139,28 @@ const PushNotifications = ({
 
   const handleSubmit = () => {
     const db = getDatabase();
+    const postReference = ref(db, `users/${userId}/notifications`);
+    const newPostRef = push(postReference);
     const postId = newPostRef.key;
     const postData = [];
     time.map((specificTime) => {
       postData.push({
         id: `NN${postId}`,
+        name: newMedication,
         startDate: startDate,
         endDate: endDate,
         time: specificTime,
+        dosage: dosage,
+        unit: unit,
+        form: medicationType,
+        quantity: quantity,
       });
     });
-    const postReference = ref(db, `users/${userId}/notifications`);
-    const newPostRef = push(postReference);
+
     set(newPostRef, postData);
     setNotificationsList((currentNotifications) => {
       return [...currentNotifications, postData];
     });
-
     time.map((specificTime) => {
       handleNotifications(specificTime);
     });
