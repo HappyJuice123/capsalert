@@ -4,16 +4,30 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Menu, MenuItem } from "react-native-material-menu";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MedicationsContext } from "../contexts/Medications";
 
-export const MyMedicationsItem = ({ item, handleDelete }) => {
+export const MyMedicationsItem = ({
+  item,
+  handleDelete,
+  setModalOpen,
+  setEditData,
+}) => {
   const [visible, setVisible] = useState(false);
+
+  const { setMedicationData } = useContext(MedicationsContext);
 
   const navigation = useNavigation();
 
   const hideMenu = () => setVisible(false);
 
   const showMenu = () => setVisible(true);
+
+  const handleEditPress = (item) => {
+    setModalOpen(true);
+    setEditData(true);
+    setMedicationData(item);
+  };
 
   return (
     <TouchableOpacity style={styles.listItem}>
@@ -62,12 +76,13 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
               <TouchableOpacity>
                 <Text
                   style={styles.options}
-                  onPress={() => {
-                    {
-                      /* Navigate to the Edit Medication route */
-                    }
-                    navigation.navigate("AddMedication", item);
-                  }}
+                  // onPress={() => {
+                  //   {
+                  //     /* Navigate to the Edit Medication route */
+                  //   }
+                  //   navigation.navigate("AddMedication", item);
+                  // }}
+                  onPress={() => handleEditPress(item)}
                 >
                   {" "}
                   Edit <Feather name="edit" size={24} color="black" />

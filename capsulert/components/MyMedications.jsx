@@ -15,13 +15,14 @@ import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [editData, setEditData] = useState(false);
   const [medications, setMedications] = useState([]);
 
   const { userId } = useContext(UserContext);
 
   useEffect(() => {
     getMedications();
-  }, []);
+  }, [medications]);
 
   const getMedications = () => {
     const dbRef = ref(getDatabase());
@@ -100,6 +101,8 @@ export function MyMedications() {
           <AddMedication
             setMedications={setMedications}
             setModalOpen={setModalOpen}
+            editData={editData}
+            setEditData={setEditData}
           />
         </ScrollView>
       </Modal>
@@ -116,7 +119,12 @@ export function MyMedications() {
         style={styles.list}
         data={medications}
         renderItem={({ item }) => (
-          <MyMedicationsItem item={item} handleDelete={handleDelete} />
+          <MyMedicationsItem
+            item={item}
+            handleDelete={handleDelete}
+            setModalOpen={setModalOpen}
+            setEditData={setEditData}
+          />
         )}
       ></FlatList>
     </ScrollView>
