@@ -14,7 +14,6 @@ import { MyMedicationsItem } from "./MyMedicationsItem";
 import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
-  // const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [medications, setMedications] = useState([]);
 
@@ -35,8 +34,6 @@ export function MyMedications() {
             uniqueKeys.map((key) => {
               medicationsArray.push(snapshot.val().medications[key]);
             });
-            // console.log(uniqueKeys, "<<< unique key");
-            // console.log(medicationsArray, "<<< medicationsArray");
             setMedications(medicationsArray);
           } else {
             console.log("No data available");
