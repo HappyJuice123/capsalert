@@ -1,171 +1,159 @@
+import React, { useState, useEffect, useContext } from "react";
 import {
-  KeyboardAvoidingView,
   StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  Image,
-  Button,
   FlatList,
   ScrollView,
+  Modal,
+  Text,
+  TouchableOpacity,
 } from "react-native";
+import { getDatabase, ref, child, get, remove } from "firebase/database";
+import { UserContext } from "../contexts/User";
+import { AddMedication } from "./AddMedication";
+import { MyMedicationsItem } from "./MyMedicationsItem";
+import { AntDesign } from "@expo/vector-icons";
 
-import React, { useState, useEffect } from "react";
+export function MyMedications() {
+  // const [isLoading, setIsLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [medications, setMedications] = useState([]);
 
-import { getMedication } from "../utils/api";
-
-import * as Linking from "expo-linking";
-
-import * as Speech from "expo-speech";
-
-function AdditionalMedInfo({ route }) {
-  const [name, setName] = useState("");
-  const [descriptions, setDescriptions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [url, setUrl] = useState("");
-  const [speaking, setSpeaking] = useState(false);
-
-  const medicationName = route.params;
+  const { userId } = useContext(UserContext);
 
   useEffect(() => {
-    setIsLoading(true);
+    getMedications();
+  }, []);
 
-    getMedication(medicationName)
-      .then((responseData) => {
-        console.log(responseData, "responseData, AddMedInfo");
-        if (responseData === undefined) {
-          setError(true);
+  const getMedications = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          if (snapshot.val().medications) {
+            const uniqueKeys = Object.keys(snapshot.val().medications);
+            const medicationsArray = [];
+            uniqueKeys.map((key) => {
+              medicationsArray.push(snapshot.val().medications[key]);
+            });
+            // console.log(uniqueKeys, "<<< unique key");
+            // console.log(medicationsArray, "<<< medicationsArray");
+            setMedications(medicationsArray);
+          } else {
+            console.log("No data available");
+            setMedications([]);
+          }
         }
-        setName(responseData.name);
-        setDescriptions(responseData.hasPart);
-        const updatedUrl = responseData.url.replace("api.", "");
-        setUrl(updatedUrl);
-        setIsLoading(false);
-        setError(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleDelete = (item) => {
+    const dbRef = ref(getDatabase());
+    const db = getDatabase();
+    get(child(dbRef, `users/${userId}/medications`))
+      .then((snapshot) => {
+        const medicationList = snapshot.val();
+        console.log(medicationList, "<<<< medicationListMM");
+
+        for (const medication in medicationList) {
+          console.log(medication, "<<<< medication");
+
+          get(child(dbRef, `users/${userId}/medications/${medication}`)).then(
+            (snapshot) => {
+              const medicationInDatabase = snapshot.val();
+              console.log(medicationInDatabase, "<<<< medicationInDatabase");
+
+              if (medicationInDatabase.id === item.id) {
+                console.log(
+                  medicationInDatabase.id,
+                  "<<<< medicationInDatabase.id"
+                );
+                console.log(item.id, "<<<< item.id");
+                const key = medication;
+                console.log(key, "<<<< key");
+                remove(ref(db, `users/${userId}/medications/${key}`));
+              }
+              setMedications((medicationsResult) => {
+                return medicationsResult.filter(
+                  (medication) => medication !== item
+                );
+              });
+            }
+          );
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  const speakDescription = () => {
-    options = {
-      rate: 0.6,
-      onStart: () => setSpeaking(true),
-      onStopped: () => setSpeaking(false),
-      onDone: () => setSpeaking(false),
-    };
-    const descriptionArr = descriptions.map(
-      (description) => description.description
-    );
-
-    const readDescription = descriptionArr.join(" ");
-    if (!speaking) {
-      Speech.speak(readDescription, options);
-    } else {
-      Speech.stop();
-    }
   };
-
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <ScrollView>
-        {isLoading ? (
-          <Text>Loading your medication details...</Text>
-        ) : (
-          <View style={styles.description}>
-            <Text style={styles.header}>{name}</Text>
-            <TouchableOpacity onPress={speakDescription}>
-              <Image
-                style={styles.imageSpeech}
-                source={require("../assets/speaking-icon.png")}
-              />
-            </TouchableOpacity>
-
-            <FlatList
-              scrollEnabled={false}
-              data={descriptions}
-              renderItem={({ item }) => {
-                return (
-                  <View>
-                    <Text style={styles.text}>{item.description}</Text>
-                  </View>
-                );
-              }}
-            ></FlatList>
-          </View>
-        )}
-        <View>
-          <Text style={styles.extraInfo}>
-            For further details please refer to the NHS website
-          </Text>
-          <TouchableOpacity
-            style={styles.buttonText}
-            onPress={() => Linking.openURL(url)}
-          >
-            {error ? (
-              <Text>Error: Medication Not Recognised</Text>
-            ) : (
-              <Text>Click here to visit the NHS page for your medication</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <Image
-            style={styles.image}
-            source={require("../assets/nhs_attribution_logo.png")}
+    <ScrollView>
+      <Modal visible={modalOpen} animationType="slide">
+        <ScrollView>
+          <AntDesign
+            name="closesquare"
+            size={30}
+            style={{ ...styles.modalToggle, ...styles.modalClose }}
+            color="black"
+            onPress={() => setModalOpen(false)}
           />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+          <AddMedication
+            setMedications={setMedications}
+            setModalOpen={setModalOpen}
+          />
+        </ScrollView>
+      </Modal>
+
+      <TouchableOpacity>
+        <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
+          {" "}
+          Add Medication{" "}
+        </Text>
+      </TouchableOpacity>
+
+      <FlatList
+        scrollEnabled={false}
+        style={styles.list}
+        data={medications}
+        renderItem={({ item }) => (
+          <MyMedicationsItem item={item} handleDelete={handleDelete} />
+        )}
+      ></FlatList>
+    </ScrollView>
   );
 }
 
-export default AdditionalMedInfo;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10,
+  list: {
+    backgroundColor: "#fff",
+    fontSize: 8,
   },
-  header: {
-    fontWeight: 500,
-    paddingBottom: 10,
+  addMedsBtn: {
     marginTop: 20,
-    fontSize: 20,
+    marginBottom: 50,
+    backgroundColor: "#ADD8E6",
+    borderColor: "#000000",
+    borderWidth: 2,
+    borderRadius: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 60,
+    paddingRight: 60,
+    marginLeft: 50,
+    marginRight: 50,
+    textAlign: "center",
   },
-  description: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  extraInfo: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  buttonText: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
+  modalToggle: {
+    marginBottom: 10,
     padding: 10,
     borderRadius: 10,
-    marginBottom: 30,
+    alignSelf: "center",
   },
-  image: {
-    width: 350,
-    height: 200,
-    resizeMode: "contain",
-  },
-  imageSpeech: {
-    width: 80,
-    height: 80,
-    resizeMode: "contain",
-  },
-  text: {
-    textAlign: "justify",
-    marginBottom: 10,
+  modalClose: {
+    marginHorizontal: 40,
+    marginBottom: 0,
   },
 });

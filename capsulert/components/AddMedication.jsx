@@ -1,171 +1,344 @@
+import React, { useState, useContext } from "react";
 import {
-  KeyboardAvoidingView,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
-  View,
   Text,
-  Image,
-  Button,
-  FlatList,
-  ScrollView,
+  Modal,
+  View,
 } from "react-native";
+// import { useNavigation } from "@react-navigation/native";
+import { getDatabase, set, ref, push } from "firebase/database";
+import { UserContext } from "../contexts/User";
+import { Picker } from "@react-native-picker/picker";
+import PushNotifications from "./PushNotifications";
+import { AntDesign } from "@expo/vector-icons";
 
-import React, { useState, useEffect } from "react";
+export const AddMedication = ({ setMedications, setModalOpen }) => {
+  const [newMedication, setNewMedication] = useState("");
+  const [unit, setUnit] = useState("");
+  const [showUnitOption, setshowUnitOption] = useState(false);
+  const [dosage, setDosage] = useState("");
+  const [medicationType, setMedicationType] = useState("");
+  const [showMedicationOption, setShowMedicationOption] = useState(false);
+  const [quantity, setQuantity] = useState("");
+  const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [time, setTime] = useState([]);
 
-import { getMedication } from "../utils/api";
+  // const navigation = useNavigation();
 
-import * as Linking from "expo-linking";
+  const { userId } = useContext(UserContext);
 
-import * as Speech from "expo-speech";
+  const handleNotificationsModalPress = () => {
+    setNotificationsModalOpen(!notificationsModalOpen);
+  };
 
-function AdditionalMedInfo({ route }) {
-  const [name, setName] = useState("");
-  const [descriptions, setDescriptions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [url, setUrl] = useState("");
-  const [speaking, setSpeaking] = useState(false);
+  // Handle submit medication information/ firebase realtime storage
 
-  const medicationName = route.params;
+  // const handleInput = () => {
+  //   const db = getDatabase();
+  //   const postData = {
+  //     name: newMedication,
+  //     dosage: dosage,
+  //     unit: unit,
+  //     form: medicationType,
+  //     quantity: quantity,
+  //     startDate: startDate,
+  //     endDate: endDate,
+  //     time: time,
+  //   };
+  //   const postReference = ref(db, `users/${userId}/medications`);
+  //   const newPostRef = push(postReference);
+  //   set(newPostRef, postData);
+  //   setNewMedication("");
+  //   setModalOpen(false);
+  //   setMedications((currentMedications) => {
+  //     return [...currentMedications, postData];
+  //   });
+  // };
 
-  useEffect(() => {
-    setIsLoading(true);
-
-    getMedication(medicationName)
-      .then((responseData) => {
-        console.log(responseData, "responseData, AddMedInfo");
-        if (responseData === undefined) {
-          setError(true);
-        }
-        setName(responseData.name);
-        setDescriptions(responseData.hasPart);
-        const updatedUrl = responseData.url.replace("api.", "");
-        setUrl(updatedUrl);
-        setIsLoading(false);
-        setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const speakDescription = () => {
-    options = {
-      rate: 0.6,
-      onStart: () => setSpeaking(true),
-      onStopped: () => setSpeaking(false),
-      onDone: () => setSpeaking(false),
+  const handleInput = () => {
+    const db = getDatabase();
+    const postReference = ref(db, `users/${userId}/medications`);
+    const newPostRef = push(postReference);
+    const postId = newPostRef.key;
+    const postData = {
+      id: `MM${postId}`,
+      name: newMedication,
+      // startDate: startDate,
+      // endDate: endDate,
+      // time: selectedTime,
+      dosage: dosage,
+      unit: unit,
+      form: medicationType,
+      quantity: quantity,
     };
-    const descriptionArr = descriptions.map(
-      (description) => description.description
-    );
-
-    const readDescription = descriptionArr.join(" ");
-    if (!speaking) {
-      Speech.speak(readDescription, options);
-    } else {
-      Speech.stop();
-    }
+    set(newPostRef, postData);
+    setNewMedication("");
+    setModalOpen(false);
+    setMedications((currentMedications) => {
+      return [...currentMedications, postData];
+    });
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <ScrollView>
-        {isLoading ? (
-          <Text>Loading your medication details...</Text>
+    <View styles={styles.container}>
+      {/* Input Medication Name */}
+      <TextInput
+        placeholder={"Enter Medication"}
+        style={styles.input}
+        value={newMedication}
+        onChangeText={(value) => setNewMedication(value)}
+      />
+
+      {/* Dosage/Unit */}
+      <View style={styles.dosageContainer}>
+        <Text>Dosage:</Text>
+        {showUnitOption ? (
+          <></>
         ) : (
-          <View style={styles.description}>
-            <Text style={styles.header}>{name}</Text>
-            <TouchableOpacity onPress={speakDescription}>
-              <Image
-                style={styles.imageSpeech}
-                source={require("../assets/speaking-icon.png")}
-              />
-            </TouchableOpacity>
-
-            <FlatList
-              scrollEnabled={false}
-              data={descriptions}
-              renderItem={({ item }) => {
-                return (
-                  <View>
-                    <Text style={styles.text}>{item.description}</Text>
-                  </View>
-                );
-              }}
-            ></FlatList>
-          </View>
-        )}
-        <View>
-          <Text style={styles.extraInfo}>
-            For further details please refer to the NHS website
-          </Text>
-          <TouchableOpacity
-            style={styles.buttonText}
-            onPress={() => Linking.openURL(url)}
-          >
-            {error ? (
-              <Text>Error: Medication Not Recognised</Text>
-            ) : (
-              <Text>Click here to visit the NHS page for your medication</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <Image
-            style={styles.image}
-            source={require("../assets/nhs_attribution_logo.png")}
+          <TextInput
+            placeholder={"Enter dosage"}
+            style={styles.dosage}
+            value={dosage}
+            onChangeText={(value) => setDosage(value)}
           />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
-}
+        )}
 
-export default AdditionalMedInfo;
+        <Picker
+          selectedValue={unit}
+          style={styles.unit}
+          onValueChange={(currentUnit) => {
+            setUnit(currentUnit);
+            if (currentUnit === "other") {
+              setshowUnitOption(true);
+              setUnit("");
+            } else {
+              setshowUnitOption(false);
+            }
+          }}
+        >
+          <Picker.Item label="Select Unit" value={unit} />
+          <Picker.Item label="milligram (mg)" value="mg" />
+          <Picker.Item label="microgram (μg)" value="ug" />
+          <Picker.Item label="millilitre (ml)" value="ml" />
+          <Picker.Item label="Other dosage" value="other" />
+        </Picker>
+      </View>
+
+      {/* Dosage: Show Other input */}
+      {showUnitOption ? (
+        <TouchableOpacity style={styles.customerPicker}>
+          <Text>Custom Unit:</Text>
+          <TextInput
+            placeholder={"Enter Custom Unit"}
+            value={unit}
+            style={styles.otherInput}
+            onChangeText={(currentUnit) => setUnit(currentUnit)}
+          />
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
+
+      {/* Type of Medication */}
+      <View style={styles.typeContainer}>
+        <Text>Type of Medication:</Text>
+        <Picker
+          selectedValue={medicationType}
+          style={styles.typePicker}
+          onValueChange={(currentMedicationType) => {
+            setMedicationType(currentMedicationType);
+            if (currentMedicationType === "other") {
+              setShowMedicationOption(true);
+              setMedicationType("");
+            } else {
+              setShowMedicationOption(false);
+            }
+          }}
+        >
+          <Picker.Item label="Select" value={medicationType} />
+          <Picker.Item label="Pill" value="Pill" />
+          <Picker.Item label="Liquid" value="Liquid" />
+          <Picker.Item label="Drops" value="Drops" />
+          <Picker.Item label="Inhaler" value="Inhaler" />
+          <Picker.Item label="Powder" value="Powder" />
+          <Picker.Item label="Injection" value="Injection" />
+          <Picker.Item label="Lozenge" value="Lozenge" />
+          <Picker.Item label="Cream" value="Cream" />
+          <Picker.Item label="Other" value="other" />
+        </Picker>
+      </View>
+      {/* Type of Medication: Show Other input */}
+      {showMedicationOption ? (
+        <TouchableOpacity style={styles.customerPicker}>
+          <Text>Custom Medication Type:</Text>
+          <TextInput
+            placeholder={"Enter Type of Medication "}
+            value={medicationType}
+            style={styles.otherInput}
+            onChangeText={(currentNewValue) => {
+              setMedicationType(currentNewValue);
+            }}
+          />
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
+      {/* Quantity */}
+      <TouchableOpacity style={styles.quantity}>
+        <Text>Amount to take:</Text>
+        <TextInput
+          placeholder={"Enter quantity here "}
+          value={quantity}
+          style={styles.quantityInput}
+          onChangeText={(currentQuantity) => setQuantity(currentQuantity)}
+        />
+      </TouchableOpacity>
+
+      {/* Set Notifications */}
+
+      <TouchableOpacity onPress={handleNotificationsModalPress}>
+        <Text style={styles.notifications}>Set Notifications </Text>
+      </TouchableOpacity>
+      <Modal visible={notificationsModalOpen} animationType="slide">
+        <AntDesign
+          name="closesquare"
+          size={30}
+          style={{ ...styles.modalToggle, ...styles.modalClose }}
+          color="black"
+          onPress={() => setNotificationsModalOpen(false)}
+        />
+
+        <PushNotifications
+          notificationsModalOpen={notificationsModalOpen}
+          setNotificationsModalOpen={setNotificationsModalOpen}
+          time={time}
+          setTime={setTime}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+        />
+      </Modal>
+
+      {/* Submit Medication info */}
+      <TouchableOpacity style={styles.btn} onPress={handleInput}>
+        <Text style={styles.btnText}>Save Medication</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    textAlign: "center",
   },
-  header: {
-    fontWeight: 500,
-    paddingBottom: 10,
+  input: {
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginVertical: 20,
+    marginHorizontal: 30,
+    padding: 4,
+    textAlign: "center",
+  },
+  btn: {
     marginTop: 20,
-    fontSize: 20,
+    marginBottom: 50,
+    backgroundColor: "#ADD8E6",
+    borderColor: "#000000",
+    borderWidth: 2,
+    borderRadius: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 60,
+    paddingRight: 60,
+    marginHorizontal: 80,
   },
-  description: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 20,
+  btnText: {
+    textAlign: "center",
   },
-  extraInfo: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 20,
+  customerPicker: {
+    marginHorizontal: 30,
+    marginVertical: 10,
   },
-  buttonText: {
+  otherInput: {
+    borderRadius: 5,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  select: {
+    borderColor: "#F2F2F2",
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  notifications: {
+    backgroundColor: "#F2F2F2",
+    textAlign: "center",
+    borderColor: "#000000",
+    borderWidth: 1.5,
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingLeft: 60,
+    paddingRight: 60,
+    marginHorizontal: 20,
+    marginVertical: 20,
+  },
+  dosageContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    marginHorizontal: 20,
+  },
+  dosage: {
+    borderColor: "#000",
+    borderWidth: 0.7,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    marginVertical: 20,
+  },
+  unit: {
+    width: 200,
+  },
+  typeContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    gap: 50,
+  },
+  typePicker: {
+    width: 150,
+  },
+  quantity: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 80,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  quantityInput: {
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    marginVertical: 5,
+  },
+  modalToggle: {
+    marginBottom: 10,
     padding: 10,
     borderRadius: 10,
-    marginBottom: 30,
+    alignSelf: "center",
   },
-  image: {
-    width: 350,
-    height: 200,
-    resizeMode: "contain",
-  },
-  imageSpeech: {
-    width: 80,
-    height: 80,
-    resizeMode: "contain",
-  },
-  text: {
-    textAlign: "justify",
-    marginBottom: 10,
+  modalClose: {
+    marginHorizontal: 40,
+    marginBottom: 0,
   },
 });
