@@ -25,8 +25,8 @@ export function MyMedications() {
   }, [medications]);
 
   const getMedications = () => {
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `users/${userId}`))
+    const db = ref(getDatabase());
+    get(child(db, `users/${userId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           if (snapshot.val().medications) {
@@ -53,41 +53,33 @@ export function MyMedications() {
     get(child(dbRef, `users/${userId}/medications`))
       .then((snapshot) => {
         const medicationList = snapshot.val();
-        console.log(medicationList, "<<<< medicationListMM");
 
         for (const medication in medicationList) {
-          console.log(medication, "<<<< medication");
-
           get(child(dbRef, `users/${userId}/medications/${medication}`)).then(
             (snapshot) => {
               const medicationInDatabase = snapshot.val();
-              console.log(medicationInDatabase, "<<<< medicationInDatabase");
 
               if (medicationInDatabase.id === item.id) {
-                console.log(
-                  medicationInDatabase.id,
-                  "<<<< medicationInDatabase.id"
-                );
-                console.log(item.id, "<<<< item.id");
                 const key = medication;
-                console.log(key, "<<<< key");
                 remove(ref(db, `users/${userId}/medications/${key}`));
+                setMedications((medicationsResult) => {
+                  return medicationsResult.filter(
+                    (medication) => medication !== item
+                  );
+                });
+              } else {
+                console.log("ID does not match");
               }
-              setMedications((medicationsResult) => {
-                return medicationsResult.filter(
-                  (medication) => medication !== item
-                );
-              });
             }
           );
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error, "<<<error");
       });
   };
   return (
-    <ScrollView>
+    <ScrollView className="bg-whiteGrey">
       <Modal visible={modalOpen} animationType="slide">
         <ScrollView>
           <AntDesign
@@ -107,8 +99,15 @@ export function MyMedications() {
         </ScrollView>
       </Modal>
 
-      <TouchableOpacity>
-        <Text style={styles.addMedsBtn} onPress={() => setModalOpen(true)}>
+      <TouchableOpacity className="bg-purpleLight rounded-xl mt-10 w-56 mb-5">
+        <Text
+          // style={styles.addMedsBtn}
+          className="text-center my-2 text-white"
+          onPress={() => {
+            setModalOpen(true);
+            setEditData(false);
+          }}
+        >
           {" "}
           Add Medication{" "}
         </Text>
