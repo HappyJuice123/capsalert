@@ -1,10 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Button } from "react-native";
 import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
@@ -27,96 +21,118 @@ const MyMedical = () => {
   };
 
   return (
-    <ScrollView>
-      <Text style={styles.welcome}>Welcome, {loggedInUser}!</Text>
-      <Text style={styles.title}>Capsalert</Text>
-      <View style={styles.buttons}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate("Medical History");
-          }}
+    <ScrollView className="bg-whiteGrey">
+      <View className="bg-whiteGrey mt-6">
+        <Text className="text-center my-1 text-5xl text-greyBlack font-semibold">
+          Capsalert
+        </Text>
+        <Text className="text-center my-5 text-greyBlack text-base">
+          Welcome, {loggedInUser}!
+        </Text>
+        <View
+          className="flex-1 items-center"
+          // style={styles.buttons}
         >
-          <Text style={styles.text}>Medical History</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Medical History");
+            }}
+            className=" bg-purpleLight rounded-xl mt-10 w-56 mb-5"
+          >
+            <Text className="text-center my-2 text-white">Medical History</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            {
-              /* Navigate to the MyMedications route */
-            }
-            navigation.navigate("MyMedications");
-          }}
-        >
-          <Text style={styles.text}>My Medications</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              {
+                /* Navigate to the MyMedications route */
+              }
+              navigation.navigate("MyMedications");
+            }}
+            className="bg-purpleLight rounded-xl my-5 w-56"
+          >
+            <Text className="text-center my-2 text-white">My Medications</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate("Allergies");
-          }}
-        >
-          <Text style={styles.text}>Allergies</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Allergies");
+            }}
+            className="bg-purpleLight rounded-xl my-5 w-56"
+          >
+            <Text className="text-center my-2 text-white">Allergies</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            {
-              /* Navigate to the Due Medications route */
-            }
-            navigation.navigate("DueMedications");
-          }}
-        >
-          <Text style={styles.text}>Due Medications</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              {
+                /* Navigate to the Due Medications route */
+              }
+              navigation.navigate("DueMedications");
+            }}
+            className="bg-purpleLight rounded-xl my-5 w-56"
+          >
+            <Text
+              // style={styles.text}
+              className="text-center my-2 text-white"
+            >
+              Due Medications
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-          <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleSignOut}
+            className="bg-purpleBG rounded-2xl my-16 w-24"
+          >
+            <Text
+              // style={styles.buttonText}
+              className="text-center my-2 text-white"
+            >
+              Sign Out
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 20,
-    marginBottom: 50,
-    backgroundColor: "#ADD8E6",
-    borderColor: "#000000",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 60,
-    paddingRight: 60,
-    marginLeft: 50,
-    marginRight: 50,
-  },
-  title: {
-    textAlign: "center",
-    fontSize: 60,
-    marginBottom: 40,
-    textAlignVertical: "top",
-    borderColor: "#ffc0cb",
-  },
+// const styles = StyleSheet.create({
+//   button: {
+//     marginTop: 20,
+//     marginBottom: 50,
+//     backgroundColor: "#ADD8E6",
+//     borderColor: "#000000",
+//     borderWidth: 2,
+//     borderRadius: 15,
+//     paddingTop: 20,
+//     paddingBottom: 20,
+//     paddingLeft: 60,
+//     paddingRight: 60,
+//     marginLeft: 50,
+//     marginRight: 50,
+//   },
+//   title: {
+//     textAlign: "center",
+//     fontSize: 60,
+//     marginBottom: 40,
+//     textAlignVertical: "top",
+//     borderColor: "#ffc0cb",
+//   },
 
-  welcome: {
-    marginTop: 70,
-    textAlign: "center",
-  },
-  text: {
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontSize: 20,
-  },
-  buttons: {
-    alignContent: "center",
-    //  textAlignVertical: "center",
-  },
-});
+//   welcome: {
+//     marginTop: 70,
+//     textAlign: "center",
+//   },
+//   text: {
+//     textAlign: "center",
+//     textAlignVertical: "center",
+//     fontSize: 20,
+//   },
+//   buttons: {
+//     alignContent: "center",
+//     //  textAlignVertical: "center",
+//   },
+// });
 
 export default MyMedical;

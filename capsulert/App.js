@@ -60,6 +60,12 @@ export default function App() {
             <Stack.Screen
               name="My Medical"
               component={MyMedical}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#6c537a",
+                },
+                headerTintColor: "#ebebeb",
+              }}
             ></Stack.Screen>
             <Stack.Screen
               name="Medical History"
@@ -98,11 +104,11 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });
