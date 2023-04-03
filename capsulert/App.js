@@ -60,6 +60,7 @@ export default function App() {
             <Stack.Screen
               name="My Medical"
               component={MyMedical}
+              options={{ headerShown: false }}
             ></Stack.Screen>
             <Stack.Screen
               name="Medical History"
