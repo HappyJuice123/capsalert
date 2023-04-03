@@ -12,6 +12,8 @@ import { UserContext } from "../contexts/User";
 import { Picker } from "@react-native-picker/picker";
 import PushNotifications from "./PushNotifications";
 import { AntDesign } from "@expo/vector-icons";
+import { getFormatedDate } from "react-native-modern-datepicker";
+import DatePicker from "react-native-modern-datepicker";
 
 export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [newMedication, setNewMedication] = useState("");
@@ -22,11 +24,40 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [notificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const [dateModal, setDateModal] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const { userId } = useContext(UserContext);
 
   const handleNotificationsModalPress = () => {
     setNotificationsModalOpen(!notificationsModalOpen);
+  };
+
+  // set start date
+  const today = new Date();
+
+  const calendarStartDate = getFormatedDate(
+    today.setDate(today.getDate()),
+    "YYYY/MM/DD"
+  );
+
+  const handleDateModalPress = () => {
+    setDateModal(!dateModal);
+  };
+
+  const handleStartDateChange = (newStartDate) => {
+    setStartDate(newStartDate);
+  };
+
+  //  set end date
+  const calendarEndDate = getFormatedDate(
+    today.setDate(today.getDate()),
+    "YYYY/MM/DD"
+  );
+
+  const handleEndDateChange = (newEndDate) => {
+    setEndDate(newEndDate);
   };
 
   // Handle submit medication information/ firebase realtime storage
@@ -43,6 +74,8 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       unit: unit,
       form: medicationType,
       quantity: quantity,
+      startDate: startDate,
+      endDate: endDate,
     };
     set(newPostRef, postData);
     setNewMedication("");
@@ -167,6 +200,38 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
         />
       </TouchableOpacity>
 
+      {/* Start/End Date */}
+      <TouchableOpacity>
+        <View style={styles.displayDate}>
+          <Text>Start Date: {startDate}</Text>
+          <Text>End Date: {endDate}</Text>
+        </View>
+        <TouchableOpacity onPress={handleDateModalPress}>
+          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
+        </TouchableOpacity>
+      </TouchableOpacity>
+      <Modal animationType="slide" transparent={true} visible={dateModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.dateView}>
+            <DatePicker
+              mode="calendar"
+              minimumDate={calendarStartDate}
+              selected={startDate}
+              onDateChange={(selected) => handleStartDateChange(selected)}
+            />
+            <DatePicker
+              mode="calendar"
+              minimumDate={calendarEndDate}
+              selected={endDate}
+              onDateChange={(selected) => handleEndDateChange(selected)}
+            />
+            <TouchableOpacity onPress={handleDateModalPress}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       {/* Set Notifications */}
 
       <TouchableOpacity onPress={handleNotificationsModalPress}>
@@ -189,6 +254,10 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
           unit={unit}
           medicationType={medicationType}
           quantity={quantity}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
         />
       </Modal>
 
@@ -308,5 +377,44 @@ const styles = StyleSheet.create({
   modalClose: {
     marginHorizontal: 40,
     marginBottom: 0,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  dateView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    width: "80%",
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  displayDate: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  setDatebtn: {
+    textAlign: "center",
+    backgroundColor: "#F2F2F2",
+    borderColor: "#000000",
+    borderWidth: 1.5,
+    borderRadius: 10,
+    padding: 10,
+    marginHorizontal: 50,
+    marginVertical: 20,
   },
 });

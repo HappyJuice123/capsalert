@@ -12,7 +12,6 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import DatePicker from "react-native-modern-datepicker";
-import { getFormatedDate } from "react-native-modern-datepicker";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { NotificationsContext } from "../contexts/Notifications";
@@ -41,10 +40,7 @@ const PushNotifications = ({
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [dateModal, setDateModal] = useState(false);
   const [timeModal, setTimeModal] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [time, setTime] = useState([]);
 
   const { userId } = useContext(UserContext);
@@ -124,32 +120,6 @@ const PushNotifications = ({
     return token;
   }
 
-  // set start date
-  const today = new Date();
-
-  const calendarStartDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleDateModalPress = () => {
-    setDateModal(!dateModal);
-  };
-
-  const handleStartDateChange = (newStartDate) => {
-    setStartDate(newStartDate);
-  };
-
-  //  set end date
-  const calendarEndDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleEndDateChange = (newEndDate) => {
-    setEndDate(newEndDate);
-  };
-
   //  set time
 
   const handleTimeModalPress = () => {
@@ -197,38 +167,6 @@ const PushNotifications = ({
 
   return (
     <View>
-      {/* Start/End Date */}
-      <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Start Date: {startDate}</Text>
-          <Text>End Date: {endDate}</Text>
-        </View>
-        <TouchableOpacity onPress={handleDateModalPress}>
-          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={dateModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarStartDate}
-              selected={startDate}
-              onDateChange={(selected) => handleStartDateChange(selected)}
-            />
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarEndDate}
-              selected={endDate}
-              onDateChange={(selected) => handleEndDateChange(selected)}
-            />
-            <TouchableOpacity onPress={handleDateModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
       {/* Time */}
       <TouchableOpacity>
         <View style={styles.displayDate}>
