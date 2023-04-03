@@ -1,4 +1,4 @@
-# capsalert
+# Capsalert
 ## Project Overview
 For our final group project we created a medication notification app, this android app allows users to create an account and input their medical history, allergies, and current medication.
 Capsalert allows the user to have multiple reminders for specific medications, which will provide a push notification to the phone with a discreet message reminding them to take their schedualed medications.
