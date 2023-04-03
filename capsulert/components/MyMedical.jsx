@@ -73,6 +73,15 @@ const MyMedical = () => {
           <Text style={styles.text}>Due Medications</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("ImagePicker");
+          }}
+        >
+          <Text style={styles.text}>ImagePicker</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>

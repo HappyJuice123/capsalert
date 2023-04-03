@@ -9,6 +9,7 @@ import { AddAllergies } from "./components/AddAllergies";
 import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
 import MyMedical from "./components/MyMedical";
+import PickImage from "./components/PickImage";
 import { UserProvider } from "./contexts/User";
 import { NotificationsProvider } from "./contexts/Notifications";
 import AdditionalMedInfo from "./components/AdditionalMedInfo";
@@ -91,6 +92,11 @@ export default function App() {
               component={DueMedications}
               options={{ title: "DueMedications" }}
             />
+            <Stack.Screen
+              name="ImagePicker"
+              component={PickImage}
+              options={{ title: "imagePicker" }}
+            ></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </NotificationsProvider>
