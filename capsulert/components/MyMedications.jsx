@@ -3,12 +3,11 @@ import {
   StyleSheet,
   FlatList,
   ScrollView,
-  View,
   Modal,
   Text,
   TouchableOpacity,
 } from "react-native";
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
@@ -18,6 +17,7 @@ export function MyMedications() {
   // const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [medications, setMedications] = useState([]);
+  const [hasData, setHasData] = useState(false);
 
   const { userId } = useContext(UserContext);
 
@@ -31,18 +31,19 @@ export function MyMedications() {
       .then((snapshot) => {
         if (snapshot.exists()) {
           if (snapshot.val().medications) {
-            const uniqueKey = Object.keys(snapshot.val().medications);
-            const snapshotMedications = [snapshot.val().medications];
+            const uniqueKeys = Object.keys(snapshot.val().medications);
             const medicationsArray = [];
-            uniqueKey.map((key) => {
+            uniqueKeys.map((key) => {
               medicationsArray.push(snapshot.val().medications[key]);
             });
-            console.log(snapshotMedications, "<<< snapshot.val.medications");
-            console.log(uniqueKey, "<<< unique key");
-            console.log(medicationsArray, "<<< medicationsArray");
+            // console.log(uniqueKeys, "<<< unique key");
+            // console.log(medicationsArray, "<<< medicationsArray");
             setMedications(medicationsArray);
+            setHasData(true);
           } else {
             console.log("No data available");
+            setMedications([]);
+            setHasData(false);
           }
         }
       })
@@ -52,13 +53,47 @@ export function MyMedications() {
   };
 
   const handleDelete = (item) => {
-    setMedications((prevmedications) => {
-      return prevmedications.filter((medication) => medication !== item);
-    });
+    const dbRef = ref(getDatabase());
+    const db = getDatabase();
+    get(child(dbRef, `users/${userId}/medications`))
+      .then((snapshot) => {
+        const medicationList = snapshot.val();
+        console.log(medicationList, "<<<< medicationListMM");
+
+        for (const medication in medicationList) {
+          console.log(medication, "<<<< medication");
+
+          get(child(dbRef, `users/${userId}/medications/${medication}`)).then(
+            (snapshot) => {
+              const medicationInDatabase = snapshot.val();
+              console.log(medicationInDatabase, "<<<< medicationInDatabase");
+
+              if (medicationInDatabase.id === item.id) {
+                console.log(
+                  medicationInDatabase.id,
+                  "<<<< medicationInDatabase.id"
+                );
+                console.log(item.id, "<<<< item.id");
+                const key = medication;
+                console.log(key, "<<<< key");
+                remove(ref(db, `users/${userId}/medications/${key}`));
+              }
+              setMedications((medicationsResult) => {
+                return medicationsResult.filter(
+                  (medication) => medication !== item
+                );
+              });
+            }
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
-    <View>
+    <ScrollView>
       <Modal visible={modalOpen} animationType="slide">
         <ScrollView>
           <AntDesign
@@ -82,15 +117,19 @@ export function MyMedications() {
           Add Medication{" "}
         </Text>
       </TouchableOpacity>
-
-      <FlatList
-        style={styles.list}
-        data={medications}
-        renderItem={({ item }) => (
-          <MyMedicationsItem item={item} handleDelete={handleDelete} />
-        )}
-      ></FlatList>
-    </View>
+      {hasData ? (
+        <FlatList
+          scrollEnabled={false}
+          style={styles.list}
+          data={medications}
+          renderItem={({ item }) => (
+            <MyMedicationsItem item={item} handleDelete={handleDelete} />
+          )}
+        ></FlatList>
+      ) : (
+        <Text style={styles.saved}>No saved medications</Text>
+      )}
+    </ScrollView>
   );
 }
 
@@ -123,5 +162,9 @@ const styles = StyleSheet.create({
   modalClose: {
     marginHorizontal: 40,
     marginBottom: 0,
+  },
+  saved: {
+    textAlign: "center",
+    fontStyle: "italic",
   },
 });

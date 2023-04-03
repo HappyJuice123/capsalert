@@ -5,6 +5,7 @@ import {
   View,
   Text,
   Image,
+  ScrollView,
 } from "react-native";
 
 import React, { useState, useEffect } from "react";
@@ -41,44 +42,46 @@ function AdditionalMedInfo({ route }) {
   }, []);
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      {isLoading ? (
-        <Text>Loading your medication details...</Text>
-      ) : (
-        <View style={styles.description}>
-          <Text style={styles.header}>{name}</Text>
-          <Text>
-            {descriptions.map((item) => {
-              return item.description;
-            })}
+    <ScrollView>
+      <KeyboardAvoidingView style={styles.container}>
+        {isLoading ? (
+          <Text>Loading your medication details...</Text>
+        ) : (
+          <View style={styles.description}>
+            <Text style={styles.header}>{name}</Text>
+            <Text>
+              {descriptions.map((item) => {
+                return item.description;
+              })}
+            </Text>
+          </View>
+        )}
+        <View>
+          <Text style={styles.extraInfo}>
+            For further details please refer to the NHS website
           </Text>
+          <TouchableOpacity
+            style={styles.buttonText}
+            onPress={() =>
+              Linking.openURL(`https://www.nhs.uk/medicines/${name}`)
+            }
+          >
+            {error ? (
+              <Text>Error: Medication Not Recognised</Text>
+            ) : (
+              <Text>Click here to visit the NHS page for your medication</Text>
+            )}
+          </TouchableOpacity>
         </View>
-      )}
-      <View>
-        <Text style={styles.extraInfo}>
-          For further details please refer to the NHS website
-        </Text>
-        <TouchableOpacity
-          style={styles.buttonText}
-          onPress={() =>
-            Linking.openURL(`https://www.nhs.uk/medicines/${name}`)
-          }
-        >
-          {error ? (
-            <Text>Error: Medication Not Recognised</Text>
-          ) : (
-            <Text>Click here to visit the NHS page for your medication</Text>
-          )}
-        </TouchableOpacity>
-      </View>
 
-      <View>
-        <Image
-          style={styles.image}
-          source={require("../assets/nhs_attribution_logo.png")}
-        />
-      </View>
-    </KeyboardAvoidingView>
+        <View>
+          <Image
+            style={styles.image}
+            source={require("../assets/nhs_attribution_logo.png")}
+          />
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 

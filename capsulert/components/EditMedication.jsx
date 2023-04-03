@@ -14,8 +14,8 @@ import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
-export const AddMedication = ({ setMedications, setModalOpen }) => {
-  const [newMedication, setNewMedication] = useState("");
+export const EditMedication = ({ route }) => {
+  const [medicationName, setMedicationName] = useState();
   const [dateModal, setDateModal] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -27,9 +27,18 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
   const [medicationType, setMedicationType] = useState("");
   const [showMedicationOption, setShowMedicationOption] = useState(false);
   const [quantity, setQuantity] = useState("");
-  const [brand, setBrand] = useState("");
 
   const { userId } = useContext(UserContext);
+  const medicationItem = route.params;
+
+  setMedicationName(medicationItem.name);
+  setUnit(medicationItem.unit);
+  setQuantity(medicationItem.quantity);
+  setMedicationType(medicationItem.form);
+  setQuantity(medicationItem.form);
+  setDosage(medicationItem.dosage);
+
+  console.log(medicationItem, "<<<  const medicationName = route.params;");
 
   // set start date
   const today = new Date();
@@ -65,29 +74,29 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
 
   // Handle submit medication information/ firebase realtime storage
 
-  const handleInput = () => {
-    const db = getDatabase();
-    const postReference = ref(db, `users/${userId}/medications`);
-    const newPostRef = push(postReference);
-    const postId = newPostRef.key;
-    const postData = {
-      id: `MM${postId}`,
-      name: newMedication,
-      startDate: startDate,
-      endDate: endDate,
-      time: selectedTime,
-      dosage: dosage,
-      unit: unit,
-      form: medicationType,
-      quantity: quantity,
-    };
-    set(newPostRef, postData);
-    setNewMedication("");
-    setModalOpen(false);
-    setMedications((currentMedications) => {
-      return [...currentMedications, postData];
-    });
-  };
+  //   const handleInput = () => {
+  //     const db = getDatabase();
+  //     const postReference = ref(db, `users/${userId}/medications`);
+  //     const newPostRef = push(postReference);
+  //     const postId = newPostRef.key;
+  //     const postData = {
+  //       id: `MM${postId}`,
+  //       name: newMedication,
+  //       startDate: startDate,
+  //       endDate: endDate,
+  //       time: selectedTime,
+  //       dosage: dosage,
+  //       unit: unit,
+  //       form: medicationType,
+  //       quantity: quantity,
+  //     };
+  //     set(newPostRef, postData);
+  //     setNewMedication("");
+  //     setModalOpen(false);
+  //     setMedications((currentMedications) => {
+  //       return [...currentMedications, postData];
+  //     });
+  //   };
 
   return (
     <ScrollView styles={styles.container}>
@@ -95,11 +104,11 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       <TextInput
         placeholder={"Enter Medication"}
         style={styles.input}
-        value={newMedication}
-        onChangeText={(value) => setNewMedication(value)}
+        value={medicationName}
+        onChangeText={(value) => setMedicationName(value)}
       />
 
-      <View style={styles.brandContainer}>
+      {/* <View style={styles.brandContainer}>
         <Text>Medication brand:</Text>
         <TextInput
           placeholder={"Enter brand"}
@@ -107,7 +116,7 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
           value={brand}
           onChangeText={(value) => setBrand(value)}
         />
-      </View>
+      </View> */}
 
       {/* Start/End Date */}
       <TouchableOpacity>
@@ -276,8 +285,9 @@ export const AddMedication = ({ setMedications, setModalOpen }) => {
       </TouchableOpacity>
 
       {/* Submit Medication info */}
-      <TouchableOpacity style={styles.btn} onPress={handleInput}>
-        <Text style={styles.btnText}>Add Medication</Text>
+      <TouchableOpacity style={styles.btn}>
+        <Text style={styles.btnText}>Save Medication</Text>
+        {/* onPress={handleSaveMedication} */}
       </TouchableOpacity>
     </ScrollView>
   );
@@ -296,21 +306,21 @@ const styles = StyleSheet.create({
     padding: 4,
     textAlign: "center",
   },
-  brandContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginHorizontal: 20,
-  },
-  brand: {
-    borderColor: "#000",
-    borderWidth: 0.7,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginHorizontal: 5,
-    marginVertical: 20,
-  },
+  //   brandContainer: {
+  //     display: "flex",
+  //     flexDirection: "row",
+  //     justifyContent: "space-around",
+  //     alignItems: "center",
+  //     marginHorizontal: 20,
+  //   },
+  //   brand: {
+  //     borderColor: "#000",
+  //     borderWidth: 0.7,
+  //     borderRadius: 5,
+  //     paddingHorizontal: 10,
+  //     marginHorizontal: 5,
+  //     marginVertical: 20,
+  //   },
   btn: {
     marginTop: 20,
     marginBottom: 50,

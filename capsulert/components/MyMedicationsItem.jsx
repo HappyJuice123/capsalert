@@ -65,12 +65,13 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
                   style={styles.options}
                   onPress={() => {
                     {
-                      /* Navigate to the AddMedication route */
+                      /* Navigate to the Edit Medication route */
                     }
-                    navigation.navigate("AddMedication");
+                    navigation.navigate("AddMedication", item);
                   }}
                 >
-                  <Feather name="edit" size={24} color="black" />
+                  {" "}
+                  Edit <Feather name="edit" size={24} color="black" />
                 </Text>
               </TouchableOpacity>
             </MenuItem>
