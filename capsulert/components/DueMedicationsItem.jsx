@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { getDatabase, ref, update } from "firebase/database";
+import { UserContext } from "../contexts/User";
 
 export const DueMedicationsItem = ({ item }) => {
-  const [toggleMedTaken, setToggleMedTaken] = useState(false);
+  const [toggleMedTaken, setToggleMedTaken] = useState(item.taken);
+
+  const { userId } = useContext(UserContext);
 
   let today = new Date();
+  const notificationId = item.id.slice(2, -2);
 
   const handleTimeStyle = () => {
     if (item.time.slice(3, 5) >= 30) {
       if (
         item.time.slice(0, 2) - today.getHours() === 0 &&
         item.time.slice(3, 5) - today.getMinutes() <= 30
+      ) {
+        return styles.dueTime;
+      } else if (
+        today.getHours() - item.time.slice(0, 2) === 1 &&
+        60 - item.time.slice(3, 5) + today.getMinutes() <= 30
+      ) {
+        return styles.dueTime;
+      } else if (
+        today.getHours() - item.time.slice(0, 2) === 1 &&
+        60 - item.time.slice(3, 5) + today.getMinutes() > 30
+      ) {
+        return styles.medMissed;
+      } else if (today.getHours() - item.time.slice(0, 2) > 1) {
+        return styles.medMissed;
+      } else {
+        return styles.time;
+      }
+    } else if (item.time.slice(3, 5) < 30) {
+      if (
+        item.time.slice(0, 2) - today.getHours() === 1 &&
+        60 - today.getMinutes() + item.time.slice(3, 5) <= 30
+      ) {
+        return styles.dueTime;
+      } else if (
+        today.getHours() - item.time.slice(0, 2) === 0 &&
+        today.getMinutes() - item.time.slice(3, 5) <= 30
       ) {
         return styles.dueTime;
       } else if (
@@ -23,29 +54,21 @@ export const DueMedicationsItem = ({ item }) => {
       } else {
         return styles.time;
       }
-    } else if (item.time.slice(3, 5) < 30) {
-      if (
-        item.time.slice(0, 2) - today.getHours() === 1 &&
-        60 - today.getMinutes() <= 30
-      ) {
-        return styles.dueTime;
-      } else if (
-        item.time.slice(0, 2) - today.getHours() === 0 &&
-        today.getMinutes() <= 30
-      ) {
-        return styles.dueTime;
-      } else if (today.getHours() - item.time.slice(0, 2) >= 1) {
-        return styles.medMissed;
-      } else {
-        return styles.time;
-      }
     }
   };
 
   const handleMedTaken = () => {
+    const db = getDatabase();
+    const updateRef = ref(
+      db,
+      `users/${userId}/notifications/${notificationId}/${item.index}`
+    );
+
     if (toggleMedTaken === false) {
+      update(updateRef, { taken: true });
       setToggleMedTaken(true);
     } else {
+      update(updateRef, { taken: false });
       setToggleMedTaken(false);
     }
   };

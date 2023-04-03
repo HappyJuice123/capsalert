@@ -24,9 +24,10 @@ const DueMedications = () => {
 
             const dueMedicationsArray = [];
             uniqueMedicationKeys.map((key) => {
-              snapshot.val().notifications[key].forEach((medication) => {
+              snapshot.val().notifications[key].forEach((medication, index) => {
                 dueMedicationsArray.push({
                   ...medication,
+                  index: index,
                 });
               });
             });

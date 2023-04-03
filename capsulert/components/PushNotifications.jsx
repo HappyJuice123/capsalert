@@ -145,7 +145,7 @@ const PushNotifications = ({
     const postData = [];
     time.map((specificTime) => {
       postData.push({
-        id: `NN${postId}`,
+        id: `NN${postId}-${postData.length}`,
         name: newMedication,
         startDate: startDate,
         endDate: endDate,
@@ -154,6 +154,7 @@ const PushNotifications = ({
         unit: unit,
         form: medicationType,
         quantity: quantity,
+        taken: false,
       });
     });
 
