@@ -34,6 +34,7 @@ export const MyMedicationsItem = ({
       {/* Medication details */}
       <View>
         <Text style={styles.itemText}>{item.name}</Text>
+        <Text style={styles.itemText}>{item.brand}</Text>
         <Text style={styles.itemText}>Start: {item.startDate}</Text>
         <Text style={styles.itemText}>End: {item.endDate}</Text>
         <Text style={styles.itemText}>
