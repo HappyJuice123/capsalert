@@ -1,11 +1,9 @@
 import {
   KeyboardAvoidingView,
-  StyleSheet,
   TouchableOpacity,
   View,
   Text,
   Image,
-  Button,
   FlatList,
   ScrollView,
 } from "react-native";
@@ -20,6 +18,7 @@ import * as Speech from "expo-speech";
 
 function AdditionalMedInfo({ route }) {
   const [name, setName] = useState("");
+  const [errName, setErrName] = useState("");
   const [descriptions, setDescriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -33,9 +32,11 @@ function AdditionalMedInfo({ route }) {
 
     getMedication(medicationName)
       .then((responseData) => {
+        setErrName(medicationName);
         console.log(responseData, "responseData, AddMedInfo");
         if (responseData === undefined) {
           setError(true);
+          setIsLoading(false);
         }
         setName(responseData.name);
         setDescriptions(responseData.hasPart);
@@ -50,6 +51,7 @@ function AdditionalMedInfo({ route }) {
   }, []);
 
   const speakDescription = () => {
+    setSpeaking(true);
     options = {
       rate: 0.6,
       onStart: () => setSpeaking(true),
@@ -61,24 +63,55 @@ function AdditionalMedInfo({ route }) {
     );
 
     const readDescription = descriptionArr.join(" ");
-    if (!speaking) {
-      Speech.speak(readDescription, options);
-    } else {
-      Speech.stop();
-    }
+
+    Speech.speak(readDescription, options);
   };
 
-  return (
-    <KeyboardAvoidingView style={styles.container}>
+  const stopSpeech = () => {
+    setSpeaking(false);
+    Speech.stop();
+  };
+
+  return error ? (
+    <View className="bg-whiteGrey">
+      <Text className="text-lg font-semibold my-5 mx-5">
+        {errName ? errName[0].toUpperCase() + errName.slice(1) : errName}
+      </Text>
+      <Text className="text-justify mx-5 my-5">
+        Error - Medication Not Recognised
+      </Text>
+      <View className="items-center">
+        <TouchableOpacity
+          onPress={() => Linking.openURL("https://www.nhs.uk/medicines/")}
+          className=" bg-purpleLight rounded-xl w-11/12 mb-5"
+        >
+          <Text className="mx-5 text-center my-3  text-whiteGrey">
+            Click here for a list of medicines from the NHS
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View className="items-center">
+        <Image
+          className="scale-50"
+          source={require("../assets/nhs_attribution_logo.png")}
+        />
+      </View>
+    </View>
+  ) : (
+    <KeyboardAvoidingView className="bg-whiteGrey">
       <ScrollView>
         {isLoading ? (
-          <Text>Loading your medication details...</Text>
+          <Text className="text-greyBlack">
+            Loading your medication details...
+          </Text>
         ) : (
-          <View style={styles.description}>
-            <Text style={styles.header}>{name}</Text>
-            <TouchableOpacity onPress={speakDescription}>
+          <View>
+            <Text className="text-lg font-semibold mt-5 mx-5">{name}</Text>
+            <TouchableOpacity
+              onPress={!speaking ? speakDescription : stopSpeech}
+            >
               <Image
-                style={styles.imageSpeech}
+                className="w-10 h-20 mx-6"
                 source={require("../assets/speaking-icon.png")}
               />
             </TouchableOpacity>
@@ -89,7 +122,9 @@ function AdditionalMedInfo({ route }) {
               renderItem={({ item }) => {
                 return (
                   <View>
-                    <Text style={styles.text}>{item.description}</Text>
+                    <Text className="text-justify mx-5 mb-3 mt--1">
+                      {item.description}
+                    </Text>
                   </View>
                 );
               }}
@@ -97,24 +132,24 @@ function AdditionalMedInfo({ route }) {
           </View>
         )}
         <View>
-          <Text style={styles.extraInfo}>
-            For further details please refer to the NHS website
+          <Text className="mx-5 text-justify mt-3 mb-5">
+            For further details please refer to the NHS website.
           </Text>
-          <TouchableOpacity
-            style={styles.buttonText}
-            onPress={() => Linking.openURL(url)}
-          >
-            {error ? (
-              <Text>Error: Medication Not Recognised</Text>
-            ) : (
-              <Text>Click here to visit the NHS page for your medication</Text>
-            )}
-          </TouchableOpacity>
+          <View className="items-center">
+            <TouchableOpacity
+              className=" bg-purpleLight rounded-xl w-11/12 mb-5"
+              onPress={() => Linking.openURL(url)}
+            >
+              <Text className="mx-5 text-center my-3 text-whiteGrey">
+                Click here to visit the NHS page for your medication
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View>
+        <View className="items-center">
           <Image
-            style={styles.image}
+            className="scale-50"
             source={require("../assets/nhs_attribution_logo.png")}
           />
         </View>
@@ -124,48 +159,3 @@ function AdditionalMedInfo({ route }) {
 }
 
 export default AdditionalMedInfo;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
-  header: {
-    fontWeight: 500,
-    paddingBottom: 10,
-    marginTop: 20,
-    fontSize: 20,
-  },
-  description: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  extraInfo: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  buttonText: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 30,
-  },
-  image: {
-    width: 350,
-    height: 200,
-    resizeMode: "contain",
-  },
-  imageSpeech: {
-    width: 80,
-    height: 80,
-    resizeMode: "contain",
-  },
-  text: {
-    textAlign: "justify",
-    marginBottom: 10,
-  },
-});
