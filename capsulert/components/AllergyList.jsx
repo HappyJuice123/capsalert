@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, Button } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Button,
+  ScrollView,
+} from "react-native";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
 
@@ -65,27 +72,29 @@ export const AllergyList = ({ newAllergy }) => {
   }, [readAllergyList, newAllergy]);
 
   return (
-    <View>
-      <Text className="text-center my-1 text-2xl text-greyBlack font-semibold">
-        Allergy List
-      </Text>
-      <FlatList
-        scrollEnabled={false}
-        data={readAllergyList}
-        renderItem={({ item }) => {
-          return (
-            <View>
-              <Text>{item}</Text>
-              <TouchableOpacity>
-                <Button
-                  title="Remove"
-                  onPress={() => handleRemove(item)}
-                ></Button>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-      />
-    </View>
+    <ScrollView className="bg-whiteGrey">
+      <View>
+        <Text className="text-center my-1 text-2xl text-greyBlack font-semibold">
+          Your allergy list
+        </Text>
+        <FlatList
+          scrollEnabled={false}
+          data={readAllergyList}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <Text>{item}</Text>
+                <TouchableOpacity>
+                  <Button
+                    title="Remove"
+                    onPress={() => handleRemove(item)}
+                  ></Button>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 };

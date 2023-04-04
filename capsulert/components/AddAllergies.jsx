@@ -286,7 +286,7 @@ export const AddAllergies = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView className="bg-whiteGrey">
       <View>
         {/* <Text className="text-center my-1 text-3xl text-greyBlack font-semibold">
           Allergies
@@ -468,7 +468,7 @@ export const AddAllergies = () => {
             Add Allergy
           </Text> */}
           <TextInput
-            placeholder="Your allergies here..."
+            placeholder="Add to your allergies ..."
             className="mt-7 ml-3"
             //            style={styles.input}
             onChangeText={(textValue) => {
@@ -483,7 +483,7 @@ export const AddAllergies = () => {
             className="bg-purpleBG rounded-2xl mt-0 ml-3 w-24"
             title="Add "
           >
-            <Text className="text-center my-2 text-white">add</Text>
+            <Text className="text-center my-2 text-white">Add</Text>
           </TouchableOpacity>
         </View>
 
