@@ -47,87 +47,89 @@ export default function App() {
   return (
     <UserProvider>
       <NotificationsProvider>
-        <NavigationContainer
-          linking={linking}
-          fallback={<Text>Loading...</Text>}
-        >
-          <Stack.Navigator>
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="Login"
-              component={SignInPage}
-            ></Stack.Screen>
-            <Stack.Screen
-              name="Register"
-              component={SignUpPage}
-              options={{
-                headerStyle: {
-                  backgroundColor: "#6c537a",
-                },
-                headerTintColor: "#ebebeb",
-              }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name="My Medical"
-              component={MyMedical}
-              options={{
-                headerStyle: {
-                  backgroundColor: "#6c537a",
-                },
-                headerTintColor: "#ebebeb",
-              }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name="Medical History"
-              component={MedicalHistory}
-              options={{
-                headerStyle: {
-                  backgroundColor: "#6c537a",
-                },
-                headerTintColor: "#ebebeb",
-              }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name="MyMedications"
-              component={MyMedications}
-              options={{ title: "My Medications" }}
-            />
-            <Stack.Screen
-              name="AddMedication"
-              component={AddMedication}
-              options={{ title: "Add Medication" }}
-            />
-            <Stack.Screen name="Allergies" component={AddAllergies} />
-            <Stack.Screen
-              name="AdditionalMedInfo"
-              component={AdditionalMedInfo}
-              options={{
-                title: "Additional Medical Information",
-                headerStyle: {
-                  backgroundColor: "#6c537a",
-                },
-                headerTintColor: "#ebebeb",
-                backgroundColor: "#ebebeb",
-              }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name="Push Notifications"
-              component={PushNotifications}
-              options={{ title: "Push Notifications" }}
-            />
-            <Stack.Screen
-              name="DueMedications"
-              component={DueMedications}
-              options={{
-                title: "DueMedications",
-                headerStyle: {
-                  backgroundColor: "#6c537a",
-                },
-                headerTintColor: "#ebebeb",
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <MedicationsProvider>
+          <NavigationContainer
+            linking={linking}
+            fallback={<Text>Loading...</Text>}
+          >
+            <Stack.Navigator>
+              <Stack.Screen
+                options={{ headerShown: false }}
+                name="Login"
+                component={SignInPage}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Register"
+                component={SignUpPage}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="My Medical"
+                component={MyMedical}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Medical History"
+                component={MedicalHistory}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="My Medications"
+                component={MyMedications}
+                options={{ title: "My Medications" }}
+              />
+              <Stack.Screen
+                name="AddMedication"
+                component={AddMedication}
+                options={{ title: "Add Medication" }}
+              />
+              <Stack.Screen name="Allergies" component={AddAllergies} />
+              <Stack.Screen
+                name="AdditionalMedInfo"
+                component={AdditionalMedInfo}
+                options={{
+                  title: "Additional Medical Information",
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                  backgroundColor: "#ebebeb",
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Push Notifications"
+                component={PushNotifications}
+                options={{ title: "Push Notifications" }}
+              />
+              <Stack.Screen
+                name="DueMedications"
+                component={DueMedications}
+                options={{
+                  title: "DueMedications",
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </MedicationsProvider>
       </NotificationsProvider>
     </UserProvider>
   );
