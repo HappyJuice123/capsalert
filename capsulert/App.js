@@ -54,7 +54,6 @@ export default function App() {
           >
             <Stack.Navigator>
               <Stack.Screen
-                // options={{ headerShown: false }}
                 name="Login"
                 component={SignInPage}
                 options={{
