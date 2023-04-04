@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  Modal,
-  View,
-} from "react-native";
+import { TextInput, TouchableOpacity, Text, Modal, View } from "react-native";
 import {
   getDatabase,
   set,
@@ -188,48 +181,54 @@ export const AddMedication = ({
   };
 
   return (
-    <View
-    // styles={styles.container}
-    >
-      {/* Input Medication Name */}
-      <View className="flex items-center">
+    <View className="text-center">
+      {/* Close Modal button */}
+      <View className="flex justify-center items-center mt-10 mb-2">
+        <TouchableOpacity onPress={() => setModalOpen(false)}>
+          <Text className="font-bold text-black text-center bg-whiteGrey border-2 border-black rounded-xl w-20 p-2">
+            Close
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Medication Name */}
+      <View className="flex items-center text-whiteGrey mt-10">
+        <Text className="mb-3 font-bold">Name</Text>
         <TextInput
           placeholder={"Enter Medication"}
-          // style={styles.input}
+          className="border-2 border-whiteGrey rounded-xl w-60 mb-5 p-2 text-center"
           value={newMedication}
           onChangeText={(value) => setNewMedication(value)}
         />
       </View>
-
-      {/* Input Medication Brand Name */}
+      {/* Medication Brand Name */}
       <View className="flex items-center">
+        <Text className="mb-3 font-bold ">Brand</Text>
         <TextInput
           placeholder={"Enter Medication Brand"}
-          // style={styles.input}
+          className="border-2 border-whiteGrey rounded-xl w-60 mb-5 p-2 text-center"
           value={medicationBrand}
           onChangeText={(value) => setMedicationBrand(value)}
         />
       </View>
+      {/* Dosage */}
+      <View className="flex items-center gap-2">
+        <Text className="mb-3 font-bold">Dosage</Text>
+        <TextInput
+          placeholder={"Enter Dosage"}
+          className="border-2 border-whiteGrey rounded-xl w-60 mb-5 p-2 text-center"
+          value={dosage}
+          onChangeText={(value) => setDosage(value)}
+        />
+      </View>
 
-      {/* Dosage/Unit */}
-      <View
-      // style={styles.dosageContainer}
-      >
-        <Text>Dosage:</Text>
-        {showUnitOption ? (
-          <></>
-        ) : (
-          <TextInput
-            placeholder={"Enter dosage"}
-            // style={styles.dosage}
-            value={dosage}
-            onChangeText={(value) => setDosage(value)}
-          />
-        )}
-
+      {/* Unit */}
+      <View className="flex items-center">
+        <Text className="mb-3 font-bold">Unit</Text>
+      </View>
+      <View className="border-2 border-whiteGrey rounded-xl w-65 mb-2 text-center mx-20">
         <Picker
           selectedValue={unit}
-          // style={styles.unit}
           onValueChange={(currentUnit) => {
             setUnit(currentUnit);
             if (currentUnit === "other") {
@@ -240,7 +239,7 @@ export const AddMedication = ({
             }
           }}
         >
-          <Picker.Item label="select" value={unit} />
+          <Picker.Item label="Select" value={unit} />
           <Picker.Item label="milligram (mg)" value="mg" />
           <Picker.Item label="microgram (μg)" value="ug" />
           <Picker.Item label="millilitre (ml)" value="ml" />
@@ -248,31 +247,29 @@ export const AddMedication = ({
         </Picker>
       </View>
 
-      {/* Dosage: Show Other input */}
+      {/* unit: Show Other input */}
       {showUnitOption ? (
-        <TouchableOpacity
-        // style={styles.customerPicker}
-        >
-          <Text>Custom Unit:</Text>
-          <TextInput
-            placeholder={"Enter Custom Unit"}
-            value={unit}
-            // style={styles.otherInput}
-            onChangeText={(currentUnit) => setUnit(currentUnit)}
-          />
-        </TouchableOpacity>
+        <View className="flex items-center mt-5">
+          <Text className="mb-3 font-bold">Custom Unit</Text>
+          <TouchableOpacity>
+            <TextInput
+              placeholder={"Enter Custom Unit"}
+              value={unit}
+              className="border-2 border-whiteGrey rounded-xl w-60 mb-2 p-2 text-center"
+              onChangeText={(currentUnit) => setUnit(currentUnit)}
+            />
+          </TouchableOpacity>
+        </View>
       ) : (
         <></>
       )}
-
       {/* Type of Medication */}
-      <View
-      // style={styles.typeContainer}
-      >
-        <Text>Type of Medication:</Text>
+      <View className="flex items-center mt-5">
+        <Text className="mb-3 font-bold">Medication type</Text>
+      </View>
+      <View className="border-2 border-whiteGrey rounded-xl w-65 mb-2 text-center mx-20">
         <Picker
           selectedValue={medicationType}
-          // style={styles.typePicker}
           onValueChange={(currentMedicationType) => {
             setMedicationType(currentMedicationType);
             if (currentMedicationType === "other") {
@@ -284,7 +281,7 @@ export const AddMedication = ({
           }}
         >
           <Picker.Item
-            label={editData ? medicationType : "select"}
+            label={editData ? medicationType : "Select"}
             value={medicationType}
           />
           <Picker.Item label="Pill" value="Pill" />
@@ -300,61 +297,72 @@ export const AddMedication = ({
       </View>
       {/* Type of Medication: Show Other input */}
       {showMedicationOption ? (
-        <TouchableOpacity
-        // style={styles.customerPicker}
-        >
-          <Text>Custom Medication Type:</Text>
-          <TextInput
-            placeholder={"Enter Type of Medication "}
-            value={medicationType}
-            // style={styles.otherInput}
-            onChangeText={(currentNewValue) => {
-              setMedicationType(currentNewValue);
-            }}
-          />
-        </TouchableOpacity>
+        <View className="flex items-center mt-5">
+          <Text className="font-bold">Custom Medication Type</Text>
+          <TouchableOpacity>
+            <TextInput
+              placeholder={"Enter Type of Medication "}
+              value={medicationType}
+              className="border-2 border-whiteGrey rounded-xl w-60 mt-3 mb-2 p-2 text-center"
+              onChangeText={(currentNewValue) => {
+                setMedicationType(currentNewValue);
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       ) : (
         <></>
       )}
+
       {/* Quantity */}
-      <TouchableOpacity
-      // style={styles.quantity}
-      >
-        <Text>Amount to take:</Text>
+      <TouchableOpacity className="flex items-center mt-4">
+        <Text className="mb-3 font-bold">Quantity to take</Text>
         <TextInput
           placeholder={"Enter quantity here"}
           value={quantity}
-          // style={styles.quantityInput}
+          className="border-2 border-whiteGrey rounded-xl w-60 mb-2 p-2 text-center"
           onChangeText={(currentQuantity) => setQuantity(currentQuantity)}
         />
       </TouchableOpacity>
 
       {/* Start/End Date */}
-
       <TouchableOpacity>
-        <View
-        // style={styles.displayDate}
-        >
-          <Text>Start Date: {startDate}</Text>
-          <Text>End Date: {endDate}</Text>
-        </View>
-        <View className="flex-1 items-center">
-          <TouchableOpacity onPress={handleDateModalPress}>
-            <Text
-            // style={styles.setDatebtn}
-            >
-              Click to add start/end date
+        <View>
+          <View className="flex items-center mt-5">
+            <Text className="font-bold">Start Date </Text>
+            <Text className="border-2 border-whiteGrey rounded-xl w-60 mt-3 mb-5 p-3 text-center">
+              {startDate}
             </Text>
+            <Text className="font-bold">End Date </Text>
+            <Text className="border-2 border-whiteGrey rounded-xl w-60 mt-3 mb-6 p-3 text-center">
+              {endDate}
+            </Text>
+          </View>
+        </View>
+        <View className="flex items-center">
+          <TouchableOpacity
+            className="border-2 border-whiteGrey rounded-xl w-50 mb-5 p-3 text-center"
+            onPress={handleDateModalPress}
+          >
+            {editData ? (
+              <Text>Click to update start/end date</Text>
+            ) : (
+              <Text>Click to add start/end date</Text>
+            )}
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={dateModal}>
-        <View
-        // style={styles.centeredView}
-        >
-          <View
-          // style={styles.dateView}
-          >
+        <View className="flex-1 justify-center items-center">
+          <View className="mt-3 w-3/5">
+            <TouchableOpacity
+              className="text-center w-15 p-2 mb-5"
+              onPress={handleDateModalPress}
+            >
+              <Text className="bg-whiteGrey text-black font-bold border-2 border-black text-center w-15 p-3 rounded-xl">
+                Close
+              </Text>
+            </TouchableOpacity>
             <DatePicker
               mode="calendar"
               minimumDate={calendarStartDate}
@@ -367,32 +375,24 @@ export const AddMedication = ({
               selected={endDate}
               onDateChange={(selected) => handleEndDateChange(selected)}
             />
-            <TouchableOpacity onPress={handleDateModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
       {/* Set Notifications */}
-
       <View className="flex items-center">
         <TouchableOpacity
-          className="bg-whiteGrey border-2 border-black rounded-xl mt-11.5 w-56 py-3"
+          className="bg-whiteGrey border-2 border-black rounded-xl mt-2 w-80 py-3"
           onPress={handleNotificationsModalPress}
         >
-          <Text
-            className="text-black text-center"
-            // style={styles.notifications}
-          >
-            Set Notifications{" "}
+          <Text className="text-black font-bold text-center">
+            Set Notification{" "}
           </Text>
         </TouchableOpacity>
         <Modal visible={notificationsModalOpen} animationType="slide">
           <AntDesign
             name="closesquare"
             size={30}
-            // style={{ ...styles.modalToggle, ...styles.modalClose }}
             color="black"
             onPress={() => setNotificationsModalOpen(false)}
           />
@@ -411,7 +411,6 @@ export const AddMedication = ({
           />
         </Modal>
       </View>
-
       {/* Submit Medication info */}
       {editData ? (
         <View className="flex items-center">
@@ -419,7 +418,10 @@ export const AddMedication = ({
             className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
             onPress={() => handleEdit(medicationData)}
           >
-            <Text className="text-center my-2 text-white">Save Medication</Text>
+            <Text className="text-center my-2 text-white">
+              {/* SAVE MEDICATION  */}
+              Save Medication
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -428,7 +430,8 @@ export const AddMedication = ({
             className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
             onPress={handleInput}
           >
-            <Text className="text-center my-2 text-whiteGrey">
+            <Text className="text-base font-bold text-center my-2 text-white">
+              {/* ADD MEDICATION  */}
               Add Medication
             </Text>
           </TouchableOpacity>
@@ -437,153 +440,3 @@ export const AddMedication = ({
     </View>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     textAlign: "center",
-//   },
-//   input: {
-//     borderColor: "#000",
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     marginVertical: 20,
-//     marginHorizontal: 30,
-//     padding: 4,
-//     textAlign: "center",
-//   },
-//   btn: {
-//     marginTop: 20,
-//     marginBottom: 50,
-//     backgroundColor: "#ADD8E6",
-//     borderColor: "#000000",
-//     borderWidth: 2,
-//     borderRadius: 15,
-//     paddingTop: 20,
-//     paddingBottom: 20,
-//     paddingLeft: 60,
-//     paddingRight: 60,
-//     marginHorizontal: 80,
-//   },
-//   btnText: {
-//     textAlign: "center",
-//   },
-//   customerPicker: {
-//     marginHorizontal: 30,
-//     marginVertical: 10,
-//   },
-//   otherInput: {
-//     borderRadius: 5,
-//     marginHorizontal: 20,
-//     marginVertical: 10,
-//   },
-//   select: {
-//     borderColor: "#F2F2F2",
-//     borderWidth: 1,
-//     borderRadius: 5,
-//   },
-//   notifications: {
-//     backgroundColor: "#F2F2F2",
-//     textAlign: "center",
-//     borderColor: "#000000",
-//     borderWidth: 1.5,
-//     borderRadius: 5,
-//     paddingVertical: 10,
-//     paddingLeft: 60,
-//     paddingRight: 60,
-//     marginHorizontal: 20,
-//     marginVertical: 20,
-//   },
-//   dosageContainer: {
-//     display: "flex",
-//     flexDirection: "row",
-//     justifyContent: "space-around",
-//     alignItems: "center",
-//     marginHorizontal: 20,
-//   },
-//   dosage: {
-//     borderColor: "#000",
-//     borderWidth: 0.7,
-//     borderRadius: 5,
-//     paddingHorizontal: 10,
-//     marginHorizontal: 5,
-//     marginVertical: 20,
-//   },
-//   unit: {
-//     width: 200,
-//   },
-//   typeContainer: {
-//     display: "flex",
-//     flexDirection: "row",
-//     justifyContent: "space-around",
-//     alignItems: "center",
-//     gap: 50,
-//   },
-//   typePicker: {
-//     width: 150,
-//   },
-//   quantity: {
-//     display: "flex",
-//     flexDirection: "row",
-//     alignItems: "center",
-//     gap: 80,
-//     marginHorizontal: 20,
-//     marginVertical: 10,
-//   },
-//   quantityInput: {
-//     borderColor: "#000",
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     paddingHorizontal: 10,
-//     marginHorizontal: 5,
-//     marginVertical: 5,
-//   },
-//   modalToggle: {
-//     marginBottom: 10,
-//     padding: 10,
-//     borderRadius: 10,
-//     alignSelf: "center",
-//   },
-//   modalClose: {
-//     marginHorizontal: 40,
-//     marginBottom: 0,
-//   },
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginTop: 22,
-//   },
-//   dateView: {
-//     margin: 20,
-//     backgroundColor: "white",
-//     borderRadius: 20,
-//     width: "80%",
-//     padding: 35,
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-//   displayDate: {
-//     display: "flex",
-//     flexDirection: "column",
-//     gap: 10,
-//     marginHorizontal: 20,
-//     marginVertical: 10,
-//   },
-//   setDatebtn: {
-//     textAlign: "center",
-//     backgroundColor: "#F2F2F2",
-//     borderColor: "#000000",
-//     borderWidth: 1.5,
-//     borderRadius: 10,
-//     padding: 10,
-//     marginHorizontal: 50,
-//     marginVertical: 20,
-//   },
-// });

@@ -12,7 +12,6 @@ import { UserContext } from "../contexts/User";
 import { MedicationsContext } from "../contexts/Medications";
 import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
-import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,14 +83,6 @@ export function MyMedications() {
     <ScrollView className="bg-whiteGrey">
       <Modal visible={modalOpen} animationType="slide">
         <ScrollView>
-          <AntDesign
-            name="closesquare"
-            size={30}
-            className="self-center"
-            color="black"
-            onPress={() => setModalOpen(false)}
-          />
-
           <AddMedication
             setMedications={setMedications}
             setModalOpen={setModalOpen}

@@ -77,7 +77,7 @@ export default function App() {
                 component={MedicalHistory}
               ></Stack.Screen>
               <Stack.Screen
-                name="MyMedications"
+                name="My Medications"
                 component={MyMedications}
                 options={{
                   headerStyle: {

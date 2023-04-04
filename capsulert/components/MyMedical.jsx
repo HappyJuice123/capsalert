@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, ScrollView, Button } from "react-native";
-import React, { useContext, useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
@@ -44,7 +44,7 @@ const MyMedical = () => {
               {
                 /* Navigate to the MyMedications route */
               }
-              navigation.navigate("MyMedications");
+              navigation.navigate("My Medications");
             }}
             className="bg-purpleLight rounded-xl my-5 w-56"
           >

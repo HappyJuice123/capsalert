@@ -116,22 +116,6 @@ export const MyMedicationsItem = ({
                   />
                 </TouchableOpacity>
               </MenuItem>
-              {/* <MenuItem onPress={hideMenu}> */}
-              {/* More info button */}
-              {/* <TouchableOpacity
-                  className="bg-whiteGrey flex flex-row items-center gap-2"
-                  onPress={() => {
-                    navigation.navigate("AdditionalMedInfo", item.name);
-                  }}
-                >
-                  <Text className="font-bold text-sm">More Info</Text>
-                  <Ionicons
-                    name="ios-information-circle-outline"
-                    size={24}
-                    color="black"
-                  /> */}
-              {/* </TouchableOpacity> */}
-              {/* </MenuItem> */}
             </Menu>
           </TouchableOpacity>
         </TouchableOpacity>
