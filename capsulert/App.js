@@ -17,6 +17,9 @@ import PushNotifications from "./components/PushNotifications";
 import DueMedications from "./components/DueMedications";
 import * as Notifications from "expo-notifications";
 import * as Linking from "expo-linking";
+import configENV from "./config";
+
+console.log("process.env", configENV.NHS_API_KEY);
 
 const Stack = createNativeStackNavigator();
 
