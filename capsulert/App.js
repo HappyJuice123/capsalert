@@ -54,9 +54,15 @@ export default function App() {
           >
             <Stack.Navigator>
               <Stack.Screen
-                options={{ headerShown: false }}
+                // options={{ headerShown: false }}
                 name="Login"
                 component={SignInPage}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
               ></Stack.Screen>
               <Stack.Screen
                 name="Register"
