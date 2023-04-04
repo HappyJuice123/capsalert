@@ -11,7 +11,6 @@ export const getMedication = (medicationName) =>
     url: `${baseUrl}/${medicationName}`,
   })
     .then((response) => {
-      console.log(response.data, "<<<response.data");
       if (response.data === undefined) {
         return undefined;
       }
