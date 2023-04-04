@@ -390,12 +390,14 @@ export const AddMedication = ({
           </Text>
         </TouchableOpacity>
         <Modal visible={notificationsModalOpen} animationType="slide">
-          <AntDesign
-            name="closesquare"
-            size={30}
-            color="black"
-            onPress={() => setNotificationsModalOpen(false)}
-          />
+          <View className="flex justify-center items-center mt-10 mb-2">
+            <TouchableOpacity onPress={() => setNotificationsModalOpen(false)}>
+              <Text className="font-bold text-black text-center bg-whiteGrey border-2 border-black rounded-xl w-20 p-2">
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <PushNotifications
             notificationsModalOpen={notificationsModalOpen}
             setNotificationsModalOpen={setNotificationsModalOpen}

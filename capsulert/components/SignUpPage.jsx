@@ -52,41 +52,44 @@ const SignUpPage = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <View style={styles.inputContainer}>
+    <KeyboardAvoidingView className="flex-1 items-center bg-whiteGrey ">
+      <View className="w-10/12 flex-1 items-center ">
+        <Text className="text-center mt-20 mb-10 text-5xl text-greyBlack font-semibold">
+          Capsalert
+        </Text>
         <TextInput
+          className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2 text-center items-center"
           placeholder="First Name"
           value={firstName}
           onChangeText={(text) => {
             setFirstName(text);
             setLoggedInUser(text);
           }}
-          style={styles.input}
         />
         <TextInput
+          className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2 text-center items-center"
           placeholder="Last Name"
           value={lastName}
           onChangeText={(text) => setLastName(text)}
-          style={styles.input}
         />
         <TextInput
+          className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2 text-center items-center"
           placeholder="Email"
           value={registerEmail}
           onChangeText={(text) => setRegisterEmail(text)}
-          style={styles.input}
         />
         <TextInput
+          className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2  text-center items-center"
           placeholder="Password"
           value={registerPassword}
           onChangeText={(text) => setRegisterPassword(text)}
-          style={styles.input}
           secureTextEntry
         />
-      </View>
-
-      <View>
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Register</Text>
+        <TouchableOpacity
+          className="bg-purpleLight rounded-xl w-56 my-5 mb-40"
+          onPress={handleSignUp}
+        >
+          <Text className="text-center my-2 text-white">Register</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -94,34 +97,3 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    width: "80%",
-  },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
-  },
-  button: {
-    backgroundColor: "#0782F9",
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-});

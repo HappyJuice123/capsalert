@@ -61,6 +61,12 @@ export default function App() {
               <Stack.Screen
                 name="Register"
                 component={SignUpPage}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
               ></Stack.Screen>
               <Stack.Screen
                 name="My Medical"
@@ -85,12 +91,7 @@ export default function App() {
               <Stack.Screen
                 name="My Medications"
                 component={MyMedications}
-                options={{
-                  headerStyle: {
-                    backgroundColor: "#6c537a",
-                  },
-                  headerTintColor: "#ebebeb",
-                }}
+                options={{ title: "My Medications" }}
               />
               <Stack.Screen
                 name="AddMedication"
@@ -133,12 +134,3 @@ export default function App() {
     </UserProvider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
