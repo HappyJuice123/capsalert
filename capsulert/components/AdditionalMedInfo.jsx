@@ -74,23 +74,26 @@ function AdditionalMedInfo({ route }) {
 
   return error ? (
     <View className="bg-whiteGrey">
-      <Text className="text-lg font-semibold my-5 mx-5">
-        {errName ? errName[0].toUpperCase() + errName.slice(1) : errName}
-      </Text>
-      <Text className="text-justify mx-5 my-5">
-        Error - Medication Not Recognised
-      </Text>
-      <View className="items-center">
+      <View className="bg-whiteGrey">
+        <Text className="text-lg font-semibold my-5 mx-5">
+          {errName ? errName[0].toUpperCase() + errName.slice(1) : errName}
+        </Text>
+        <Text className="text-justify mx-5 my-5">
+          Error - Medication Not Recognised
+        </Text>
+      </View>
+
+      <View className="items-center bg-whiteGrey ">
         <TouchableOpacity
           onPress={() => Linking.openURL("https://www.nhs.uk/medicines/")}
-          className=" bg-purpleLight rounded-xl w-11/12 mb-5"
+          className=" bg-purpleLight rounded-xl w-11/12"
         >
           <Text className="mx-5 text-center my-3  text-whiteGrey">
             Click here for a list of medicines from the NHS
           </Text>
         </TouchableOpacity>
       </View>
-      <View className="items-center">
+      <View className="items-center pb-80 bg-whiteGrey">
         <Image
           className="scale-50"
           source={require("../assets/nhs_attribution_logo.png")}
@@ -147,7 +150,7 @@ function AdditionalMedInfo({ route }) {
           </View>
         </View>
 
-        <View className="items-center">
+        <View className="items-center pb-80">
           <Image
             className="scale-50"
             source={require("../assets/nhs_attribution_logo.png")}

@@ -91,6 +91,7 @@ export default function App() {
                   backgroundColor: "#6c537a",
                 },
                 headerTintColor: "#ebebeb",
+                backgroundColor: "#ebebeb",
               }}
             ></Stack.Screen>
             <Stack.Screen
