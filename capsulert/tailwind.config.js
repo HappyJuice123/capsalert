@@ -7,7 +7,9 @@ module.exports = {
         purpleBG: "#6c537a", //colour of header
         purpleLight: "#8a7099", //colour of buttons
         whiteGrey: "#ebebeb", //font colour when there is a purple background, and the background colour
-        greyBlack: "#262626", // text colour on whitegrey background
+        greyBlack: "#262626", // text colour on whitegrey background,
+        redLight: "#fcbbbb", // missed medications
+        greenLight: "#c9f4aa", // taken medications
       },
     },
   },
