@@ -198,22 +198,16 @@ const PushNotifications = ({
     <View>
       {/* Time */}
       <TouchableOpacity>
-        <View
-          style={styles.displayDate}
-          // className="flex-1 flex-col mx-2 my-2"
-        >
-          <Text className="text-center my-4">Time(s):</Text>
+        <View className="flex flex-col mx-4 my-4">
+          <Text className="text-center font-bold mt-6">Time(s):</Text>
           <FlatList
             className="mt-4"
             scrollEnabled={false}
             data={time}
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity
-                  style={styles.listItem}
-                  // className="bg-whiteGrey flex-1 flex-row justify-between items-center px-4 py-4 my-2 rounded-md"
-                >
-                  <Text style={styles.itemText}>{item}</Text>
+                <TouchableOpacity className="bg-whiteGrey flex flex-row justify-between items-center px-4 py-4 my-2 rounded-md">
+                  <Text>{item}</Text>
                   <TouchableOpacity className="flex-initial flex-row items-center gap-x-1">
                     <Text>Delete</Text>
                     <MaterialIcons
@@ -228,27 +222,24 @@ const PushNotifications = ({
             }}
           />
         </View>
-        {/* 
-        listItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 50,
-    padding: 15,
-    backgroundColor: "#f8f8f8",
-    borderBottomWidth: 1,
-    borderColor: "#eee",
-  }, */}
 
-        <TouchableOpacity onPress={handleTimeModalPress}>
-          <Text style={styles.setDatebtn}>Click to Add Time</Text>
+        <TouchableOpacity
+          onPress={handleTimeModalPress}
+          className="bg-whiteGrey border-2 border-black rounded-xl mx-4 mt-2 py-3"
+        >
+          <Text className="text-black font-bold text-center">
+            Click to Add Time
+          </Text>
         </TouchableOpacity>
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={timeModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
+        <View className="flex-1 justify-center items-center">
+          <View
+            // style={styles.dateView}
+            className="w-60 h-70 shadow-md shadow-slate-600"
+          >
             <DatePicker
+              className="rounded-md"
               mode="time"
               minuteInterval={1}
               onTimeChange={(time) => {
@@ -262,9 +253,16 @@ const PushNotifications = ({
         </View>
       </Modal>
 
-      <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-        <Text className="text-center">Save Settings</Text>
-      </TouchableOpacity>
+      <View className="flex flex-col items-center">
+        <TouchableOpacity
+          className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
+          onPress={handleSubmit}
+        >
+          <Text className="text-base font-bold text-center my-2 text-white">
+            Save Settings
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       {/* <TouchableOpacity style={styles.btn} onPress={handleDelete}>
         <Text style={styles.btnText}>Cancel All Notifications</Text>
@@ -276,36 +274,6 @@ const PushNotifications = ({
 export default PushNotifications;
 
 const styles = StyleSheet.create({
-  listItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 50,
-    padding: 15,
-    backgroundColor: "#f8f8f8",
-    borderBottomWidth: 1,
-    borderColor: "#eee",
-  },
-  btn: {
-    marginTop: 20,
-    marginBottom: 50,
-    backgroundColor: "#ADD8E6",
-    borderColor: "#000000",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 60,
-    paddingRight: 60,
-    marginHorizontal: 80,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
   dateView: {
     margin: 20,
     backgroundColor: "white",
@@ -321,22 +289,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  displayDate: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  setDatebtn: {
-    textAlign: "center",
-    backgroundColor: "#F2F2F2",
-    borderColor: "#000000",
-    borderWidth: 1.5,
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 50,
-    marginVertical: 20,
   },
 });
