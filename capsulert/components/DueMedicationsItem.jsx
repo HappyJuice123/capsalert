@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   medTaken: {
-    backgroundColor: "#818cf8",
+    backgroundColor: "#8a7099",
     color: "#fff",
     paddingHorizontal: 15,
     paddingVertical: 10,

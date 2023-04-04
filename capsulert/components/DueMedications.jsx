@@ -59,11 +59,11 @@ const DueMedications = () => {
 
   return (
     <ScrollView className="bg-whiteGrey">
-      <View className="flex-1 flex-row flex-wrap justify-center items-center gap-x-2 mt-5">
+      <View className="flex-1 flex-row flex-wrap justify-center items-center gap-x-2 mx-2 mt-5">
         <Text>Legend:</Text>
         <TouchableOpacity className="bg-lime-400 w-4 h-4 rounded-sm"></TouchableOpacity>
         <Text>Due</Text>
-        <TouchableOpacity className="bg-indigo-400 w-4 h-4 rounded-sm"></TouchableOpacity>
+        <TouchableOpacity className="bg-purpleLight w-4 h-4 rounded-sm"></TouchableOpacity>
         <Text>Taken</Text>
         <TouchableOpacity className="bg-redLight w-4 h-4 rounded-sm"></TouchableOpacity>
         <Text>Missed</Text>
