@@ -12,44 +12,44 @@ export const DueMedicationsItem = ({ item }) => {
   const notificationId = item.id.slice(2, -2);
 
   const handleTimeStyle = () => {
-    if (item.time.slice(3, 5) >= 30) {
+    if (Number(item.time.slice(3, 5)) >= 30) {
       if (
-        item.time.slice(0, 2) - today.getHours() === 0 &&
-        item.time.slice(3, 5) - today.getMinutes() <= 30
+        Number(item.time.slice(0, 2)) - today.getHours() === 0 &&
+        Number(item.time.slice(3, 5)) - today.getMinutes() <= 30
       ) {
         return styles.dueTime;
       } else if (
-        today.getHours() - item.time.slice(0, 2) === 1 &&
-        60 - item.time.slice(3, 5) + today.getMinutes() <= 30
+        today.getHours() - Number(item.time.slice(0, 2)) === 1 &&
+        60 - Number(item.time.slice(3, 5)) + today.getMinutes() <= 30
       ) {
         return styles.dueTime;
       } else if (
-        today.getHours() - item.time.slice(0, 2) === 1 &&
-        60 - item.time.slice(3, 5) + today.getMinutes() > 30
+        today.getHours() - Number(item.time.slice(0, 2)) === 1 &&
+        60 - Number(item.time.slice(3, 5)) + today.getMinutes() > 30
       ) {
         return styles.medMissed;
-      } else if (today.getHours() - item.time.slice(0, 2) > 1) {
+      } else if (today.getHours() - Number(item.time.slice(0, 2) > 1)) {
         return styles.medMissed;
       } else {
         return styles.time;
       }
-    } else if (item.time.slice(3, 5) < 30) {
+    } else if (Number(item.time.slice(3, 5) < 30)) {
       if (
-        item.time.slice(0, 2) - today.getHours() === 1 &&
-        60 - today.getMinutes() + item.time.slice(3, 5) <= 30
+        Number(item.time.slice(0, 2)) - today.getHours() === 1 &&
+        60 - today.getMinutes() + Number(item.time.slice(3, 5) <= 30)
       ) {
         return styles.dueTime;
       } else if (
-        today.getHours() - item.time.slice(0, 2) === 0 &&
-        today.getMinutes() - item.time.slice(3, 5) <= 30
+        today.getHours() - Number(item.time.slice(0, 2)) === 0 &&
+        today.getMinutes() - Number(item.time.slice(3, 5)) <= 30
       ) {
         return styles.dueTime;
       } else if (
-        today.getHours() - item.time.slice(0, 2) === 0 &&
-        today.getMinutes() - item.time.slice(3, 5) > 30
+        today.getHours() - Number(item.time.slice(0, 2)) === 0 &&
+        today.getMinutes() - Number(item.time.slice(3, 5)) > 30
       ) {
         return styles.medMissed;
-      } else if (today.getHours() - item.time.slice(0, 2) >= 1) {
+      } else if (today.getHours() - Number(item.time.slice(0, 2)) >= 1) {
         return styles.medMissed;
       } else {
         return styles.time;
