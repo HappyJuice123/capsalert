@@ -85,11 +85,9 @@ export const AllergyList = ({ newAllergy }) => {
           renderItem={({ item }) => {
             return (
               <View>
-                <Text>{item}</Text>
-
                 <TouchableOpacity
-                  className=" ml-2 bg-purpleLight rounded-xl mt-5 w-90 text-white 
-              border-black border-2"
+                  className=" ml-1 bg-purpleLight rounded-xl mt-5 w-80 text-white 
+                  border-black border-2"
                 >
                   <Text className="text-white items-center pl-5 pt-2">
                     {item}
