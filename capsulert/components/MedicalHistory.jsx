@@ -18,8 +18,6 @@ import {
   get,
   child,
 } from "firebase/database";
-import { Feather } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
   const [data, setData] = useState([]);
@@ -104,57 +102,42 @@ const MedicalHistory = () => {
   };
 
   return (
-    <ScrollView className="bg-whiteGrey">
-      <View className="bg-whiteGrey mt-6 ">
-        {/* style={styles.container} */}
-        <Text className="text-left my-5 text-greyBlack text-xl ml-3">
-          Medical History
-        </Text>
-        {/* style={styles.title} */}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Medical History</Text>
         <TouchableOpacity>
-          <View className="flex items-center">
-            <TextInput
-              className="border-greyBlack border-2 rounded-xl w-60 mb-5 p-2 text-center"
-              placeholder="Add to your medical history..."
-              onChangeText={(value) => {
-                setNewInput(value);
-              }}
-              value={newInput}
-            />
-            <TouchableOpacity
-              className=" bg-purpleLight rounded-xl w-56 mb-5 flex items-center"
-              onPress={() => handleSubmit(newInput)}
-            >
-              <Text className="text-center my-2 text-white">Add</Text>
-            </TouchableOpacity>
-          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Add to your medical history..."
+            onChangeText={(value) => {
+              setNewInput(value);
+            }}
+            value={newInput}
+          />
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => handleSubmit(newInput)}
+          >
+            <Text style={styles.add}>Add</Text>
+          </TouchableOpacity>
         </TouchableOpacity>
-        <Text className="text-left my-5 text-greyBlack text-base ml-3">
-          Your medical history
-        </Text>
-        <View className="flex-1 items-center border-black border-t-2 ">
-          <FlatList
-            scrollEnabled={false}
-            data={data}
-            renderItem={({ item }) => (
+        <Text style={styles.yourHistory}>Your medical history</Text>
+        <FlatList
+          scrollEnabled={false}
+          style={styles.flatlist}
+          data={data}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={{ ...styles.itemBox }}>
+              <Text style={styles.item}>{item}</Text>
               <TouchableOpacity
-                className=" bg-purpleLight rounded-xl mt-5 w-96 text-white 
-              border-black border-2"
+                style={styles.removeButton}
+                onPress={() => handleRemove(item)}
               >
-                <Text className="text-white items-center pl-5 pt-2">
-                  {item}{" "}
-                </Text>
-                <MaterialIcons
-                  style={styles.icon}
-                  name="delete-outline"
-                  size={26}
-                  color="black"
-                  onPress={() => handleRemove(item)}
-                ></MaterialIcons>
+                <Text>Remove</Text>
               </TouchableOpacity>
-            )}
-          ></FlatList>
-        </View>
+            </TouchableOpacity>
+          )}
+        ></FlatList>
       </View>
     </ScrollView>
   );
@@ -230,14 +213,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000000",
     borderWidth: 0.5,
     alignContent: "center",
-  },
-  icon: {
-    alignSelf: "flex-end",
-    verticalAlign: "middle",
-    padding: 5,
-    paddingBottom: 10,
-    paddingRight: 10,
-    paddingTop: 2,
   },
 });
 export default MedicalHistory;

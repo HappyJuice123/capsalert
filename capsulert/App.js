@@ -70,12 +70,6 @@ export default function App() {
             <Stack.Screen
               name="Medical History"
               component={MedicalHistory}
-              options={{
-                headerStyle: {
-                  backgroundColor: "#6c537a",
-                },
-                headerTintColor: "#ebebeb",
-              }}
             ></Stack.Screen>
             <Stack.Screen
               name="MyMedications"
