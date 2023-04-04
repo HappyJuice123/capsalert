@@ -1,6 +1,5 @@
 import {
   KeyboardAvoidingView,
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -40,8 +39,12 @@ const SignInPage = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <View style={styles.inputContainer}>
+    <KeyboardAvoidingView className="items-center bg-whiteGrey pb-96">
+      <View>
+        <Text className="text-center mt-20 text-5xl text-greyBlack font-semibold">
+          Capsalert
+        </Text>
+
         <TextInput
           placeholder="Email"
           value={loginEmail}
@@ -49,28 +52,28 @@ const SignInPage = () => {
             setLoginEmail(text);
             setLoggedInUser(text);
           }}
-          style={styles.input}
+          className="border-2 border-black rounded-xl w-60 mb-5 p-2 mt-16 text-center bg-white"
         />
         <TextInput
           placeholder="Password"
           value={loginPassword}
           onChangeText={(text) => setLoginPassword(text)}
-          style={styles.input}
+          className="border-2 border-black rounded-xl w-60 mb-5 p-2 text-center bg-white"
           secureTextEntry
         />
       </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
+      <View className="pb-96 flex items-center">
+        <TouchableOpacity
+          onPress={handleLogin}
+          className="bg-purpleLight rounded-xl my-5 w-56"
+        >
+          <Text className="text-center my-2 text-white">Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.replace("Register")}
-          style={[styles.button, styles.buttonOutline]}
+          className=" rounded-xl  w-56 "
         >
-          <Text style={styles.buttonOutlineText}>
-            Click here to sign up if you don't have an account
-          </Text>
+          <Text className="text-center my-2 text-greyBlack">Register</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -78,48 +81,3 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    width: "80%",
-  },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginBottom: 5,
-  },
-  buttonContainer: {
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-  },
-  button: {
-    backgroundColor: "#0782F9",
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-  buttonOutlineText: {
-    color: "#0782F9",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-});
