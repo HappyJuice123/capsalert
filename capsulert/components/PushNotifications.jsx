@@ -35,6 +35,13 @@ const PushNotifications = ({
   setNotificationsModalOpen,
   modalOpen,
   setModalOpen,
+  newMedication,
+  dosage,
+  unit,
+  medicationType,
+  quantity,
+  startDate,
+  endDate,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -132,23 +139,29 @@ const PushNotifications = ({
 
   const handleSubmit = () => {
     const db = getDatabase();
+    const postReference = ref(db, `users/${userId}/notifications`);
+    const newPostRef = push(postReference);
     const postId = newPostRef.key;
     const postData = [];
     time.map((specificTime) => {
       postData.push({
-        id: `NN${postId}`,
+        id: `NN${postId}-${postData.length}`,
+        name: newMedication,
         startDate: startDate,
         endDate: endDate,
         time: specificTime,
+        dosage: dosage,
+        unit: unit,
+        form: medicationType,
+        quantity: quantity,
+        taken: false,
       });
     });
-    const postReference = ref(db, `users/${userId}/notifications`);
-    const newPostRef = push(postReference);
+
     set(newPostRef, postData);
     setNotificationsList((currentNotifications) => {
       return [...currentNotifications, postData];
     });
-
     time.map((specificTime) => {
       handleNotifications(specificTime);
     });
@@ -165,6 +178,12 @@ const PushNotifications = ({
   //   console.log("All notifications deleted");
   // };
 
+  const handleDeleteTime = (item) => {
+    setTime((prevTimes) => {
+      return prevTimes.filter((specificTime) => specificTime !== item);
+    });
+  };
+
   return (
     <View>
       {/* Time */}
@@ -175,7 +194,12 @@ const PushNotifications = ({
             scrollEnabled={false}
             data={time}
             renderItem={({ item }) => {
-              return <Text style={styles.itemText}>{item}</Text>;
+              return (
+                <TouchableOpacity style={styles.listItem}>
+                  <Text style={styles.itemText}>{item}</Text>
+                  <Text onPress={() => handleDeleteTime(item)}>Delete</Text>
+                </TouchableOpacity>
+              );
             }}
           />
         </View>
@@ -269,5 +293,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 50,
     marginVertical: 20,
+  },
+  listItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 50,
+    padding: 15,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 1,
+    borderColor: "#eee",
   },
 });
