@@ -12,7 +12,6 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import DatePicker from "react-native-modern-datepicker";
-import { getFormatedDate } from "react-native-modern-datepicker";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { NotificationsContext } from "../contexts/Notifications";
@@ -36,19 +35,20 @@ const PushNotifications = ({
   setNotificationsModalOpen,
   modalOpen,
   setModalOpen,
-  time,
-  setTime,
+  newMedication,
+  dosage,
+  unit,
+  medicationType,
+  quantity,
   startDate,
-  setStartDate,
   endDate,
-  setEndDate,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [dateModal, setDateModal] = useState(false);
   const [timeModal, setTimeModal] = useState(false);
+  const [time, setTime] = useState([]);
 
   const { userId } = useContext(UserContext);
   const { setNotificationsList } = useContext(NotificationsContext);
@@ -127,32 +127,6 @@ const PushNotifications = ({
     return token;
   }
 
-  // set start date
-  const today = new Date();
-
-  const calendarStartDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleDateModalPress = () => {
-    setDateModal(!dateModal);
-  };
-
-  const handleStartDateChange = (newStartDate) => {
-    setStartDate(newStartDate);
-  };
-
-  //  set end date
-  const calendarEndDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-  );
-
-  const handleEndDateChange = (newEndDate) => {
-    setEndDate(newEndDate);
-  };
-
   //  set time
 
   const handleTimeModalPress = () => {
@@ -165,21 +139,29 @@ const PushNotifications = ({
 
   const handleSubmit = () => {
     const db = getDatabase();
+    const postReference = ref(db, `users/${userId}/notifications`);
+    const newPostRef = push(postReference);
+    const postId = newPostRef.key;
     const postData = [];
     time.map((specificTime) => {
       postData.push({
+        id: `NN${postId}-${postData.length}`,
+        name: newMedication,
         startDate: startDate,
         endDate: endDate,
         time: specificTime,
+        dosage: dosage,
+        unit: unit,
+        form: medicationType,
+        quantity: quantity,
+        taken: false,
       });
     });
-    const postReference = ref(db, `users/${userId}/notifications`);
-    const newPostRef = push(postReference);
+
     set(newPostRef, postData);
     setNotificationsList((currentNotifications) => {
       return [...currentNotifications, postData];
     });
-
     time.map((specificTime) => {
       handleNotifications(specificTime);
     });
@@ -196,40 +178,14 @@ const PushNotifications = ({
   //   console.log("All notifications deleted");
   // };
 
+  const handleDeleteTime = (item) => {
+    setTime((prevTimes) => {
+      return prevTimes.filter((specificTime) => specificTime !== item);
+    });
+  };
+
   return (
     <View>
-      {/* Start/End Date */}
-      <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Start Date: {startDate}</Text>
-          <Text>End Date: {endDate}</Text>
-        </View>
-        <TouchableOpacity onPress={handleDateModalPress}>
-          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={dateModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.dateView}>
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarStartDate}
-              selected={startDate}
-              onDateChange={(selected) => handleStartDateChange(selected)}
-            />
-            <DatePicker
-              mode="calendar"
-              minimumDate={calendarEndDate}
-              selected={endDate}
-              onDateChange={(selected) => handleEndDateChange(selected)}
-            />
-            <TouchableOpacity onPress={handleDateModalPress}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
       {/* Time */}
       <TouchableOpacity>
         <View style={styles.displayDate}>
@@ -238,7 +194,12 @@ const PushNotifications = ({
             scrollEnabled={false}
             data={time}
             renderItem={({ item }) => {
-              return <Text style={styles.itemText}>{item}</Text>;
+              return (
+                <TouchableOpacity style={styles.listItem}>
+                  <Text style={styles.itemText}>{item}</Text>
+                  <Text onPress={() => handleDeleteTime(item)}>Delete</Text>
+                </TouchableOpacity>
+              );
             }}
           />
         </View>
@@ -332,5 +293,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 50,
     marginVertical: 20,
+  },
+  listItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 50,
+    padding: 15,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 1,
+    borderColor: "#eee",
   },
 });
