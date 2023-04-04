@@ -52,8 +52,8 @@ const SignUpPage = () => {
   };
 
   return (
-    <KeyboardAvoidingView className="flex-1 items-center justify-center bg-whiteGrey ">
-      <View className="w-10/12 flex-1 items-center justify-center">
+    <KeyboardAvoidingView className="flex-1 items-center bg-whiteGrey ">
+      <View className="w-10/12 flex-1 items-center ">
         <Text className="text-center mt-20 mb-10 text-5xl text-greyBlack font-semibold">
           Capsalert
         </Text>
@@ -79,16 +79,16 @@ const SignUpPage = () => {
           onChangeText={(text) => setRegisterEmail(text)}
         />
         <TextInput
-          className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2 text-center items-center"
+          className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2  text-center items-center"
           placeholder="Password"
           value={registerPassword}
           onChangeText={(text) => setRegisterPassword(text)}
           secureTextEntry
         />
-      </View>
-
-      <View className="bg-purpleLight rounded-xl w-56 mb-40">
-        <TouchableOpacity onPress={handleSignUp}>
+        <TouchableOpacity
+          className="bg-purpleLight rounded-xl w-56 my-5 mb-40"
+          onPress={handleSignUp}
+        >
           <Text className="text-center my-2 text-white">Register</Text>
         </TouchableOpacity>
       </View>
