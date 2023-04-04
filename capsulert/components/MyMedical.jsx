@@ -37,7 +37,7 @@ const MyMedical = () => {
             onPress={() => {
               navigation.navigate("Medical History");
             }}
-            className=" bg-purpleLight rounded-xl mt-10 w-56 mb-5"
+            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5"
           >
             <Text className="text-center my-2 text-white">Medical History</Text>
           </TouchableOpacity>

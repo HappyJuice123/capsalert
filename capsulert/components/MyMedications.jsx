@@ -5,6 +5,7 @@ import {
   ScrollView,
   Modal,
   Text,
+  View,
   TouchableOpacity,
 } from "react-native";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
@@ -15,6 +16,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [dataModalOpen, setDataModalOpen] = useState(false);
   const [editData, setEditData] = useState(false);
   const [medications, setMedications] = useState([]);
 
@@ -85,7 +87,8 @@ export function MyMedications() {
           <AntDesign
             name="closesquare"
             size={30}
-            style={{ ...styles.modalToggle, ...styles.modalClose }}
+            className="self-center"
+            // style={{ ...styles.modalToggle, ...styles.modalClose }}
             color="black"
             onPress={() => setModalOpen(false)}
           />
@@ -98,24 +101,23 @@ export function MyMedications() {
           />
         </ScrollView>
       </Modal>
-
-      <TouchableOpacity className="bg-purpleLight rounded-xl mt-10 w-56 mb-5">
-        <Text
-          // style={styles.addMedsBtn}
-          className="text-center my-2 text-white"
-          onPress={() => {
-            setModalOpen(true);
-            setEditData(false);
-          }}
-        >
-          {" "}
-          Add Medication{" "}
-        </Text>
-      </TouchableOpacity>
+      <View className="flex-1 items-center">
+        <TouchableOpacity className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3">
+          <Text
+            className="text-center my-2 text-white"
+            onPress={() => {
+              setModalOpen(true);
+              setEditData(false);
+            }}
+          >
+            {" "}
+            Add Medication{" "}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         scrollEnabled={false}
-        style={styles.list}
         data={medications}
         renderItem={({ item }) => (
           <MyMedicationsItem
@@ -123,6 +125,8 @@ export function MyMedications() {
             handleDelete={handleDelete}
             setModalOpen={setModalOpen}
             setEditData={setEditData}
+            dataModalOpen={dataModalOpen}
+            setDataModalOpen={setDataModalOpen}
           />
         )}
       ></FlatList>
@@ -131,25 +135,6 @@ export function MyMedications() {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    backgroundColor: "#fff",
-    fontSize: 8,
-  },
-  addMedsBtn: {
-    marginTop: 20,
-    marginBottom: 50,
-    backgroundColor: "#ADD8E6",
-    borderColor: "#000000",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 60,
-    paddingRight: 60,
-    marginLeft: 50,
-    marginRight: 50,
-    textAlign: "center",
-  },
   modalToggle: {
     marginBottom: 10,
     padding: 10,

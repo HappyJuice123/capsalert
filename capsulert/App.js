@@ -79,7 +79,12 @@ export default function App() {
               <Stack.Screen
                 name="MyMedications"
                 component={MyMedications}
-                options={{ title: "My Medications" }}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
               />
               <Stack.Screen
                 name="AddMedication"

@@ -190,20 +190,24 @@ export const AddMedication = ({
   return (
     <View styles={styles.container}>
       {/* Input Medication Name */}
-      <TextInput
-        placeholder={"Enter Medication"}
-        style={styles.input}
-        value={newMedication}
-        onChangeText={(value) => setNewMedication(value)}
-      />
+      <View className="flex-1 items-center">
+        <TextInput
+          placeholder={"Enter Medication"}
+          style={styles.input}
+          value={newMedication}
+          onChangeText={(value) => setNewMedication(value)}
+        />
+      </View>
 
       {/* Input Medication Brand Name */}
-      <TextInput
-        placeholder={"Enter Medication Brand"}
-        style={styles.input}
-        value={medicationBrand}
-        onChangeText={(value) => setMedicationBrand(value)}
-      />
+      <View className="flex-1 items-center">
+        <TextInput
+          placeholder={"Enter Medication Brand"}
+          style={styles.input}
+          value={medicationBrand}
+          onChangeText={(value) => setMedicationBrand(value)}
+        />
+      </View>
 
       {/* Dosage/Unit */}
       <View style={styles.dosageContainer}>
@@ -314,14 +318,17 @@ export const AddMedication = ({
       </TouchableOpacity>
 
       {/* Start/End Date */}
+
       <TouchableOpacity>
         <View style={styles.displayDate}>
           <Text>Start Date: {startDate}</Text>
           <Text>End Date: {endDate}</Text>
         </View>
-        <TouchableOpacity onPress={handleDateModalPress}>
-          <Text style={styles.setDatebtn}>Click to add start/end date</Text>
-        </TouchableOpacity>
+        <View className="flex-1 items-center">
+          <TouchableOpacity onPress={handleDateModalPress}>
+            <Text style={styles.setDatebtn}>Click to add start/end date</Text>
+          </TouchableOpacity>
+        </View>
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={dateModal}>
         <View style={styles.centeredView}>
@@ -347,54 +354,72 @@ export const AddMedication = ({
 
       {/* Set Notifications */}
 
-      <TouchableOpacity onPress={handleNotificationsModalPress}>
-        <Text style={styles.notifications}>Set Notifications </Text>
-      </TouchableOpacity>
-      <Modal visible={notificationsModalOpen} animationType="slide">
-        <AntDesign
-          name="closesquare"
-          size={30}
-          style={{ ...styles.modalToggle, ...styles.modalClose }}
-          color="black"
-          onPress={() => setNotificationsModalOpen(false)}
-        />
-
-        <PushNotifications
-          notificationsModalOpen={notificationsModalOpen}
-          setNotificationsModalOpen={setNotificationsModalOpen}
-          newMedication={newMedication}
-          dosage={dosage}
-          unit={unit}
-          medicationType={medicationType}
-          quantity={quantity}
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
-        />
-      </Modal>
+      <View className="flex-1 items-center">
+        <TouchableOpacity
+          className="bg-whiteGrey border-2 border-black rounded-xl mt-5 w-56 py-3"
+          onPress={handleNotificationsModalPress}
+        >
+          <Text
+            className="text-black text-center"
+            // style={styles.notifications}
+          >
+            Set Notifications{" "}
+          </Text>
+        </TouchableOpacity>
+        <Modal visible={notificationsModalOpen} animationType="slide">
+          <AntDesign
+            name="closesquare"
+            size={30}
+            style={{ ...styles.modalToggle, ...styles.modalClose }}
+            color="black"
+            onPress={() => setNotificationsModalOpen(false)}
+          />
+          <PushNotifications
+            notificationsModalOpen={notificationsModalOpen}
+            setNotificationsModalOpen={setNotificationsModalOpen}
+            newMedication={newMedication}
+            dosage={dosage}
+            unit={unit}
+            medicationType={medicationType}
+            quantity={quantity}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+          />
+        </Modal>
+      </View>
 
       {/* Submit Medication info */}
       {editData ? (
-        <TouchableOpacity style={styles.btn}>
-          {/* onPress={handleEdit} */}
-          <Text
-            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5"
-            // style={styles.btnText}
+        <View className="flex-1 items-center">
+          <TouchableOpacity
+            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3"
+            // style={styles.btn}
             onPress={() => handleEdit(medicationData)}
           >
-            Save Medication
-          </Text>
-        </TouchableOpacity>
+            {/* onPress={handleEdit} */}
+            <Text
+              className="text-center my-2 text-white" // style={styles.btnText}
+            >
+              Save Medication
+            </Text>
+          </TouchableOpacity>
+        </View>
       ) : (
-        <TouchableOpacity style={styles.btn} onPress={handleInput}>
-          <Text
-            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5"
-            // style={styles.btnText}
+        <View className="flex-1 items-center">
+          <TouchableOpacity
+            className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3"
+            // style={styles.btn}
+            onPress={handleInput}
           >
-            Add Medication
-          </Text>
-        </TouchableOpacity>
+            <Text
+              className="text-center my-2 text-whiteGrey" // style={styles.btnText}
+            >
+              Add Medication
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
