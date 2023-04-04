@@ -40,8 +40,17 @@ const SignInPage = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <View style={styles.inputContainer}>
+    <KeyboardAvoidingView
+      // style={styles.container}
+      className="items-center bg-purpleBG"
+    >
+      <View
+      // style={styles.inputContainer}
+      >
+        <Text className="text-center mt-20 text-5xl text-greyBlack font-semibold">
+          Capsalert
+        </Text>
+
         <TextInput
           placeholder="Email"
           value={loginEmail}
@@ -49,26 +58,37 @@ const SignInPage = () => {
             setLoginEmail(text);
             setLoggedInUser(text);
           }}
-          style={styles.input}
+          // style={styles.input}
         />
         <TextInput
           placeholder="Password"
           value={loginPassword}
           onChangeText={(text) => setLoginPassword(text)}
-          style={styles.input}
+          // style={styles.input}
           secureTextEntry
         />
       </View>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
+      <View
+      // style={styles.buttonContainer}
+      >
+        <TouchableOpacity
+          onPress={handleLogin}
+          // style={styles.button}
+        >
+          <Text
+          // style={styles.buttonText}
+          >
+            Login
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.replace("Register")}
-          style={[styles.button, styles.buttonOutline]}
+          // style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>
+          <Text
+          // style={styles.buttonOutlineText}
+          >
             Click here to sign up if you don't have an account
           </Text>
         </TouchableOpacity>
@@ -79,47 +99,47 @@ const SignInPage = () => {
 
 export default SignInPage;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    width: "80%",
-  },
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginBottom: 5,
-  },
-  buttonContainer: {
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-  },
-  button: {
-    backgroundColor: "#0782F9",
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-  buttonOutlineText: {
-    color: "#0782F9",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   inputContainer: {
+//     width: "80%",
+//   },
+//   input: {
+//     backgroundColor: "white",
+//     paddingHorizontal: 15,
+//     paddingVertical: 10,
+//     borderRadius: 10,
+//     marginBottom: 5,
+//   },
+//   buttonContainer: {
+//     width: "60%",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: 40,
+//   },
+//   button: {
+//     backgroundColor: "#0782F9",
+//     width: "100%",
+//     padding: 15,
+//     borderRadius: 10,
+//     alignItems: "center",
+//   },
+//   buttonOutline: {
+//     backgroundColor: "white",
+//     marginTop: 5,
+//   },
+//   buttonText: {
+//     color: "white",
+//     fontWeight: "700",
+//     fontSize: 16,
+//   },
+//   buttonOutlineText: {
+//     color: "#0782F9",
+//     fontWeight: "700",
+//     fontSize: 16,
+//   },
+// });
