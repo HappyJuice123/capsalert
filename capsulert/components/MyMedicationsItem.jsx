@@ -1,20 +1,18 @@
-import { StyleSheet, View, TouchableOpacity, Text, Modal } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Menu, MenuItem } from "react-native-material-menu";
 import { useState, useContext } from "react";
 import { MedicationsContext } from "../contexts/Medications";
-import { AntDesign } from "@expo/vector-icons";
 
 export const MyMedicationsItem = ({
   item,
   handleDelete,
   setModalOpen,
   setEditData,
-  dataModalOpen,
-  setDataModalOpen,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -35,91 +33,44 @@ export const MyMedicationsItem = ({
 
   return (
     <View className="bg-whiteGrey p-5">
-      <Modal visible={dataModalOpen} animationType="slide">
-        <Text style={styles.itemText}>
-          <Text className="font-bold">Name: </Text>
-          {item.name}
-        </Text>
-        <Text style={styles.itemText}>
-          <Text className="font-bold">Brand: </Text>
-          {item.brand}
-        </Text>
-        <Text style={styles.itemText}>
-          <Text className="font-bold">Start: </Text> {item.startDate}
-        </Text>
-        <Text style={styles.itemText}>
-          <Text className="font-bold">End: </Text> {item.endDate}
-        </Text>
-        <Text style={styles.itemText}>
-          <Text className="font-bold">Dosage: </Text>
-          {item.dosage}
-          {item.unit}
-        </Text>
-        <Text style={styles.itemText}>
-          <Text className="font-bold">Medication Type: </Text>
-          {item.form}
-        </Text>
-        <Text style={styles.itemText}>
-          <Text className="font-bold">Quantity to take: </Text>
-          {item.quantity}
-        </Text>
-        <AntDesign
-          name="closesquare"
-          size={30}
-          className="self-center"
-          // style={{ ...styles.modalToggle, ...styles.modalClose }}
-          color="black"
-          onPress={() => setDataModalOpen(false)}
-        />
-      </Modal>
-      <TouchableOpacity
-        // style={styles.listItem}
-        className="flex flex-row justify-between"
-        onPress={() => setDataModalOpen(true)}
-      >
+      <TouchableOpacity className="flex flex-row justify-between">
         {/* Medication details */}
         <View>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">Name: </Text>
             {item.name}
           </Text>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">Brand: </Text>
             {item.brand}
           </Text>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">Start: </Text> {item.startDate}
           </Text>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">End: </Text> {item.endDate}
           </Text>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">Dosage: </Text>
             {item.dosage}
             {item.unit}
           </Text>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">Medication Type: </Text>
             {item.form}
           </Text>
-          <Text style={styles.itemText}>
+          <Text className="text-xs">
             <Text className="font-bold">Quantity to take: </Text>
             {item.quantity}
           </Text>
-          {/* <Text className="font-bold mt-3" style={styles.itemText}>
-            <Text className="font-bold mt-5">click for more details</Text>
-          </Text> */}
         </View>
 
-        <TouchableOpacity style={styles.options}>
+        <TouchableOpacity className="flex flex-row justify-between gap-4">
           {/* More info button */}
           <TouchableOpacity>
             <Text
-              style={styles.addMedsBtn}
+              className="font-bold"
               onPress={() => {
-                {
-                  /* Navigate to the AdditionalMedInfo screen */
-                }
                 navigation.navigate("AdditionalMedInfo", item.name);
               }}
             >
@@ -130,54 +81,57 @@ export const MyMedicationsItem = ({
           {/* Three dot options menu */}
           <TouchableOpacity>
             <Menu
+              className="bg-whiteGrey w-30 p-1"
               visible={visible}
               anchor={
                 <Text onPress={showMenu}>
-                  <Entypo
-                    name="dots-three-horizontal"
-                    size={24}
-                    color="black"
-                  />
+                  <Entypo name="dots-three-vertical" size={20} color="black" />
                 </Text>
               }
               onRequestClose={hideMenu}
             >
               <MenuItem onPress={hideMenu}>
                 {/* Edit button */}
-                <TouchableOpacity>
-                  <Text
-                    // style={styles.options}
-                    // onPress={() => {
-                    //   {
-                    //     /* Navigate to the Edit Medication route */
-                    //   }
-                    //   navigation.navigate("AddMedication", item);
-                    // }}
-                    onPress={() => handleEditPress(item)}
-                  >
-                    {" "}
-                    Edit <Feather name="edit" size={24} color="black" />
-                  </Text>
+
+                <TouchableOpacity
+                  className="bg-whiteGrey flex flex-row gap-2"
+                  onPress={() => handleEditPress(item)}
+                >
+                  <Text className="font-bold text-base mr-2"> Edit</Text>
+                  <Feather name="edit" size={22} color="black" />
                 </TouchableOpacity>
               </MenuItem>
 
               <MenuItem onPress={hideMenu}>
                 {/* Delete button */}
-                <TouchableOpacity>
-                  <Text
-                    // style={styles.options}
-                    onPress={() => handleDelete(item)}
-                  >
-                    {" "}
-                    Delete
-                    <MaterialIcons
-                      name="delete-outline"
-                      size={26}
-                      color="black"
-                    />
-                  </Text>
+                <TouchableOpacity
+                  className="bg-whiteGrey flex flex-row items-center gap-2"
+                  onPress={() => handleDelete(item)}
+                >
+                  <Text className="font-bold text-base"> Delete</Text>
+                  <MaterialIcons
+                    name="delete-outline"
+                    size={26}
+                    color="black"
+                  />
                 </TouchableOpacity>
               </MenuItem>
+              {/* <MenuItem onPress={hideMenu}> */}
+              {/* More info button */}
+              {/* <TouchableOpacity
+                  className="bg-whiteGrey flex flex-row items-center gap-2"
+                  onPress={() => {
+                    navigation.navigate("AdditionalMedInfo", item.name);
+                  }}
+                >
+                  <Text className="font-bold text-sm">More Info</Text>
+                  <Ionicons
+                    name="ios-information-circle-outline"
+                    size={24}
+                    color="black"
+                  /> */}
+              {/* </TouchableOpacity> */}
+              {/* </MenuItem> */}
             </Menu>
           </TouchableOpacity>
         </TouchableOpacity>
@@ -185,29 +139,3 @@ export const MyMedicationsItem = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  listItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 15,
-    backgroundColor: "#F2F2F2",
-    borderBottomWidth: 1,
-  },
-  itemText: {
-    fontSize: 10,
-  },
-  icon: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  options: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-  },
-});

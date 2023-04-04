@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
-  StyleSheet,
   FlatList,
   ScrollView,
   Modal,
@@ -10,17 +9,18 @@ import {
 } from "react-native";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
+import { MedicationsContext } from "../contexts/Medications";
 import { AddMedication } from "./AddMedication";
 import { MyMedicationsItem } from "./MyMedicationsItem";
 import { AntDesign } from "@expo/vector-icons";
 
 export function MyMedications() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [dataModalOpen, setDataModalOpen] = useState(false);
   const [editData, setEditData] = useState(false);
   const [medications, setMedications] = useState([]);
 
   const { userId } = useContext(UserContext);
+  const { setMedicationData } = useContext(MedicationsContext);
 
   useEffect(() => {
     getMedications();
@@ -88,7 +88,6 @@ export function MyMedications() {
             name="closesquare"
             size={30}
             className="self-center"
-            // style={{ ...styles.modalToggle, ...styles.modalClose }}
             color="black"
             onPress={() => setModalOpen(false)}
           />
@@ -102,17 +101,15 @@ export function MyMedications() {
         </ScrollView>
       </Modal>
       <View className="flex-1 items-center">
-        <TouchableOpacity className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3">
-          <Text
-            className="text-center my-2 text-white"
-            onPress={() => {
-              setModalOpen(true);
-              setEditData(false);
-            }}
-          >
-            {" "}
-            Add Medication{" "}
-          </Text>
+        <TouchableOpacity
+          className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3"
+          onPress={() => {
+            setModalOpen(true);
+            setEditData(false);
+            setMedicationData([]);
+          }}
+        >
+          <Text className="text-center my-2 text-white"> Add Medication </Text>
         </TouchableOpacity>
       </View>
 
@@ -125,24 +122,9 @@ export function MyMedications() {
             handleDelete={handleDelete}
             setModalOpen={setModalOpen}
             setEditData={setEditData}
-            dataModalOpen={dataModalOpen}
-            setDataModalOpen={setDataModalOpen}
           />
         )}
       ></FlatList>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  modalToggle: {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 10,
-    alignSelf: "center",
-  },
-  modalClose: {
-    marginHorizontal: 40,
-    marginBottom: 0,
-  },
-});
