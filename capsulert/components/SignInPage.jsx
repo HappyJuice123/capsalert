@@ -4,6 +4,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
@@ -71,10 +72,14 @@ const SignInPage = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.replace("Register")}
-          className=" rounded-xl  w-56 "
+          className="rounded-xl w-56"
         >
-          <Text className="text-center my-2 text-greyBlack">Register</Text>
+          <Text className="text-center text-greyBlack">Register</Text>
         </TouchableOpacity>
+        <Image
+          className="w-40 h-60 mt-10 mx-auto"
+          source={require("../assets/pills.png")}
+        />
       </View>
     </KeyboardAvoidingView>
   );
