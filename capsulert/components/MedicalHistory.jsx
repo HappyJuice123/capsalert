@@ -18,6 +18,8 @@ import {
   get,
   child,
 } from "firebase/database";
+import { Feather } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 const MedicalHistory = () => {
   const [newInput, setNewInput] = useState("");
   const [data, setData] = useState([]);
@@ -102,117 +104,68 @@ const MedicalHistory = () => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Medical History</Text>
+    <ScrollView className="bg-whiteGrey">
+      <View className="bg-whiteGrey mt-6 ">
+        <Text className="text-left my-5 text-greyBlack text-xl ml-3">
+          Medical History
+        </Text>
+
         <TouchableOpacity>
-          <TextInput
-            style={styles.input}
-            placeholder="Add to your medical history..."
-            onChangeText={(value) => {
-              setNewInput(value);
-            }}
-            value={newInput}
-          />
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => handleSubmit(newInput)}
-          >
-            <Text style={styles.add}>Add</Text>
-          </TouchableOpacity>
-        </TouchableOpacity>
-        <Text style={styles.yourHistory}>Your medical history</Text>
-        <FlatList
-          scrollEnabled={false}
-          style={styles.flatlist}
-          data={data}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={{ ...styles.itemBox }}>
-              <Text style={styles.item}>{item}</Text>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={() => handleRemove(item)}
-              >
-                <Text>Remove</Text>
-              </TouchableOpacity>
+          <View className="flex items-center">
+            <TextInput
+              className="border-greyBlack border-2 rounded-xl w-60 mb-5 p-2 text-center"
+              placeholder="Add to your medical history..."
+              onChangeText={(value) => {
+                setNewInput(value);
+              }}
+              value={newInput}
+            />
+            <TouchableOpacity
+              className=" bg-purpleLight rounded-xl w-56 mb-5 flex items-center"
+              onPress={() => handleSubmit(newInput)}
+            >
+              <Text className="text-center my-2 text-white">Add</Text>
             </TouchableOpacity>
-          )}
-        ></FlatList>
+          </View>
+        </TouchableOpacity>
+        <Text className="text-left my-5 text-greyBlack text-base ml-3">
+          Your medical history
+        </Text>
+        <View className="flex-1 items-center border-black border-t-2 ">
+          <FlatList
+            scrollEnabled={false}
+            data={data}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                className=" bg-purpleLight rounded-xl mt-5 w-96 text-white 
+              border-black border-2"
+              >
+                <Text className="text-white items-center pl-5 pt-2">
+                  {item}{" "}
+                </Text>
+                <MaterialIcons
+                  style={styles.icon}
+                  name="delete-outline"
+                  size={26}
+                  color="black"
+                  onPress={() => handleRemove(item)}
+                ></MaterialIcons>
+              </TouchableOpacity>
+            )}
+          ></FlatList>
+        </View>
       </View>
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
-  input: {
-    borderColor: "#000000",
-    borderWidth: 3,
-    marginTop: 40,
-    marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 10,
-    paddingLeft: 20,
-  },
-  title: {
-    fontSize: 30,
-    textAlignVertical: "top",
-    marginTop: 100,
-    textAlign: "left",
-    marginLeft: 20,
-  },
-  addButton: {
-    backgroundColor: "#ADD8E6",
-    borderColor: "#000000",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingTop: 20,
-    paddingBottom: 20,
-    width: 100,
-    alignItems: "center",
+  icon: {
     alignSelf: "flex-end",
-    marginRight: 40,
-  },
-  yourHistory: {
-    fontSize: 20,
-    marginTop: 20,
-    marginLeft: 20,
-  },
-  boxList: {
-    backgroundColor: "#ADD8E6",
-    margin: 20,
-    borderColor: "#000000",
-    borderWidth: 1,
-  },
-  add: {
-    fontSize: 15,
-  },
-  removeButton: {
-    borderColor: "#000000",
-    borderWidth: 2,
-    margin: 10,
-    borderRadius: 15,
-    paddingTop: 5,
-    paddingBottom: 5,
-    width: 70,
-    alignItems: "center",
-    alignSelf: "flex-end",
-    marginRight: 40,
-  },
-  flatlist: {
-    backgroundColor: "#ADD8E6",
-    marginTop: 10,
-    borderColor: "#000000",
-    borderWidth: 1,
-    margin: 10,
-  },
-  item: {
-    paddingLeft: 20,
-    paddingTop: 10,
-    alignItems: "center",
-  },
-  itemBox: {
-    borderBottomColor: "#000000",
-    borderWidth: 0.5,
-    alignContent: "center",
+    verticalAlign: "middle",
+    padding: 5,
+    paddingBottom: 10,
+    paddingRight: 10,
+    paddingTop: 2,
   },
 });
 export default MedicalHistory;

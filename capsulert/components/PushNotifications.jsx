@@ -15,6 +15,8 @@ import DatePicker from "react-native-modern-datepicker";
 import { getDatabase, set, ref, push } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { NotificationsContext } from "../contexts/Notifications";
+import { MaterialIcons } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
 
 LogBox.ignoreLogs([
   "Calling getExpoPushTokenAsync without specifying a projectId is deprecated and will no longer be supported in SDK 49+",
@@ -184,25 +186,60 @@ const PushNotifications = ({
     });
   };
 
+  // displayDate: {
+  //   display: "flex",
+  //   flexDirection: "column",
+  //   gap: 10,
+  //   marginHorizontal: 20,
+  //   marginVertical: 10,
+  // },
+
   return (
     <View>
       {/* Time */}
       <TouchableOpacity>
-        <View style={styles.displayDate}>
-          <Text>Time(s):</Text>
+        <View
+          style={styles.displayDate}
+          // className="flex-1 flex-col mx-2 my-2"
+        >
+          <Text className="text-center my-4">Time(s):</Text>
           <FlatList
+            className="mt-4"
             scrollEnabled={false}
             data={time}
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity style={styles.listItem}>
+                <TouchableOpacity
+                  style={styles.listItem}
+                  // className="bg-whiteGrey flex-1 flex-row justify-between items-center px-4 py-4 my-2 rounded-md"
+                >
                   <Text style={styles.itemText}>{item}</Text>
-                  <Text onPress={() => handleDeleteTime(item)}>Delete</Text>
+                  <TouchableOpacity className="flex-initial flex-row items-center gap-x-1">
+                    <Text>Delete</Text>
+                    <MaterialIcons
+                      name="delete-outline"
+                      size={26}
+                      color="black"
+                      onPress={() => handleDeleteTime(item)}
+                    />
+                  </TouchableOpacity>
                 </TouchableOpacity>
               );
             }}
           />
         </View>
+        {/* 
+        listItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 50,
+    padding: 15,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 1,
+    borderColor: "#eee",
+  }, */}
 
         <TouchableOpacity onPress={handleTimeModalPress}>
           <Text style={styles.setDatebtn}>Click to Add Time</Text>
@@ -226,7 +263,7 @@ const PushNotifications = ({
       </Modal>
 
       <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-        <Text style={styles.btnText}>Save Settings</Text>
+        <Text className="text-center">Save Settings</Text>
       </TouchableOpacity>
 
       {/* <TouchableOpacity style={styles.btn} onPress={handleDelete}>
@@ -239,6 +276,17 @@ const PushNotifications = ({
 export default PushNotifications;
 
 const styles = StyleSheet.create({
+  listItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 50,
+    padding: 15,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 1,
+    borderColor: "#eee",
+  },
   btn: {
     marginTop: 20,
     marginBottom: 50,
@@ -251,9 +299,6 @@ const styles = StyleSheet.create({
     paddingLeft: 60,
     paddingRight: 60,
     marginHorizontal: 80,
-  },
-  btnText: {
-    textAlign: "center",
   },
   centeredView: {
     flex: 1,
@@ -293,15 +338,5 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 50,
     marginVertical: 20,
-  },
-  listItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 50,
-    padding: 15,
-    backgroundColor: "#f8f8f8",
-    borderBottomWidth: 1,
-    borderColor: "#eee",
   },
 });
