@@ -192,7 +192,7 @@ export const AddMedication = ({
       </View>
 
       {/* Medication Name */}
-      <View className="flex items-center text-whiteGrey mt-10">
+      <View className="flex items-center text-whiteGrey mt-8">
         <Text className="mb-3 font-bold">Name</Text>
         <TextInput
           placeholder={"Enter Medication"}
@@ -359,7 +359,7 @@ export const AddMedication = ({
               className="text-center w-15 p-2 mb-5"
               onPress={handleDateModalPress}
             >
-              <Text className="bg-whiteGrey text-black font-bold border-2 border-black text-center w-15 p-3 rounded-xl">
+              <Text className="bg-whiteGrey text-black font-bold border-2 border-black text-center w-15 p-3 rounded-xl shadow-md shadow-slate-600">
                 Close
               </Text>
             </TouchableOpacity>
@@ -382,7 +382,7 @@ export const AddMedication = ({
       {/* Set Notifications */}
       <View className="flex items-center">
         <TouchableOpacity
-          className="bg-whiteGrey border-2 border-black rounded-xl mt-2 w-80 py-3"
+          className="bg-whiteGrey border-2 border-black rounded-xl mt-2 w-80 py-3 shadow-md shadow-slate-600"
           onPress={handleNotificationsModalPress}
         >
           <Text className="text-black font-bold text-center">
@@ -415,7 +415,7 @@ export const AddMedication = ({
       {editData ? (
         <View className="flex items-center">
           <TouchableOpacity
-            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
+            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3 shadow-md shadow-slate-600"
             onPress={() => handleEdit(medicationData)}
           >
             <Text className="text-center my-2 text-white">
@@ -427,7 +427,7 @@ export const AddMedication = ({
       ) : (
         <View className="flex items-center">
           <TouchableOpacity
-            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
+            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3 shadow-md shadow-slate-600"
             onPress={handleInput}
           >
             <Text className="text-base font-bold text-center my-2 text-white">

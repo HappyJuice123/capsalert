@@ -93,7 +93,7 @@ export function MyMedications() {
       </Modal>
       <View className="flex-1 items-center">
         <TouchableOpacity
-          className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3"
+          className="bg-purpleLight rounded-xl mt-10 w-56 mb-5 py-3 mx-8 shadow-md shadow-slate-600"
           onPress={() => {
             setModalOpen(true);
             setEditData(false);
