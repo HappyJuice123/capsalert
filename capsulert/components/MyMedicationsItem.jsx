@@ -1,13 +1,22 @@
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Menu, MenuItem } from "react-native-material-menu";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MedicationsContext } from "../contexts/Medications";
 
-export const MyMedicationsItem = ({ item, handleDelete }) => {
+export const MyMedicationsItem = ({
+  item,
+  handleDelete,
+  setModalOpen,
+  setEditData,
+}) => {
   const [visible, setVisible] = useState(false);
+
+  const { setMedicationData } = useContext(MedicationsContext);
 
   const navigation = useNavigation();
 
@@ -15,108 +24,102 @@ export const MyMedicationsItem = ({ item, handleDelete }) => {
 
   const showMenu = () => setVisible(true);
 
+  const handleEditPress = (item) => {
+    setModalOpen(true);
+    setEditData(true);
+    setMedicationData(item);
+    hideMenu();
+  };
+
   return (
-    <TouchableOpacity style={styles.listItem}>
-      {/* Medication details */}
-      <View>
-        <Text style={styles.itemText}>{item.name}</Text>
-        <Text style={styles.itemText}>Start: {item.startDate}</Text>
-        <Text style={styles.itemText}>End: {item.endDate}</Text>
-        <Text style={styles.itemText}>
-          {item.dosage}
-          {item.unit}
-        </Text>
-        <Text style={styles.itemText}>{item.form}</Text>
-        <Text style={styles.itemText}>{item.quantity}</Text>
-      </View>
-
-      <TouchableOpacity style={styles.options}>
-        {/* More info button */}
-        <TouchableOpacity>
-          <Text
-            style={styles.addMedsBtn}
-            onPress={() => {
-              {
-                /* Navigate to the AdditionalMedInfo screen */
-              }
-              navigation.navigate("AdditionalMedInfo", item.name);
-            }}
-          >
-            More Info
+    <View className="bg-whiteGrey p-5">
+      <TouchableOpacity className="flex flex-row justify-between">
+        {/* Medication details */}
+        <View>
+          <Text className="text-xs">
+            <Text className="font-bold">Name: </Text>
+            {item.name}
           </Text>
-        </TouchableOpacity>
+          <Text className="text-xs">
+            <Text className="font-bold">Brand: </Text>
+            {item.brand}
+          </Text>
+          <Text className="text-xs">
+            <Text className="font-bold">Start: </Text> {item.startDate}
+          </Text>
+          <Text className="text-xs">
+            <Text className="font-bold">End: </Text> {item.endDate}
+          </Text>
+          <Text className="text-xs">
+            <Text className="font-bold">Dosage: </Text>
+            {item.dosage}
+            {item.unit}
+          </Text>
+          <Text className="text-xs">
+            <Text className="font-bold">Medication Type: </Text>
+            {item.form}
+          </Text>
+          <Text className="text-xs">
+            <Text className="font-bold">Quantity to take: </Text>
+            {item.quantity}
+          </Text>
+        </View>
 
-        {/* Three dot options menu */}
-        <TouchableOpacity>
-          <Menu
-            visible={visible}
-            anchor={
-              <Text onPress={showMenu}>
-                <Entypo name="dots-three-horizontal" size={24} color="black" />
-              </Text>
-            }
-            onRequestClose={hideMenu}
-          >
-            <MenuItem onPress={hideMenu}>
-              {/* Edit button */}
-              <TouchableOpacity>
-                <Text
-                  style={styles.options}
-                  onPress={() => {
-                    {
-                      /* Navigate to the Edit Medication route */
-                    }
-                    navigation.navigate("AddMedication", item);
-                  }}
-                >
-                  {" "}
-                  Edit <Feather name="edit" size={24} color="black" />
+        <TouchableOpacity className="flex flex-row justify-between gap-4">
+          {/* More info button */}
+          <TouchableOpacity>
+            <Text
+              className="font-bold"
+              onPress={() => {
+                navigation.navigate("AdditionalMedInfo", item.name);
+              }}
+            >
+              More Info
+            </Text>
+          </TouchableOpacity>
+
+          {/* Three dot options menu */}
+          <TouchableOpacity>
+            <Menu
+              className="bg-whiteGrey w-30 p-1"
+              visible={visible}
+              anchor={
+                <Text onPress={showMenu}>
+                  <Entypo name="dots-three-vertical" size={20} color="black" />
                 </Text>
-              </TouchableOpacity>
-            </MenuItem>
-            <MenuItem onPress={hideMenu}>
-              {/* Delete button */}
-              <TouchableOpacity>
-                <Text style={styles.options} onPress={() => handleDelete(item)}>
-                  {" "}
-                  Delete
+              }
+              onRequestClose={hideMenu}
+            >
+              <MenuItem onPress={hideMenu}>
+                {/* Edit button */}
+
+                <TouchableOpacity
+                  className="bg-whiteGrey flex flex-row gap-2"
+                  onPress={() => handleEditPress(item)}
+                >
+                  <Text className="font-bold text-base mr-2"> Edit</Text>
+                  <Feather name="edit" size={22} color="black" />
+                </TouchableOpacity>
+              </MenuItem>
+
+              <MenuItem onPress={hideMenu}>
+                {/* Delete button */}
+                <TouchableOpacity
+                  className="bg-whiteGrey flex flex-row items-center gap-2"
+                  onPress={() => handleDelete(item)}
+                >
+                  <Text className="font-bold text-base"> Delete</Text>
                   <MaterialIcons
                     name="delete-outline"
                     size={26}
                     color="black"
                   />
-                </Text>
-              </TouchableOpacity>
-            </MenuItem>
-          </Menu>
+                </TouchableOpacity>
+              </MenuItem>
+            </Menu>
+          </TouchableOpacity>
         </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  listItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 15,
-    backgroundColor: "#F2F2F2",
-    borderBottomWidth: 1,
-  },
-  itemText: {
-    fontSize: 10,
-  },
-  icon: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  options: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-  },
-});

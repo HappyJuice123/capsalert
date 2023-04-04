@@ -30,7 +30,7 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.6",
+    "react-native": "^0.71.6",
     "react-native-material-menu": "^2.0.0",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
     "react-native-popup-menu": "^0.16.1",

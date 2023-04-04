@@ -11,6 +11,7 @@ import SignUpPage from "./components/SignUpPage";
 import MyMedical from "./components/MyMedical";
 import { UserProvider } from "./contexts/User";
 import { NotificationsProvider } from "./contexts/Notifications";
+import { MedicationsProvider } from "./contexts/Medications";
 import AdditionalMedInfo from "./components/AdditionalMedInfo";
 import PushNotifications from "./components/PushNotifications";
 import DueMedications from "./components/DueMedications";
@@ -131,12 +132,3 @@ export default function App() {
     </UserProvider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
