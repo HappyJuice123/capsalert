@@ -29,10 +29,7 @@ const MyMedical = () => {
         <Text className="text-center my-5 text-greyBlack text-base">
           Welcome, {loggedInUser}!
         </Text>
-        <View
-          className="flex-1 items-center"
-          // style={styles.buttons}
-        >
+        <View className="flex-1 items-center">
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Medical History");
@@ -84,55 +81,12 @@ const MyMedical = () => {
             onPress={handleSignOut}
             className="bg-purpleBG rounded-2xl my-16 w-24"
           >
-            <Text
-              // style={styles.buttonText}
-              className="text-center my-2 text-white"
-            >
-              Sign Out
-            </Text>
+            <Text className="text-center my-2 text-white">Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
   );
 };
-
-// const styles = StyleSheet.create({
-//   button: {
-//     marginTop: 20,
-//     marginBottom: 50,
-//     backgroundColor: "#ADD8E6",
-//     borderColor: "#000000",
-//     borderWidth: 2,
-//     borderRadius: 15,
-//     paddingTop: 20,
-//     paddingBottom: 20,
-//     paddingLeft: 60,
-//     paddingRight: 60,
-//     marginLeft: 50,
-//     marginRight: 50,
-//   },
-//   title: {
-//     textAlign: "center",
-//     fontSize: 60,
-//     marginBottom: 40,
-//     textAlignVertical: "top",
-//     borderColor: "#ffc0cb",
-//   },
-
-//   welcome: {
-//     marginTop: 70,
-//     textAlign: "center",
-//   },
-//   text: {
-//     textAlign: "center",
-//     textAlignVertical: "center",
-//     fontSize: 20,
-//   },
-//   buttons: {
-//     alignContent: "center",
-//     //  textAlignVertical: "center",
-//   },
-// });
 
 export default MyMedical;
