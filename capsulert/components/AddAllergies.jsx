@@ -301,10 +301,10 @@ export const AddAllergies = () => {
         <View className="flex flex-row ml-3">
           <Checkbox
             value={isCelerySelected}
-            onValueChange={() => handleCheckbox("Celery")}
-            input
+            onValueChange={() => {
+              handleCheckbox("Celery");
+            }}
             type="checkbox"
-            className=" flex items-center justify-start peer relative appearance-none w-5 h-5 border rounded-sm focus:outline-none checked"
           />
           <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
             Celery
@@ -314,9 +314,10 @@ export const AddAllergies = () => {
         <View className="flex flex-row ml-3">
           <Checkbox
             value={isCerealsSelected}
-            onValueChange={() => handleCheckbox("Cereals")}
+            onValueChange={() => {
+              handleCheckbox("Cereals");
+            }}
             type="checkbox"
-            className=" flex items-center justify-start peer relative appearance-none w-5 h-5 border rounded-sm focus:outline-none checked"
           />
           <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
             Cereals containing gluten
@@ -463,13 +464,14 @@ export const AddAllergies = () => {
           </Text>
         </View>
 
-        <View>
+        <View className="flex items-center mt-4">
           {/* <Text className="text-left my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
             Add Allergy
           </Text> */}
           <TextInput
             placeholder="Add to your allergies ..."
-            className="mt-7 ml-3"
+            //className="mt-7 ml-3"
+            className="border-greyBlack border-2 rounded-xl w-60 mb-5 ml-2 p-2 text-center"
             //            style={styles.input}
             onChangeText={(textValue) => {
               return setNewAllergy(textValue);
@@ -480,7 +482,8 @@ export const AddAllergies = () => {
           <TouchableOpacity
             button
             onPress={handleInput}
-            className="bg-purpleBG rounded-2xl mt-0 ml-3 w-24"
+            //className="bg-purpleBG rounded-2xl mt-0 ml-3 w-24"
+            className=" bg-purpleLight rounded-xl w-56 mb-5 flex items-center"
             title="Add "
           >
             <Text className="text-center my-2 text-white">Add</Text>

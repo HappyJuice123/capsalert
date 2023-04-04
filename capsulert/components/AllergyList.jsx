@@ -5,10 +5,12 @@ import {
   FlatList,
   TouchableOpacity,
   Button,
+  StyleSheet,
   ScrollView,
 } from "react-native";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export const AllergyList = ({ newAllergy }) => {
   const { userId } = useContext(UserContext);
@@ -74,7 +76,7 @@ export const AllergyList = ({ newAllergy }) => {
   return (
     <ScrollView className="bg-whiteGrey">
       <View>
-        <Text className="text-center my-1 text-2xl text-greyBlack font-semibold">
+        <Text className="text-center my-1 text-greyBlack font-semibold text-base ml-3">
           Your allergy list
         </Text>
         <FlatList
@@ -84,11 +86,21 @@ export const AllergyList = ({ newAllergy }) => {
             return (
               <View>
                 <Text>{item}</Text>
-                <TouchableOpacity>
-                  <Button
-                    title="Remove"
+
+                <TouchableOpacity
+                  className=" ml-2 bg-purpleLight rounded-xl mt-5 w-90 text-white 
+              border-black border-2"
+                >
+                  <Text className="text-white items-center pl-5 pt-2">
+                    {item}
+                  </Text>
+                  <MaterialIcons
+                    style={styles.icon}
+                    name="delete-outline"
+                    size={26}
+                    color="black"
                     onPress={() => handleRemove(item)}
-                  ></Button>
+                  ></MaterialIcons>
                 </TouchableOpacity>
               </View>
             );
@@ -98,3 +110,14 @@ export const AllergyList = ({ newAllergy }) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  icon: {
+    alignSelf: "flex-end",
+    verticalAlign: "middle",
+    padding: 5,
+    paddingBottom: 10,
+    paddingRight: 10,
+    paddingTop: 2,
+  },
+});
