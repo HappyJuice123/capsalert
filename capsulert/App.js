@@ -56,7 +56,16 @@ export default function App() {
               name="Login"
               component={SignInPage}
             ></Stack.Screen>
-            <Stack.Screen name="Register" component={SignUpPage}></Stack.Screen>
+            <Stack.Screen
+              name="Register"
+              component={SignUpPage}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#6c537a",
+                },
+                headerTintColor: "#ebebeb",
+              }}
+            ></Stack.Screen>
             <Stack.Screen
               name="My Medical"
               component={MyMedical}
