@@ -75,6 +75,12 @@ export default function App() {
               <Stack.Screen
                 name="Medical History"
                 component={MedicalHistory}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
               ></Stack.Screen>
               <Stack.Screen
                 name="My Medications"
@@ -112,7 +118,13 @@ export default function App() {
               <Stack.Screen
                 name="DueMedications"
                 component={DueMedications}
-                options={{ title: "DueMedications" }}
+                options={{
+                  title: "DueMedications",
+                  headerStyle: {
+                    backgroundColor: "#6c537a",
+                  },
+                  headerTintColor: "#ebebeb",
+                }}
               />
             </Stack.Navigator>
           </NavigationContainer>
