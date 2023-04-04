@@ -95,7 +95,13 @@ export default function App() {
             <Stack.Screen
               name="DueMedications"
               component={DueMedications}
-              options={{ title: "DueMedications" }}
+              options={{
+                title: "DueMedications",
+                headerStyle: {
+                  backgroundColor: "#6c537a",
+                },
+                headerTintColor: "#ebebeb",
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>

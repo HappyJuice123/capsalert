@@ -36,7 +36,7 @@ export const DueMedicationsItem = ({ item }) => {
     } else if (Number(item.time.slice(3, 5) < 30)) {
       if (
         Number(item.time.slice(0, 2)) - today.getHours() === 1 &&
-        60 - today.getMinutes() + Number(item.time.slice(3, 5) <= 30)
+        60 - today.getMinutes() + Number(item.time.slice(3, 5)) <= 30
       ) {
         return styles.dueTime;
       } else if (
@@ -75,13 +75,13 @@ export const DueMedicationsItem = ({ item }) => {
 
   return (
     <TouchableOpacity
-      style={styles.listItem}
+      className="bg-zinc-50 mx-8 my-4 rounded-md shadow-md shadow-slate-600"
       onPress={() => {
         handleMedTaken();
       }}
     >
-      <View style={styles.itemTextContainer}>
-        <Text style={styles.itemText}>
+      <View className="text-xs px-4 pt-3 pb-4">
+        <Text className="mb-1 text-lg font-semibold">
           {item.name} {item.dosage} {item.unit}
         </Text>
         <Text>
@@ -100,27 +100,8 @@ export const DueMedicationsItem = ({ item }) => {
 };
 
 const styles = StyleSheet.create({
-  listItem: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    marginVertical: 10,
-    marginHorizontal: 14,
-    backgroundColor: "#F2F2F2",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#999999",
-  },
-  itemTextContainer: {
-    fontSize: 14,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-  },
-  itemText: {
-    marginBottom: 4,
-  },
   time: {
-    backgroundColor: "lightblue",
+    backgroundColor: "#bfdbfe",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderBottomLeftRadius: 5,
@@ -128,7 +109,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   dueTime: {
-    backgroundColor: "lightgreen",
+    backgroundColor: "#a3e635",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderBottomLeftRadius: 5,
@@ -136,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   medTaken: {
-    backgroundColor: "#1d62f5",
+    backgroundColor: "#818cf8",
     color: "#fff",
     paddingHorizontal: 15,
     paddingVertical: 10,
@@ -145,7 +126,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   medMissed: {
-    backgroundColor: "pink",
+    backgroundColor: "#fcbbbb",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderBottomLeftRadius: 5,

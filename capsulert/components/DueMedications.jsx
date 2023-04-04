@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, FlatList, ScrollView } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { UserContext } from "../contexts/User";
 import { DueMedicationsItem } from "./DueMedicationsItem";
@@ -52,8 +58,21 @@ const DueMedications = () => {
   };
 
   return (
-    <ScrollView style={styles.list}>
+    <ScrollView className="bg-whiteGrey">
+      <View className="flex-1 flex-row flex-wrap justify-center items-center gap-x-2 mt-5">
+        <Text>Legend:</Text>
+        <TouchableOpacity className="bg-lime-400 w-4 h-4 rounded-sm"></TouchableOpacity>
+        <Text>Due</Text>
+        <TouchableOpacity className="bg-indigo-400 w-4 h-4 rounded-sm"></TouchableOpacity>
+        <Text>Taken</Text>
+        <TouchableOpacity className="bg-redLight w-4 h-4 rounded-sm"></TouchableOpacity>
+        <Text>Missed</Text>
+        <TouchableOpacity className="bg-blue-200 w-4 h-4 rounded-sm"></TouchableOpacity>
+        <Text>Future</Text>
+      </View>
+
       <FlatList
+        className="mt-3"
         scrollEnabled={false}
         data={dueMedicationsList}
         renderItem={({ item }) => <DueMedicationsItem item={item} />}
@@ -63,34 +82,3 @@ const DueMedications = () => {
 };
 
 export default DueMedications;
-
-const styles = StyleSheet.create({
-  list: {
-    backgroundColor: "#fff",
-  },
-  addMedsBtn: {
-    marginTop: 20,
-    marginBottom: 50,
-    backgroundColor: "#ADD8E6",
-    borderColor: "#000000",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 60,
-    paddingRight: 60,
-    marginLeft: 50,
-    marginRight: 50,
-    textAlign: "center",
-  },
-  modalToggle: {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 10,
-    alignSelf: "center",
-  },
-  modalClose: {
-    marginHorizontal: 40,
-    marginBottom: 0,
-  },
-});
