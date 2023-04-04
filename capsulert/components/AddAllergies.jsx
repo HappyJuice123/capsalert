@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   TextInput,
+  StyleSheet,
   TouchableOpacity,
   Button,
   ScrollView,
@@ -287,161 +287,206 @@ export const AddAllergies = () => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.header}>Allergies</Text>
-        <Text style={styles.textBig}>
+      <View>
+        {/* <Text className="text-center my-1 text-3xl text-greyBlack font-semibold">
+          Allergies
+        </Text> */}
+        {/* <Text className="text-center my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
           What allergies would you like to add?
+        </Text> */}
+        <Text className="text-center my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
+          Please select all applicable allergies
         </Text>
-        <Text style={styles.text}>Please select all applicable allergies</Text>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isCelerySelected}
             onValueChange={() => handleCheckbox("Celery")}
-            style={styles.checkbox}
+            input
+            type="checkbox"
+            className=" flex items-center justify-start peer relative appearance-none w-5 h-5 border rounded-sm focus:outline-none checked"
           />
-          <Text style={styles.AllergenText}>Celery</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Celery
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isCerealsSelected}
             onValueChange={() => handleCheckbox("Cereals")}
-            style={styles.checkbox}
+            type="checkbox"
+            className=" flex items-center justify-start peer relative appearance-none w-5 h-5 border rounded-sm focus:outline-none checked"
           />
-          <Text style={styles.AllergenText}>Cereals containing gluten</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Cereals containing gluten
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isCrustaceansSelected}
             onValueChange={() => {
               handleCheckbox("Crustaceans");
             }}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Crustaceans</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Crustaceans
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isEggsSelected}
             onValueChange={() => {
               handleCheckbox("Eggs");
             }}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Eggs</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Eggs
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isFishSelected}
             onValueChange={() => {
               handleCheckbox("Fish");
             }}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Fish</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Fish
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isLupinSelected}
             onValueChange={() => {
               handleCheckbox("Lupin");
             }}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Lupin</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Lupin
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isMilkSelected}
             onValueChange={() => handleCheckbox("Milk")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Milk</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Milk
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isMolluscsSelected}
             onValueChange={() => handleCheckbox("Molluscs")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Molluscs</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Molluscs
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isMustardSelected}
             onValueChange={() => handleCheckbox("Mustard")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Mustard</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Mustard
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isNutsSelected}
             onValueChange={() => handleCheckbox("Nuts")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Nuts</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Nuts
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isPeanutsSelected}
             onValueChange={() => handleCheckbox("Peanuts")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Peanuts</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Peanuts
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isSesameSeedsSelected}
             onValueChange={() => handleCheckbox("Sesame Seeds")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Sesame Seeds</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Sesame Seeds
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isSoyaSelected}
             onValueChange={() => handleCheckbox("Soya")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Soya</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Soya
+          </Text>
         </View>
 
-        <View style={styles.row}>
+        <View className="flex flex-row ml-3">
           <Checkbox
             value={isSulphurDioxideSelected}
             onValueChange={() => handleCheckbox("Sulphur Dioxide")}
-            style={styles.checkbox}
+            type="checkbox"
           />
-          <Text style={styles.AllergenText}>Sulphur Dioxide</Text>
+          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+            Sulphur Dioxide
+          </Text>
         </View>
 
         <View>
-          <Text style={styles.addAllergy}>Add Allergy</Text>
+          {/* <Text className="text-left my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
+            Add Allergy
+          </Text> */}
           <TextInput
-            placeholder="Allergies..."
-            style={styles.input}
+            placeholder="Your allergies here..."
+            className="mt-7 ml-3"
+            //            style={styles.input}
             onChangeText={(textValue) => {
               return setNewAllergy(textValue);
             }}
             value={newAllergy}
           ></TextInput>
-          <TouchableOpacity>
-            <Button title="Add Allergy" onPress={handleInput}></Button>
+
+          <TouchableOpacity
+            button
+            onPress={handleInput}
+            className="bg-purpleBG rounded-2xl mt-0 ml-3 w-24"
+            title="Add "
+          >
+            <Text className="text-center my-2 text-white">add</Text>
           </TouchableOpacity>
         </View>
+
         <View>
           <AllergyList newAllergy={newAllergy} />
         </View>
@@ -450,65 +495,65 @@ export const AddAllergies = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    padding: 30,
-  },
-  header: {
-    fontSize: 30,
-    paddingBottom: 20,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    marginBottom: 20,
-  },
-  checkbox: {
-    alignSelf: "center",
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  AllergenText: {
-    marginLeft: 10,
-    marginBottom: 5,
-  },
-  input: {
-    borderColor: "#000",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginVertical: 10,
-    padding: 4,
-    width: 220,
-  },
-  text: {
-    fontSize: 15,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  textSmall: {
-    fontSize: 15,
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  textBig: {
-    fontSize: 15,
-    marginTop: 20,
-    marginBottom: 10,
-    fontWeight: "bold",
-  },
-  addAllergy: {
-    fontSize: 20,
-    marginTop: 20,
-    borderTopColor: "black",
-  },
-  headerSub: {
-    fontSize: 18,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "flex-start",
+//     justifyContent: "flex-start",
+//     padding: 30,
+//   },
+//   header: {
+//     fontSize: 30,
+//     paddingBottom: 20,
+//   },
+//   checkboxContainer: {
+//     flexDirection: "row",
+//     marginBottom: 20,
+//   },
+//   checkbox: {
+//     alignSelf: "center",
+//   },
+//   row: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//   },
+//   AllergenText: {
+//     marginLeft: 10,
+//     marginBottom: 5,
+//   },
+//   input: {
+//     borderColor: "#000",
+//     borderWidth: 1,
+//     borderRadius: 5,
+//     marginVertical: 10,
+//     padding: 4,
+//     width: 220,
+//   },
+//   text: {
+//     fontSize: 15,
+//     marginTop: 20,
+//     marginBottom: 10,
+//   },
+//   textSmall: {
+//     fontSize: 15,
+//     marginTop: 10,
+//     marginBottom: 5,
+//   },
+//   textBig: {
+//     fontSize: 15,
+//     marginTop: 20,
+//     marginBottom: 10,
+//     fontWeight: "bold",
+//   },
+//   addAllergy: {
+//     fontSize: 20,
+//     marginTop: 20,
+//     borderTopColor: "black",
+//   },
+//   headerSub: {
+//     fontSize: 18,
+//     marginTop: 10,
+//     marginBottom: 10,
+//   },
+// });

@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Button } from "react-native";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
 
@@ -73,15 +66,17 @@ export const AllergyList = ({ newAllergy }) => {
 
   return (
     <View>
-      <Text style={styles.headerSub}>Allergy List</Text>
+      <Text className="text-center my-1 text-2xl text-greyBlack font-semibold">
+        Allergy List
+      </Text>
       <FlatList
         scrollEnabled={false}
         data={readAllergyList}
         renderItem={({ item }) => {
           return (
-            <View style={styles.row}>
+            <View>
               <Text>{item}</Text>
-              <TouchableOpacity style={styles.remove}>
+              <TouchableOpacity>
                 <Button
                   title="Remove"
                   onPress={() => handleRemove(item)}
@@ -94,19 +89,3 @@ export const AllergyList = ({ newAllergy }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  headerSub: {
-    fontSize: 18,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  remove: {
-    marginLeft: 200,
-    marginBottom: 10,
-  },
-});
