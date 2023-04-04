@@ -85,7 +85,14 @@ export default function App() {
             <Stack.Screen
               name="AdditionalMedInfo"
               component={AdditionalMedInfo}
-              options={{ title: "Additional Info" }}
+              options={{
+                title: "Additional Medical Information",
+                headerStyle: {
+                  backgroundColor: "#6c537a",
+                },
+                headerTintColor: "#ebebeb",
+                backgroundColor: "#ebebeb",
+              }}
             ></Stack.Screen>
             <Stack.Screen
               name="Push Notifications"
