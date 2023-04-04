@@ -13,7 +13,6 @@ import { UserContext } from "../contexts/User";
 import { MedicationsContext } from "../contexts/Medications";
 import { Picker } from "@react-native-picker/picker";
 import PushNotifications from "./PushNotifications";
-import { AntDesign } from "@expo/vector-icons";
 import { getFormatedDate } from "react-native-modern-datepicker";
 import DatePicker from "react-native-modern-datepicker";
 
@@ -167,7 +166,6 @@ export const AddMedication = ({
               setMedications((currentMedications) => {
                 return [...currentMedications];
               });
-              setModalOpen(false);
               setEditData(false);
             })
             .catch((error) => {
@@ -192,10 +190,11 @@ export const AddMedication = ({
       </View>
 
       {/* Medication Name */}
-      <View className="flex items-center text-whiteGrey mt-8">
+      <View className="flex items-center text-whiteGrey mt-10">
         <Text className="mb-3 font-bold">Name</Text>
         <TextInput
           placeholder={"Enter Medication"}
+          textAlign="center"
           className="border-2 border-whiteGrey rounded-xl w-60 mb-5 p-2 text-center"
           value={newMedication}
           onChangeText={(value) => setNewMedication(value)}
@@ -345,9 +344,11 @@ export const AddMedication = ({
             onPress={handleDateModalPress}
           >
             {editData ? (
-              <Text>Click to update start/end date</Text>
+              <Text className="font-semibold">
+                Click to update start/end date
+              </Text>
             ) : (
-              <Text>Click to add start/end date</Text>
+              <Text className="font-semibold">Click to add start/end date</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -359,7 +360,7 @@ export const AddMedication = ({
               className="text-center w-15 p-2 mb-5"
               onPress={handleDateModalPress}
             >
-              <Text className="bg-whiteGrey text-black font-bold border-2 border-black text-center w-15 p-3 rounded-xl shadow-md shadow-slate-600">
+              <Text className="bg-whiteGrey text-black font-bold border-2 border-black text-center w-15 p-3 rounded-xl">
                 Close
               </Text>
             </TouchableOpacity>
@@ -382,7 +383,8 @@ export const AddMedication = ({
       {/* Set Notifications */}
       <View className="flex items-center">
         <TouchableOpacity
-          className="bg-whiteGrey border-2 border-black rounded-xl mt-2 w-80 py-3 shadow-md shadow-slate-600"
+          className="bg-whiteGrey border-2 border-black rounded-xl mt-2 w-80 py-3"
+          // className="bg-whiteGrey border-2 border-black rounded-xl mt-2 w-80 py-3 shadow-md shadow-slate-600"
           onPress={handleNotificationsModalPress}
         >
           <Text className="text-black font-bold text-center">
@@ -390,6 +392,12 @@ export const AddMedication = ({
           </Text>
         </TouchableOpacity>
         <Modal visible={notificationsModalOpen} animationType="slide">
+          {/* <AntDesign
+            name="closesquare"
+            size={30}
+            color="black"
+            onPress={() => setNotificationsModalOpen(false)}
+          /> */}
           <View className="flex justify-center items-center mt-10 mb-2">
             <TouchableOpacity onPress={() => setNotificationsModalOpen(false)}>
               <Text className="font-bold text-black text-center bg-whiteGrey border-2 border-black rounded-xl w-20 p-2">
@@ -397,7 +405,6 @@ export const AddMedication = ({
               </Text>
             </TouchableOpacity>
           </View>
-
           <PushNotifications
             notificationsModalOpen={notificationsModalOpen}
             setNotificationsModalOpen={setNotificationsModalOpen}
@@ -417,8 +424,16 @@ export const AddMedication = ({
       {editData ? (
         <View className="flex items-center">
           <TouchableOpacity
-            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3 shadow-md shadow-slate-600"
-            onPress={() => handleEdit(medicationData)}
+            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
+            // className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3 shadow-md shadow-slate-600"
+            onPress={() => {
+              if (newMedication === "") {
+                alert("Please enter a medication name!");
+              } else {
+                handleEdit(medicationData);
+                setModalOpen(false);
+              }
+            }}
           >
             <Text className="text-center my-2 text-white">
               {/* SAVE MEDICATION  */}
@@ -429,8 +444,15 @@ export const AddMedication = ({
       ) : (
         <View className="flex items-center">
           <TouchableOpacity
-            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3 shadow-md shadow-slate-600"
-            onPress={handleInput}
+            className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3"
+            // className="bg-purpleLight rounded-xl mt-8 w-56 mb-5 py-3 shadow-md shadow-slate-600"
+            onPress={() => {
+              if (newMedication === "") {
+                alert("Please enter a medication name!");
+              } else {
+                handleInput;
+              }
+            }}
           >
             <Text className="text-base font-bold text-center my-2 text-white">
               {/* ADD MEDICATION  */}
