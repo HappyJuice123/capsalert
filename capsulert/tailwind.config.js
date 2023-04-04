@@ -4,14 +4,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        purpleBG: "#6c537a",
-        purpleLight: "#8a7099",
-        whiteGrey: "#ebebeb",
-        greyBlack: "#262626",
-        greyButton: "#666666",
-      },
-      fontFamily: {
-        sans: ["Helvetica", "Arial", "sans-serif"],
+        purpleBG: "#6c537a", //colour of header
+        purpleLight: "#8a7099", //colour of buttons
+        whiteGrey: "#ebebeb", //font colour when there is a purple background, and the background colour
+        greyBlack: "#262626", // text colour on whitegrey background
       },
     },
   },
