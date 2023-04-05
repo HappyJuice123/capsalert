@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/core";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const SignInPage = () => {
   const [loginEmail, setLoginEmail] = useState("");
@@ -43,6 +44,7 @@ const SignInPage = () => {
       <View>
         <Text className="text-center mt-20 text-5xl text-greyBlack font-semibold">
           Capsalert
+          <MaterialCommunityIcons name="pill" size={40} color="black" />
         </Text>
 
         <TextInput

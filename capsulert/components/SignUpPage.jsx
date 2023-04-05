@@ -1,6 +1,5 @@
 import {
   KeyboardAvoidingView,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
@@ -12,6 +11,7 @@ import { auth } from "../firebase/firebase";
 import { useNavigation } from "@react-navigation/core";
 import { UserContext } from "../contexts/User";
 import { getDatabase, ref, set } from "firebase/database";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -56,6 +56,7 @@ const SignUpPage = () => {
       <View className="w-10/12 flex-1 items-center ">
         <Text className="text-center mt-20 mb-10 text-5xl text-greyBlack font-semibold">
           Capsalert
+          <MaterialCommunityIcons name="pill" size={40} color="black" />
         </Text>
         <TextInput
           className="bg-white border-2 border-greyBlack rounded-xl w-60 mb-5 p-2 text-center items-center"

@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase/firebase";
 import { UserContext } from "../contexts/User";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 //add your component on press in the TouchableOpacity component
 //eg <TouchableOpacity style={styles.button} onPress={<Allergies/>}>
@@ -22,9 +23,11 @@ const MyMedical = () => {
 
   return (
     <ScrollView className="bg-whiteGrey">
-      <View className="bg-whiteGrey mt-6">
+      {/* <View className="bg-whiteGrey mt-6"> */}
+      <View className="bg-whiteGrey mt-10">
         <Text className="text-center my-1 text-5xl text-greyBlack font-semibold">
           Capsalert
+          <MaterialCommunityIcons name="pill" size={40} color="black" />
         </Text>
         <Text className="text-center my-5 text-greyBlack text-base">
           Welcome, {loggedInUser}!
