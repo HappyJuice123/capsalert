@@ -11,7 +11,8 @@ Capsalert allows the user to have multiple reminders for specific medications, w
 <a href="https://code.visualstudio.com/"><img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white" alt="Visual Studio Code"/></a>
 <a href="https://www.npmjs.com/"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="Npm"/></a>
 <a href="https://expo.dev/"><img src="https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white" alt="Expo"/></a>
-<a href="https://www.nativewind.dev/">NativeWind</a>
+<a href="https://www.nativewind.dev/"><img width="142" alt="native-wind-img" src="https://user-images.githubusercontent.com/107635204/230014237-a3db14e1-fd2c-47cd-b9a1-24bbf4097385.png"></a>
+
 
 ## Getting set up 
 Fork & clone this repo
