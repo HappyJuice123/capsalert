@@ -3,8 +3,7 @@
 ## Project Overview
 
 For our final group project we created a medication notification app, this android app allows users to create an account and input their medical history, allergies, and current medication.
-
-Capsalert allows the user to have multiple reminders for specific medications, which will provide a push notification to the phone with a discreet message reminding them to take their scheduled medications.
+Capsalert allows the user to have multiple reminders for specific medications, which will provide a push notification to the phone with a discreet message reminding them to take their schedualed medications.
 
 ## Built with...
 
@@ -19,28 +18,19 @@ Capsalert allows the user to have multiple reminders for specific medications, w
 
 ## Getting set up
 
-1. Fork & clone this repo.
+Fork & clone this repo
 
-2. Run the following commands:
+`npm install`
 
-   `npm install`
-
-   `npx expo start`
+`npx expo start`
 
 ## How to use this app
 
-When you first access the app, you will be greeted with a sign in/sign up page. If you already have an account, log in as normal. If not, create a new account. After this, you may go into all the different pages and input the information you choose.
-
-1. Add your previous/current diagnoses into the **Medical History** page.
-2. Add food, drug and any other allergies into the **Allergy** page.
-3. View a list of all your medications in the **Medications** page. From here you can do the following:
-
-   - Add medications, where you can enter the medication's generic and brand names, dosage, form (e.g. pill, liquid, injection) and quantity to take. You can also set up notifications and input the time(s) the medication needs to be taken, which will generate local notifications on your phone. These medications can be edited and deleted at any time.
-
-   - In an effort to help users feel less alone or scared, we have also created a More Info tag for each medication. This takes you to a separate page containing more information about the medication. There is also a link to the NHS page for that medication, and some of which contain a forum where people can share similar experiences with the medication.
-
-   - We have also implemented a text to speech function to allow uses with sight impairments to still have full access to our app.
-
-4. View which medications you're due to take in the **Due Medications** page, where there is a colour coded and chronological list of your due medications, including medications that are due imminently, missed medications, medications you've already taken, and ones scheduled for later in the day. You can also tap a medication card and mark it as "Taken".
-
-5. Lastly. you can sign in and out of your account with ease, using the **Sign Out** button.
+When you first access the app you will be greeted with a sign in/sign up page, if you already have an account log in as normal; if not, create a new account. After this you may go into all the different pages and input the information you choose.
+You can add into your medical history page previous diagnosises and medical appoinments.  
+Add any important allergies into the allergy page.  
+Add medications into the medication page, when adding this information add the name, start and end date, dosage and regularity (you can edit and delete these medications at any time).  
+In an effort to help users feel less alone or scared we have created a more info tag containing some information about the medication we have also linked the nhs page for each medication you add in the more info tag, some of which contain a forum where people can share similar experiences with the medication.  
+We have also implemented a text to speach function in this more info tag to allow uses with sight impairments to still have full access to our app.  
+You can view these notifications in the due medications page, where there is a colour coded and chronological list of your notifications, incluing missed medications, imminent notifications and ones scheduled for later in the day.
+Lastly you can sign in and out of your account with ease, using the sign out button.
