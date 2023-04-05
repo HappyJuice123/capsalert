@@ -102,7 +102,7 @@ export default function App() {
                 name="Allergies"
                 component={AddAllergies}
                 options={{
-                  title: "Additional Medical Information",
+                  title: "Your Allergies",
                   headerStyle: {
                     backgroundColor: "#6c537a",
                   },

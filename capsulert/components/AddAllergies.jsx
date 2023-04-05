@@ -288,12 +288,6 @@ export const AddAllergies = () => {
   return (
     <ScrollView className="bg-whiteGrey">
       <View>
-        {/* <Text className="text-center my-1 text-3xl text-greyBlack font-semibold">
-          Allergies
-        </Text> */}
-        {/* <Text className="text-center my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
-          What allergies would you like to add?
-        </Text> */}
         <Text className="text-center my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
           Please select all applicable allergies
         </Text>
@@ -424,7 +418,7 @@ export const AddAllergies = () => {
           <Checkbox
             value={isPeanutsSelected}
             onValueChange={() => handleCheckbox("Peanuts")}
-            type="checkbox"
+            type="checkbox "
           />
           <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
             Peanuts
@@ -465,14 +459,9 @@ export const AddAllergies = () => {
         </View>
 
         <View className="flex items-center mt-4">
-          {/* <Text className="text-left my-1 mt-6 mb-3 text-2l text-greyBlack font-semibold">
-            Add Allergy
-          </Text> */}
           <TextInput
             placeholder="Add to your allergies ..."
-            //className="mt-7 ml-3"
             className="border-greyBlack border-2 rounded-xl w-60 mb-5 ml-2 p-2 text-center"
-            //            style={styles.input}
             onChangeText={(textValue) => {
               return setNewAllergy(textValue);
             }}
@@ -482,7 +471,6 @@ export const AddAllergies = () => {
           <TouchableOpacity
             button
             onPress={handleInput}
-            //className="bg-purpleBG rounded-2xl mt-0 ml-3 w-24"
             className=" bg-purpleLight rounded-xl w-56 mb-5 flex items-center"
             title="Add "
           >
@@ -497,66 +485,3 @@ export const AddAllergies = () => {
     </ScrollView>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "flex-start",
-//     justifyContent: "flex-start",
-//     padding: 30,
-//   },
-//   header: {
-//     fontSize: 30,
-//     paddingBottom: 20,
-//   },
-//   checkboxContainer: {
-//     flexDirection: "row",
-//     marginBottom: 20,
-//   },
-//   checkbox: {
-//     alignSelf: "center",
-//   },
-//   row: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//   },
-//   AllergenText: {
-//     marginLeft: 10,
-//     marginBottom: 5,
-//   },
-//   input: {
-//     borderColor: "#000",
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     marginVertical: 10,
-//     padding: 4,
-//     width: 220,
-//   },
-//   text: {
-//     fontSize: 15,
-//     marginTop: 20,
-//     marginBottom: 10,
-//   },
-//   textSmall: {
-//     fontSize: 15,
-//     marginTop: 10,
-//     marginBottom: 5,
-//   },
-//   textBig: {
-//     fontSize: 15,
-//     marginTop: 20,
-//     marginBottom: 10,
-//     fontWeight: "bold",
-//   },
-//   addAllergy: {
-//     fontSize: 20,
-//     marginTop: 20,
-//     borderTopColor: "black",
-//   },
-//   headerSub: {
-//     fontSize: 18,
-//     marginTop: 10,
-//     marginBottom: 10,
-//   },
-// });

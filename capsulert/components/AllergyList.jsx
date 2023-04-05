@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Button,
   StyleSheet,
   ScrollView,
 } from "react-native";
@@ -75,9 +74,9 @@ export const AllergyList = ({ newAllergy }) => {
 
   return (
     <ScrollView className="bg-whiteGrey">
-      <View>
+      <View className="flex items-center">
         <Text className="text-center my-1 text-greyBlack font-semibold text-base ml-3">
-          Your allergy list
+          Other allergies
         </Text>
         <FlatList
           scrollEnabled={false}
