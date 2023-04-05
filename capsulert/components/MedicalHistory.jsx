@@ -131,13 +131,13 @@ const MedicalHistory = () => {
         <Text className="text-left my-5 text-greyBlack text-base ml-3">
           Your medical history
         </Text>
-        <View className="flex-1 items-center border-black border-t-2 ">
+        <View className="flex-1 items-center border-black border-t-2">
           <FlatList
             scrollEnabled={false}
             data={data}
             renderItem={({ item }) => (
               <TouchableOpacity
-                className=" bg-purpleLight rounded-xl mt-5 w-96 text-white 
+                className=" bg-purpleLight rounded-xl mt-5 w-80 text-white 
               border-black border-2"
               >
                 <Text className="text-white items-center pl-5 pt-2">

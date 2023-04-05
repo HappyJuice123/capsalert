@@ -74,7 +74,7 @@ export const AllergyList = ({ newAllergy }) => {
 
   return (
     <ScrollView className="bg-whiteGrey">
-      <View className="flex items-center">
+      <View className="flex items-center mb-5">
         <Text className="text-center my-1 text-greyBlack font-semibold text-base ml-3">
           Other allergies
         </Text>

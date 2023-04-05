@@ -194,6 +194,10 @@ const PushNotifications = ({
   //   marginVertical: 10,
   // },
 
+  const handleCloseModalPress = () => {
+    setTimeModal(!timeModal);
+  };
+
   return (
     <View>
       {/* Time */}
@@ -224,7 +228,7 @@ const PushNotifications = ({
         </View>
 
         <TouchableOpacity
-          onPress={handleTimeModalPress}
+          onPress={handleCloseModalPress}
           className="bg-whiteGrey border-2 border-black rounded-xl mx-4 mt-2 py-3"
         >
           <Text className="text-black font-bold text-center">
@@ -246,10 +250,15 @@ const PushNotifications = ({
                 setTime((currentTimeArray) => {
                   return [...currentTimeArray, time];
                 });
-                handleTimeModalPress();
+                handleCloseModalPress();
               }}
             />
           </View>
+          <TouchableOpacity className="mt-3" onPress={handleTimeModalPress}>
+            <Text className="bg-whiteGrey text-black font-bold border-2 border-black text-center w-15 p-3 rounded-xl">
+              Close
+            </Text>
+          </TouchableOpacity>
         </View>
       </Modal>
 

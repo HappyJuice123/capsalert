@@ -92,6 +92,7 @@ export default function App() {
                 name="My Medications"
                 component={MyMedications}
                 options={{
+                  title: "Medications",
                   headerStyle: {
                     backgroundColor: "#6c537a",
                   },
@@ -107,7 +108,7 @@ export default function App() {
                 name="Allergies"
                 component={AddAllergies}
                 options={{
-                  title: "Your Allergies",
+                  title: "Allergies",
                   headerStyle: {
                     backgroundColor: "#6c537a",
                   },
@@ -136,7 +137,7 @@ export default function App() {
                 name="DueMedications"
                 component={DueMedications}
                 options={{
-                  title: "DueMedications",
+                  title: "Due Medications",
                   headerStyle: {
                     backgroundColor: "#6c537a",
                   },

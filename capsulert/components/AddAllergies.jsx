@@ -292,170 +292,172 @@ export const AddAllergies = () => {
           Please select all applicable allergies
         </Text>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isCelerySelected}
-            onValueChange={() => {
-              handleCheckbox("Celery");
-            }}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Celery
-          </Text>
-        </View>
+        <View className="mt-4">
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isCelerySelected}
+              onValueChange={() => {
+                handleCheckbox("Celery");
+              }}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Celery
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isCerealsSelected}
-            onValueChange={() => {
-              handleCheckbox("Cereals");
-            }}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Cereals containing gluten
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isCerealsSelected}
+              onValueChange={() => {
+                handleCheckbox("Cereals");
+              }}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Cereals containing gluten
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isCrustaceansSelected}
-            onValueChange={() => {
-              handleCheckbox("Crustaceans");
-            }}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Crustaceans
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isCrustaceansSelected}
+              onValueChange={() => {
+                handleCheckbox("Crustaceans");
+              }}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Crustaceans
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isEggsSelected}
-            onValueChange={() => {
-              handleCheckbox("Eggs");
-            }}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Eggs
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isEggsSelected}
+              onValueChange={() => {
+                handleCheckbox("Eggs");
+              }}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Eggs
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isFishSelected}
-            onValueChange={() => {
-              handleCheckbox("Fish");
-            }}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Fish
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isFishSelected}
+              onValueChange={() => {
+                handleCheckbox("Fish");
+              }}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Fish
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isLupinSelected}
-            onValueChange={() => {
-              handleCheckbox("Lupin");
-            }}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Lupin
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isLupinSelected}
+              onValueChange={() => {
+                handleCheckbox("Lupin");
+              }}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Lupin
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isMilkSelected}
-            onValueChange={() => handleCheckbox("Milk")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Milk
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isMilkSelected}
+              onValueChange={() => handleCheckbox("Milk")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Milk
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isMolluscsSelected}
-            onValueChange={() => handleCheckbox("Molluscs")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Molluscs
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isMolluscsSelected}
+              onValueChange={() => handleCheckbox("Molluscs")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Molluscs
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isMustardSelected}
-            onValueChange={() => handleCheckbox("Mustard")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Mustard
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isMustardSelected}
+              onValueChange={() => handleCheckbox("Mustard")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Mustard
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isNutsSelected}
-            onValueChange={() => handleCheckbox("Nuts")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Nuts
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isNutsSelected}
+              onValueChange={() => handleCheckbox("Nuts")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Nuts
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isPeanutsSelected}
-            onValueChange={() => handleCheckbox("Peanuts")}
-            type="checkbox "
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Peanuts
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isPeanutsSelected}
+              onValueChange={() => handleCheckbox("Peanuts")}
+              type="checkbox "
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Peanuts
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isSesameSeedsSelected}
-            onValueChange={() => handleCheckbox("Sesame Seeds")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Sesame Seeds
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isSesameSeedsSelected}
+              onValueChange={() => handleCheckbox("Sesame Seeds")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Sesame Seeds
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isSoyaSelected}
-            onValueChange={() => handleCheckbox("Soya")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Soya
-          </Text>
-        </View>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isSoyaSelected}
+              onValueChange={() => handleCheckbox("Soya")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Soya
+            </Text>
+          </View>
 
-        <View className="flex flex-row ml-3">
-          <Checkbox
-            value={isSulphurDioxideSelected}
-            onValueChange={() => handleCheckbox("Sulphur Dioxide")}
-            type="checkbox"
-          />
-          <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
-            Sulphur Dioxide
-          </Text>
+          <View className="flex flex-row ml-3">
+            <Checkbox
+              value={isSulphurDioxideSelected}
+              onValueChange={() => handleCheckbox("Sulphur Dioxide")}
+              type="checkbox"
+            />
+            <Text className="my-1 ml-2 text-1l text-greyBlack font-semibold">
+              Sulphur Dioxide
+            </Text>
+          </View>
         </View>
 
         <View className="flex items-center mt-4">

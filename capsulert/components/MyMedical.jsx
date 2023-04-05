@@ -51,7 +51,7 @@ const MyMedical = () => {
             }}
             className="bg-purpleLight rounded-xl my-5 w-56"
           >
-            <Text className="text-center my-2 text-white">My Medications</Text>
+            <Text className="text-center my-2 text-white">Medications</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
