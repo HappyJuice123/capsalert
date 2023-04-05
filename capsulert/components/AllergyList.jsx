@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   TouchableOpacity,
-  Button,
+  StyleSheet,
+  ScrollView,
 } from "react-native";
 import { getDatabase, ref, child, get, remove } from "firebase/database";
 import { UserContext } from "../contexts/User";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export const AllergyList = ({ newAllergy }) => {
   const { userId } = useContext(UserContext);
@@ -72,41 +73,48 @@ export const AllergyList = ({ newAllergy }) => {
   }, [readAllergyList, newAllergy]);
 
   return (
-    <View>
-      <Text style={styles.headerSub}>Allergy List</Text>
-      <FlatList
-        scrollEnabled={false}
-        data={readAllergyList}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.row}>
-              <Text>{item}</Text>
-              <TouchableOpacity style={styles.remove}>
-                <Button
-                  title="Remove"
-                  onPress={() => handleRemove(item)}
-                ></Button>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-      />
-    </View>
+    <ScrollView className="bg-whiteGrey">
+      <View className="flex items-center">
+        <Text className="text-center my-1 text-greyBlack font-semibold text-base ml-3">
+          Other allergies
+        </Text>
+        <FlatList
+          scrollEnabled={false}
+          data={readAllergyList}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <TouchableOpacity
+                  className=" ml-1 bg-purpleLight rounded-xl mt-5 w-80 text-white 
+                  border-black border-2"
+                >
+                  <Text className="text-white items-center pl-5 pt-2">
+                    {item}
+                  </Text>
+                  <MaterialIcons
+                    style={styles.icon}
+                    name="delete-outline"
+                    size={26}
+                    color="black"
+                    onPress={() => handleRemove(item)}
+                  ></MaterialIcons>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  headerSub: {
-    fontSize: 18,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  remove: {
-    marginLeft: 200,
-    marginBottom: 10,
+  icon: {
+    alignSelf: "flex-end",
+    verticalAlign: "middle",
+    padding: 5,
+    paddingBottom: 10,
+    paddingRight: 10,
+    paddingTop: 2,
   },
 });
