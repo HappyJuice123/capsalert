@@ -451,6 +451,7 @@ export const AddMedication = ({
                 alert("Please enter a medication name!");
               } else {
                 handleInput;
+                setModalOpen(false);
               }
             }}
           >
